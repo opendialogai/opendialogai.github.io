@@ -2,6 +2,6 @@
     line-height: 24px;
 }
 
-.od-header .od-header-nav__branding {
+.od-header {
     --od-header-background-gradient: none
 }
