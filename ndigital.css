@@ -66,3 +66,13 @@
     float: right;
     margin: 5px 4px;
 }
+
+.od-message-form .od-message-form--text {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.od-message-form .submit-button {
+    font-size:18px;
+    margin-top:25px;
+}
