@@ -85,3 +85,7 @@
 .od-fp-form .od-fp-form__cancel {
     color: black;
 }
+
+.od-header .od-header-cta__icon {
+    font-size: 16px;
+}
