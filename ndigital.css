@@ -82,10 +82,6 @@
     line-height: 24px;
 }
 
-.od-fp-form .od-fp-form__cancel, .od-fp-form .od-fp-form__cancel:hover, .od-fp-form .od-fp-form__cancel:focus {
-    border: none;
-    outline: none;
-    background: none;
-    text-decoration: underline;
+.od-fp-form .od-fp-form__cancel {
     color: black;
 }
