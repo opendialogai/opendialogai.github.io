@@ -1,5 +1,7 @@
 .od-full-page-rich-input .od-full-page-rich__title {
-    color:black;
+    color: black;
+    font-family: Helvetica;
+    font-size: 24px;
 }
 
 .od-full-page-rich-input .od-full-page-rich__subtitle {
