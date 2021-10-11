@@ -49,7 +49,7 @@
     display: none;
 }
 
-od-message-form .od-message-form--element-label {
+.od-message-form .od-message-form--element-label {
     margin: 6px 2px 3px 5px;
     vertical-align: super;
     font-size: 14px;
@@ -57,7 +57,7 @@ od-message-form .od-message-form--element-label {
     padding: 2px 0px 1px 0px
 }
 
-od-message-form .od-message-form--element-input {
+.od-message-form .od-message-form--element-input {
     font-size: 14px;
     border-radius: 5px;
     border: 1px solid #a9a9a9;
