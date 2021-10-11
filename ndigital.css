@@ -48,3 +48,21 @@ od-full-page-rich-input .od-full-page-rich__text {
 .od-user-input .od-user-input__form.disabled {
     display: none
 }
+
+od-message-form .od-message-form--element-label {
+    margin: 6px 2px 3px 5px;
+    vertical-align: super;
+    font-size: 14px;
+    float: left;
+    padding: 2px 0px 1px 0px
+}
+
+od-message-form .od-message-form--element-input {
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #a9a9a9;
+    padding: 5px 1px;
+    width: 62%;
+    float: right;
+    margin: 5px 4px;
+}
