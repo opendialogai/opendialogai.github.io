@@ -28,3 +28,10 @@ od-full-page-rich-input .od-full-page-rich__text {
 .od-fp-form .od-fp-form__title {
     color: #000000;    
 }
+
+.od-fp-form .od-fp-form__element {
+    position: relative;
+    width: 48%;
+    margin: 9px 2px 8px 2px;
+    float: left;
+}
