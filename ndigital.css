@@ -1,3 +1,7 @@
 .od-full-page-rich-input .od-full-page-rich__subtitle {
     line-height: 24px;
 }
+
+.od-header .od-header-nav__branding {
+    --od-header-background-gradient: none
+}
