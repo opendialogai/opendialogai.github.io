@@ -1,16 +1,16 @@
-.od-full-page-rich-input .od-full-page-rich__title {
+.od-full-page-rich__title {
     color: black;
     font-family: Helvetica;
     font-size: 24px;
 }
 
-.od-full-page-rich-input .od-full-page-rich__text {
+.od-full-page-rich__text {
     margin: 14px 10px 8px 10px;
     line-height: 1.3em;
     color: black;
 }
 
-.od-full-page-rich-input .od-full-page-rich__subtitle {
+.od-full-page-rich__subtitle {
     line-height: 24px;
     color: black;
 }
