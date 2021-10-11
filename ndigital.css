@@ -7,8 +7,9 @@
 }
 
 .od-header .od-header-nav__logo img {
-    width: 80%;
-    height: 80%;
+    margin-top: 10px;
+    width: 70%;
+    height: 70%;
 }
 
 .od-fp-form .od-fp-form__title {
