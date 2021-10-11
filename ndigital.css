@@ -44,3 +44,7 @@ od-full-page-rich-input .od-full-page-rich__text {
     line-height: 2.5;
     height: 40px;
 }
+
+.od-user-input .od-user-input__form.disabled {
+    display: none
+}
