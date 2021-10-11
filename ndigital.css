@@ -16,7 +16,7 @@ od-full-page-rich-input .od-full-page-rich__text {
 }
 
 .od-header {
-    --od-header-background-gradient: none
+    --od-header-background-gradient: none;
 }
 
 .od-header .od-header-nav__logo img {
@@ -46,7 +46,7 @@ od-full-page-rich-input .od-full-page-rich__text {
 }
 
 .od-user-input .od-user-input__form.disabled {
-    display: none
+    display: none;
 }
 
 od-message-form .od-message-form--element-label {
