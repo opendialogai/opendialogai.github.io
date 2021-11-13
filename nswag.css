@@ -1,0 +1,98 @@
+.od-full-page-rich-input .od-full-page-rich__title {
+    color: black;
+    font-family: Helvetica;
+    font-size: 22px;
+}
+
+.od-full-page-rich-input .od-full-page-rich__text {
+    margin: 70px 10px 8px 10px;
+    line-height: 1.3em;
+    color: black;
+}
+
+.od-full-page-rich-input .od-full-page-rich__subtitle {
+    line-height: 24px;
+    color: black;
+}
+
+.od-header {
+    --od-header-background-gradient: none;
+}
+
+.od-header .od-header-nav__logo img {
+    margin-top: 10px;
+    width: 70%;
+    height: 70%;
+}
+
+.od-fp-form .od-fp-form__title {
+    color: #000000;    
+}
+
+.od-fp-form .od-fp-form__element {
+    position: relative;
+    width: 48%;
+    margin: 9px 2px 8px 2px;
+    float: left;
+}
+
+.od-fp-form .od-fp-form__select {
+    width: 60%;
+    display: block;
+    padding: 0.6em 1.4em 0.5em 0.8em;
+    font-size: 16px;
+    line-height: 2.5;
+    height: 40px;
+}
+
+.od-user-input .od-user-input__form.disabled {
+    display: none;
+}
+
+.od-message-form .od-message-form--element-label {
+    margin: 6px 2px 3px 5px;
+    vertical-align: super;
+    font-size: 14px;
+    float: left;
+    padding: 2px 0px 1px 0px;
+}
+
+.od-message-form .od-message-form--element-input {
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #a9a9a9;
+    padding: 5px 1px;
+    width: 62%;
+    float: right;
+    margin: 5px 4px;
+}
+
+.od-message-form .od-message-form--element-select {
+    font-size: 16px;
+    height: 25px;
+    width: 61px;
+    margin-left: 4px;
+}
+
+.od-message-form .od-message-form--text {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.od-message-form .submit-button {
+    font-size:16px;
+    margin-top:25px;
+}
+
+.od-fp-form .od-fp-form__title {
+    color: #000000;
+    line-height: 24px;
+}
+
+.od-fp-form .od-fp-form__cancel {
+    color: black;
+}
+
+.od-header .od-header-cta__icon {
+    font-size: 16px;
+}
