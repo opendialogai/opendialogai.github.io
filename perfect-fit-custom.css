@@ -958,6 +958,10 @@ template {
   color: var(--od-button-text);
 }
 
+.od-fp-form .od-fp-form__select {
+    font-size: 16px;
+ }
+
 .od-message-button .od-message-button__inline-buttons {
   margin-top: 0;
 }
