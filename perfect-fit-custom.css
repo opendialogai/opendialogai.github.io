@@ -873,6 +873,10 @@ template {
   border-radius: unset;
 }
 
+.od-header .od-header-cta {
+    background-color: #cccccc;
+}
+
 .od-header .od-header__btm-fade {
   display: none;
 }
