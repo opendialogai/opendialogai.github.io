@@ -966,6 +966,10 @@ template {
   margin-top: 12px;
 }
 
+.od-message-rich.mt .od-message-rich--buttons button {
+    background-color: #69967b;
+}
+
 .od-message-button .od-message-button__buttons-wrapper__button {
   border: 2px solid var(--od-button-text);
   border-radius: 16px;
