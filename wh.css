@@ -841,7 +841,7 @@ template {
 .od-chat-window,
 .od-user-input .od-user-input__form-text-input,
 .od-autocomplete .od-autocomplete__search {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Co Text Light','Trebuchet MS',Arial,Helvetica,sans-serif;
 }
 
 .web-chat .close-chat {
