@@ -21,10 +21,10 @@
     sessionStorage.clear();  
         window.openDialogSettings = {
       url: 'https://apps.cloud.demo.opendialog.ai',
-      appKey: '9|lK3pHpfiyxNf7YlC7zd12nq6goYdHsm9utKo5swK',
+      appKey: '34|vex1nfmbJkS4YgApskF0qdPkgL1HKWVJkBDLy6PT',
       user: {
         custom: {
-          selected_scenario: '464'
+          selected_scenario: '3855'
         }
       },
     };
