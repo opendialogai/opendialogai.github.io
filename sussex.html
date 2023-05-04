@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image Example</title>
+    <style>
+        /* Add your image URL as the background */
+        body {
+            background-image: url('sussex.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your page content goes here -->
+    <script>
+    sessionStorage.clear();  
+        window.openDialogSettings = {
+      url: 'https://apps.cloud.demo.opendialog.ai',
+      appKey: '9|lK3pHpfiyxNf7YlC7zd12nq6goYdHsm9utKo5swK',
+      user: {
+        custom: {
+          selected_scenario: '464'
+        }
+      },
+    };
+</script>
+<script src='https://apps.cloud.demo.opendialog.ai/vendor/webchat/js/opendialog-bot.js'></script>
+</body>
+
+</html>
