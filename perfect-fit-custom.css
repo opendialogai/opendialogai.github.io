@@ -1021,3 +1021,7 @@ template {
 .od-message-upload__button:hover {
   border: 2px solid var(--od-received-message-background);
 }
+
+.od-user-input__form:disabled {
+   display: none
+}
