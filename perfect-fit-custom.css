@@ -1022,6 +1022,6 @@ template {
   border: 2px solid var(--od-received-message-background);
 }
 
-.od-user-input__form:disabled {
+.od-user-input .od-user-input__form.disabled  {
    display: none
 }
