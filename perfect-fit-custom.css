@@ -1025,3 +1025,8 @@ template {
 .od-user-input .od-user-input__form.disabled  {
    display: none
 }
+
+.od-external-buttons {
+   display: flex;
+   justify-content: center;
+}
