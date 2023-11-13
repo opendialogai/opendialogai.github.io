@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image Example</title>
+    <style>
+        /* Add your image URL as the background */
+        body {
+            background-image: url('frimley.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your page content goes here -->
+    <script>
+    sessionStorage.clear();  
+        window.openDialogSettings = {
+      url: 'https://staging-demos.staging-cloud.opendialog.ai',
+      appKey: '5|xgyDQbGTS2uNAaoJA2FU04lL17UIeQwFX2CgJHcw',
+      user: {
+        custom: {
+          selected_scenario: '306'
+        }
+      },
+    };
+</script>
+<script src='https://staging-demos.staging-cloud.opendialog.ai/opendialog-bot.js'></script>
+</body>
+
+</html>
