@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image Example</title>
+    <style>
+        /* Add your image URL as the background */
+        body {
+            background-image: url('ogi.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your page content goes here -->
+    <script>
+    sessionStorage.clear();  
+        window.openDialogSettings = {
+      url: 'https://staging-demos.staging-cloud.opendialog.ai',
+      appKey: '13|jk66IJlVy1fdc81NeLBrSSvdnrhTyxhOmdr3h9as',
+      user: {
+        custom: {
+          selected_scenario: '692'
+        }
+      },
+    };
+</script>
+<script src='https://staging-demos.staging-cloud.opendialog.ai/vendor/webchat/js/opendialog-bot.js'></script>
+</body>
+
+</html>
