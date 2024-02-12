@@ -4,7 +4,8 @@
 }
 
 iframe {
-        display: block;  /* iframes are inline by default */   
+        display: block;  /* iframes are inline by default */
+        height: 800px;
         width: 100%;  /* Set width to 100% of the viewport width */     
         border:0; /* Remove default border */
         allowfullscreen: true;
