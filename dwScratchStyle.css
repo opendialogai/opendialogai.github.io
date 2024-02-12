@@ -4,8 +4,9 @@
 }
 
 iframe {
-    display: block;       /* iframes are inline by default */
-    border: none;         /* Reset default border */
-    height: 100vh;        /* Viewport-relative units */
-    width: 100vw;
+        display: block;  /* iframes are inline by default */   
+        height: 100vh;  /* Set height to 100% of the viewport height */   
+        width: 100vw;  /* Set width to 100% of the viewport width */     
+        border: 1px; /* Remove default border */
+        background: lightyellow; /* Just for styling */
 }
