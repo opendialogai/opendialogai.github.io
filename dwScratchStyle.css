@@ -9,5 +9,4 @@ iframe {
         width: 100%;  /* Set width to 100% of the viewport width */     
         border:0; /* Remove default border */
         allowfullscreen: true;
-        background: lightyellow; /* Just for styling */
 }
