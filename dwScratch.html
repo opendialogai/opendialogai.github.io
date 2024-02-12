@@ -1,41 +1,15 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <link rel="mask-icon" href="https://assets-cdn.github.com/pinned-octocat.svg" color="#000000">
-    <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
-      
-    <style> 
-        body { background: #232323; width: 95%; margin: 0 auto; }
-        /* Responsive Container for iFrame */
-        .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } 
-        .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-    </style>
-    
-    <title>Tech Ops PH | your &lt; IT / design &lt; partner </title>
-  
-<script>
-function myFunction() {
-    url = document.getElementById('newURL').value;
-    url = url.replace(/^http:\/\//, '');
-    url = url.replace(/^https:\/\//, '');
-    url = "https://" + url;
-    document.getElementById('myframe').src = url;
-};
-</script>
-  
+    <title>Website Viewer</title>
+    <link rel="stylesheet" type="text/css" href="dwScratchStyle.css">
 </head>
-
 <body>
-  <div class='embed-container embed-responsive embed-responsive-4by3'>
-  <input type="button" id="mybutton" value="Home Page" onclick="myFunction()" />
-<input type="text" id="newURL" />
-<iframe id="myframe" src="">
-</iframe>
-</div>
-
+    <div class="container">
+        <input type="text" id="urlInput" placeholder="Enter website URL">
+        <button id="submitBtn">Load Website</button>
+        <iframe id="webFrame" src=""></iframe>
+    </div>
+    <script src="dwScratchScript.js"></script>
 </body>
-
 </html>
-javascrip
