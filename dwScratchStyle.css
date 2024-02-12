@@ -6,7 +6,7 @@
 iframe {
         display: block;  /* iframes are inline by default */   
         width: 100%;  /* Set width to 100% of the viewport width */
-        height: 100%;
+        height: 100vw;
         border:0; /* Remove default border */
         allowfullscreen: true;
 }
