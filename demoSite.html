@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenDialog.ai | Insurnace</title>
+    <link rel="stylesheet" type="text/css" href="amerDemo.css">
+</head>
+<body>
+<div class="container">
+        <input type="text" id="urlInput" placeholder="Customers Site Here">
+        <select id="scenerioSelector">
+          <option value="161">HRMC Patient Experience</option>
+          <option value="505">NHS Post Op Follow Up</option>
+          <option value="2346">Bumper Payment Collections MC</option>
+          <option value="2464">MSU DC</option>
+          <option value="2488">Renewal Assistant v1.4</option>
+</select>
+        <button id="submitBtn">Simulate Site</button><br>
+        <iframe id="webFrame" src=""></iframe>
+   
+   <script src="amerDemo.js"></script>
+</div>
+<script>
+    window.openDialogSettings = {
+      url: 'https://amerdemo.cloud.opendialog.ai',
+      appKey: '1|Vm4buiuOFTQCP8FwN1HVG8O6MOpG61zt61lbvQha',
+      user: {
+        custom: {
+          selected_scenario: '1'
+        }
+      },
+};
+</script>
+<script src='https://amerdemo.cloud.opendialog.ai/vendor/webchat/js/opendialog-bot.js'></script>   
+</body>
+</html>
