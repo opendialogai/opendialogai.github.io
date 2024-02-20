@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenDialog.ai | Tiger Lab</title>
+    <link rel="stylesheet" type="text/css" href="amerDemo.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<div class="container">
+
+        <iframe id="webFrame" src="https://healthcare.msu.edu"></iframe>
+
+</div>
+<script>
+    window.openDialogSettings = {
+      url: 'https://customer-office.cloud.opendialog.ai',
+      appKey: '23|LNeoFV507a3CPWv87R0Mby3AAv1zwdpTCNFOud5K',
+      user: {
+        custom: {
+          selected_scenario: '2464'
+        }
+      },
+
+      customSettings: {
+        openCta: {"title":"Hello!👋 Chat with us!","icon":"/images/vendor/@opendialogai/opendialog-design-system-pkg/src/icons/cta-chat-open.svg?9b44efcdecad1a95a5ddc89a0b783056","borderRadius":"50px","width":"280px","height":"80px","background":"#001abf"},
+        openCta: {
+          title: "Hello!👋 Chat with us!",
+          icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001abf",
+        },
+      },
+        };
+</script>
+<script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
