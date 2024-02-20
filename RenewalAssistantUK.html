@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenDialog.ai | Renewal Assistant</title>
+    <link rel="stylesheet" type="text/css" href="amerDemo.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<div class="container">
+
+        <iframe id="webFrame" src="https://opendialog.ai/insurance/"></iframe>
+
+</div>
+<script>
+    window.openDialogSettings = {
+      url: 'https://customer-office.cloud.opendialog.ai',
+      appKey: '32|ZO2Bl5gh8Mf3x2ubEreYAWjVx569tTdZdFzafXUr',
+      user: {
+        custom: {
+          selected_scenario: '3874'
+        }
+      },
+
+      customSettings: {
+        
+        openCta: {
+          title: "Hello!👋 Chat with us!",
+          icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001abf",
+        },
+      },
+        };
+</script>
+<script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
