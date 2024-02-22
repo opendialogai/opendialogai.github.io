@@ -4,6 +4,15 @@
     <title>OpenDialog.ai | MSU Health</title>
     <link rel="stylesheet" type="text/css" href="amerDemo.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+  iframe#opendialog-chatwindow {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;  
+  }
+</style>
 </head>
 <body>
 <div class="container">
@@ -20,9 +29,7 @@
           selected_scenario: '2464'
         }
       },
-      general: {
-        fullScreen: true
-      },
+
       customSettings: {
         openCta: {"title":"Hello!👋 Chat with us!","icon":"/images/vendor/@opendialogai/opendialog-design-system-pkg/src/icons/cta-chat-open.svg?9b44efcdecad1a95a5ddc89a0b783056","borderRadius":"50px","width":"280px","height":"80px","background":"#001abf"},
         openCta: {
@@ -34,6 +41,6 @@
           background: "#001abf",
         },
       },
-};
+        };
 </script>
 <script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
