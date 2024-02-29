@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenDialog.ai | Evry Health</title>
+    <link rel="stylesheet" type="text/css" href="amerDemo.css">
+</head>
+<body>
+<div class="container">
+
+        <iframe id="webFrame" src="https://www.evryhealth.com/"></iframe>
+
+</div>
+<script>
+    window.openDialogSettings = {
+      url: 'https://customer-office.cloud.opendialog.ai',
+      appKey: '35|IiFCZNk9czz0qtXxDD4Env3jZIJISB3DERvJ3N88',
+      user: {
+        custom: {
+          selected_scenario: '4629'
+        }
+      },
+
+      customSettings: {
+        
+        openCta: {
+          title: "Hello!👋 Chat with us!",
+          icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001abf",
+        },
+      },
+        };
+</script>
+<script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
