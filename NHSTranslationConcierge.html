@@ -18,28 +18,28 @@
 <body>
     <!-- Your page content goes here -->
 <script>
-    window.openDialogSettings = {
-      url: 'https://customer-office.cloud.opendialog.ai',
-      appKey: '55|QzEgFj6HJKLWiT67Q3hyOh6dc2VBV9QNEOxwZgm4a38c19fe',
-      user: {
-        custom: {
-          selected_scenario: '9442'
-        }
-      },
+  window.openDialogSettings = {
+    url: 'https://new-tenant.dev1-cloud.opendialog.ai',
+    appKey: '2|0vWdSXEywLCUFZQP4iYDYU8kbhzR3PQvBSHms0eU8c2b8d68',
+    user: {
+      email: crypto.randomUUID(),
+      custom: {
+        selected_scenario: '19',
+        language: 'ar'
+      }
+    },
 
-      customSettings: {
-        
-        openCta: {
-          title: "Hello!👋 Chat with us!",
-          icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
-          borderRadius: "50px",
-          width: "280px",
-          height: "80px",
-          background: "#001abf",
-        },
+    customSettings: {
+      openCta: {
+        title: "مرحبًا! 👋 دردش معنا!",
+        icon: "https://new-tenant.dev1-cloud.opendialog.ai/images/cta-chat-open.svg",
+        borderRadius: "50px",
+        width: "280px",
+        height: "80px",
+        background: "#001abf",
       },
-        };
+    },
+  };
 </script>
-<script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
-
+<script src='https://new-tenant.dev1-cloud.opendialog.ai/dist/nu-webchat-js'></script>
 </html>
