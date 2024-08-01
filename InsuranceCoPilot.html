@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenDialog.ai | Insurance Agent</title>
+    <link rel="stylesheet" type="text/css" href="amerDemo.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+<div class="container">
+
+        <iframe id="webFrame" src="https://opendialog.ai/insurance/"></iframe>
+
+</div>
+<script>
+    window.openDialogSettings = {
+      url: 'https://customer-office.cloud.opendialog.ai',
+      appKey: '2251799818000000|TeR9X7AT8SK5rysDexhovRSLuMYRoOqLSPTwZndc2fb93a17',
+      user: {
+        custom: {
+          selected_scenario: '2251799819000023'
+        }
+      },
+      customSettings: {
+        openCta: {
+          title: "Hello!:wave: Chat with us!",
+          icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001ABF",
+        },
+      },
+        };
+</script>
+<script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
+</body>
