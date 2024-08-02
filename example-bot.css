@@ -1,3 +1,7 @@
 .carousel__slide {
   height: fit-content;
 }
+
+.od-message-item--incoming .od-message-item__bubble {
+   overflow-wrap: anywhere;
+}
