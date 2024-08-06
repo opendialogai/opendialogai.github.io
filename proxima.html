@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenDialog.ai | Insurnace</title>
+    <link rel="stylesheet" type="text/css" href="amerDemo.css">
+</head>
+<body>
+<div class="container">
+        <input type="text" id="urlInput" placeholder="Customers Site Here">
+        <button id="submitBtn">Simulate Site</button><br>
+        <iframe id="webFrame" src=""></iframe>
+   
+   <script src="amerDemo.js"></script>
+</div>
+<script>
+    window.openDialogSettings = {
+      url: 'https://customer-office.cloud.opendialog.ai',
+      appKey: '2251799816000004|KDclv7AmI5IcVFZYBRfadDTtAK2qn6tjMf44k8bT3580b613',
+      user: {
+        custom: {
+          selected_scenario: '2251799817000292'
+        }
+      },
+
+      customSettings: {
+        
+        openCta: {
+          title: "Hello!👋 Chat with us!",
+          icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001abf",
+        },
+      },
+        };
+</script>
+<script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
+</body>
+</html>
