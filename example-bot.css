@@ -1,3 +1,8 @@
+iframe#opendialog-chatwindow {
+  left: 260px;
+  bottom: 40px;
+}
+
 .carousel__slide {
   height: fit-content;
 }
