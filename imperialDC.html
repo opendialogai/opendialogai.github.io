@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imperial Outpatients</title>
+    <style>
+        /* Add your image URL as the background */
+        body {
+            background-image: url('imperial-outpatients.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your page content goes here -->
+<script>
+    window.openDialogSettings = {
+      url: 'https://imperial-college-nhs.cloud.opendialog.ai',
+      appKey: '1125899909000001|LhaHEekkhnRvjSJqbDNg4U7Zd11kY6dqNURSKBLqd92869a5',
+      user: {
+        custom: {
+          selected_scenario: '1125899909000406',
+          session_lifetime: 0
+        }
+      },
+
+      customSettings: {
+        openCta: {"title":"Hello!👋 Chat with us!","icon":"https://imperial-college-nhs.cloud.opendialog.ai/images/vendor/@opendialogai/opendialog-design-system-pkg/src/icons/cta-chat-open.svg?9b44efcdecad1a95a5ddc89a0b783056","borderRadius":"50px","width":"280px","height":"80px","background":"#001abf"},
+        openCta: {
+          title: "Hello!👋 Chat with us!",
+          icon: "https://imperial-college-nhs.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001abf",
+        },
+      },
+        };
+</script>
+<script src='https://imperial-college-nhs.cloud.opendialog.ai/dist/nu-webchat-js'></script>
+</html>
