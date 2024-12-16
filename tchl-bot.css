@@ -34,7 +34,7 @@
     border: none;
 }
 
-.od-progress-bar .od-progress-bar__progress:after, .od-progress-bar .od-progress-bar__progress {
+.od-progress {
     background-color: #ffffff;
 }
 
