@@ -1,0 +1,47 @@
+.od-user-input__form.disabled, .od-user-input__form.disabled {
+    visibility:hidden;
+    height: 0;
+}
+
+.od-message-form--element-input {
+    width: 100%;
+    height: 30px;
+}
+
+.od-message-text, .od-full-page-rich__title, .od-full-page-rich__subtitle {
+    white-space: break-spaces;
+}
+
+.secondary {
+    color: var(--od-button-background) !important;
+    background-color: var(--od-button-text) !important;
+}
+
+.od-message-form--element-textarea {
+    height: 200px;
+}
+
+.od-message-rich--buttons > button:nth-child(1) {
+    text-align: left;
+    color: var(--od-button-background) !important;
+    background: white !important;
+    border: none;
+    font-weight: bold;
+}
+
+.od-message-rich--buttons > button:nth-child(1):hover {
+    text-decoration: underline !important;
+    border: none;
+}
+
+.od-progress-bar .od-progress-bar__progress:after, .od-progress-bar .od-progress-bar__progress {
+    background-color: #5cb75c;
+}
+
+.od-fp-form .first_name, .od-fp-form .last_name {
+    width: 100% !important;
+}
+
+.mt-wrapper.last-message .mt {
+    width: 250px;
+}
