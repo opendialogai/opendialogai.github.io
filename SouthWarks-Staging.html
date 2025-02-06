@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iSPA</title>
+    <style>
+        /* Add your image URL as the background */
+        body {
+            background-image: url('south warks.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your page content goes here -->
+<script>
+    window.openDialogSettings = {
+      url: 'https://south-warwickshire-university-nhs.cloud.opendialog.ai',
+      appKey: 'rkJOxKGpCfNsW4VnhdMyFjGz9AQ6cbwdiQJeJc78',
+      user: {
+        custom: {
+          selected_scenario: 'Staging',
+          session_lifetime: 0
+        }
+      },
+      customSettings: {
+        openCta: {"title":"Hello!:wave: Chat with us!","icon":"https://south-warwickshire-university-nhs.cloud.opendialog.ai/images/vendor/@opendialogai/opendialog-design-system-pkg/src/icons/cta-chat-open.svg?9b44efcdecad1a95a5ddc89a0b783056","borderRadius":"50px","width":"280px","height":"80px","background":"#001ABF"},
+        openCta: {
+          title: "SWFT iSPA Virtual Agent!",
+          icon: "https://south-warwickshire-university-nhs.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001ABF",
+        },
+      },
+        };
+</script>
+<script src='https://south-warwickshire-university-nhs.cloud.opendialog.ai/dist/nu-webchat-js'></script>
+
+</html>
