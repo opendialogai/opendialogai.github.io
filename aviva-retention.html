@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://feature-alternative-uis.opendialog-chatui.pages.dev/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open GI</title>
     <style>
@@ -18,29 +19,31 @@
 <body>
     <!-- Your page content goes here -->
 
-</div>
-<script>
-    window.openDialogSettings = {
+<div id="od-webchat"></div>
+
+<script src='https://feature-alternative-uis.opendialog-chatui.pages.dev/opendialog-webchat.umd.mjs'></script>
+    <script>
+      
+    const settings = {
       url: 'https://customer-office.cloud.opendialog.ai',
       appKey: '2251799833000000|gste9EE3PGT4tSfSTEMlCV0EnYxiHWLnDRQAZG6B6385d81b',
+      layout: 'minimal',
+      iframe: false,
+      sdkEnabled: true,
       user: {
         custom: {
           selected_scenario: '2251799838000000',
           session_lifetime: 0
         }
       },
-
       customSettings: {
-        
         openCta: {
-          title: "Hello!👋 Chat with us!",
-          icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
-          borderRadius: "50px",
-          width: "280px",
-          height: "80px",
-          background: "#001abf",
+          title: "Hello!:wave: Chat with us!",
+          background: "#FFD808",
         },
       },
         };
+
+      const chatui = new ODWebChat.OpenDialogChatSDK('#od-webchat');
+      chatui.init(settings);
 </script>
-<script src='https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js'></script>
