@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image Example</title>
+    <style>
+        /* Add your image URL as the background */
+        body {
+            background-image: url('aiice-service.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your page content goes here -->
+    <script>
+    sessionStorage.clear();  
+        window.openDialogSettings = {
+      url: 'https://iceinsuretech.cloud.opendialog.ai',
+      appKey: '2251799814000000|h0m2nuQC1HUeoj8n5e9nyO8nmXvSv5AtYfMInUjId267889c',
+      user: {
+        custom: {
+          selected_scenario: '2251799814000000'
+        }
+      },
+    };
+</script>
+<script src='https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js'></script>
+</body>
+
+</html>
