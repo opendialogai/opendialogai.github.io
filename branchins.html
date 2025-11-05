@@ -20,12 +20,10 @@
     <!-- Your page content goes here -->
 <script src="https://opendialog-chatui.pages.dev/opendialog-webchat.umd.mjs"></script>
 <script>
-  // Provide some settings for your ChatUI widget. 
-  // You can find the basic settings required in the Publish section of the OpenDialog platform
   const settings = {
       url: 'https://customer-office.cloud.opendialog.ai',
       appKey: '1125899924000001|I2iDmopEP5kddXwj931RWKEsPMM2ek3wDpBQdrCAc27f62c9',
-      sdkEnabled: true, // Make sure to include this one!
+      sdkEnabled: true,
       language: 'en',
       layout: 'minimal',
       user: {
@@ -42,14 +40,9 @@
           background: '#BC2504'
         }
       }
-    }
-    
-    // Instantiate your ChatUI widget, passing in the element you want to load it into
     const chatui = new ODWebChat.OpenDialogChatSDK('#od-chatui')
 
-    // Initialise your ChatUI widget, passing in your settings
     chatui.init(settings)
-
 </script>
 </body>
 
