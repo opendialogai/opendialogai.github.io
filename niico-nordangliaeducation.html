@@ -13,10 +13,10 @@
       rel="stylesheet"
     />
 
-    <!-- OpenDialog WebChat styles -->
+    <!-- ✅ Use same WebChat styles as working demo -->
     <link
       rel="stylesheet"
-      href="https://assets.webchat.opendialog.app/style.css"
+      href="https://opendialog-webchat.pages.dev/style.css"
     />
 
     <style>
@@ -50,7 +50,7 @@
         text-decoration: underline;
       }
 
-      /* HEADER (simplified from original) */
+      /* HEADER (simplified) */
       .header {
         background-color: #ffffff;
         border-bottom: 1px solid #e5e7eb;
@@ -181,10 +181,6 @@
         line-height: 1.6;
       }
 
-      .enquiry-copy a {
-        font-weight: 500;
-      }
-
       .helper-text {
         font-size: 12px;
         color: var(--text-muted);
@@ -201,17 +197,17 @@
         margin-bottom: 4px;
       }
 
-      /* Chat container where OpenDialog will render */
+      /* 🔹 Container where WebChat is EMBEDDED */
       #od-webchat {
         width: 100%;
-        height: 520px; /* adjust as you prefer */
+        height: 520px; /* adjust as needed */
         border-radius: 12px;
         overflow: hidden;
         border: 1px solid #e5e7eb;
         background: #f9fafb;
       }
 
-      /* FOOTER (minimal, recognisable) */
+      /* FOOTER (simple) */
       .footer {
         background: var(--navy);
         color: #ffffff;
@@ -281,7 +277,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-section">
-      <!-- LEFT: Key stats (visual match to original page) -->
+      <!-- LEFT: Stats -->
       <section class="main-left">
         <div class="stats-wrapper">
           <div class="stat-pill">
@@ -290,12 +286,10 @@
               of parents say their child is happy at school
             </div>
           </div>
-
           <div class="stat-pill">
             <div class="stat-number">1 in 2</div>
             <div class="stat-text">attend top 100 universities</div>
           </div>
-
           <div class="stat-pill">
             <div class="stat-number">65%</div>
             <div class="stat-text">A+ or A grades at A-level</div>
@@ -303,7 +297,7 @@
         </div>
       </section>
 
-      <!-- RIGHT: Welcome text + AI Agent (WebChat) -->
+      <!-- RIGHT: Welcome + Embedded WebChat -->
       <section class="main-right">
         <div class="enquiry-card">
           <div>
@@ -315,12 +309,10 @@
 
           <div class="enquiry-copy">
             We’re delighted that you’re considering Nord Anglia School Abu Dhabi
-            for your child’s education.
-            <br /><br />
-            Instead of a long form, you can now chat with our
-            <strong>AI Admissions Assistant</strong>. Ask about the curriculum,
-            school life, tuition fees, or arrange a school visit – all in one
-            conversation.
+            for your child’s education. Instead of a long form, you can now chat
+            with our <strong>AI Admissions Assistant</strong>. Ask about the
+            curriculum, school life, tuition fees, or arrange a school visit –
+            all in one conversation.
             <br /><br />
             Questions the agent can’t answer? You can still
             <a href="mailto:admissions@nasabudhabi.ae">email us</a> or
@@ -328,25 +320,25 @@
           </div>
 
           <p class="helper-text">
-            Tip: Try “Can you help me book a school tour?” or “Tell me about
-            tuition fees”.
+            Try: “Can you help me book a school tour?” or “Tell me about tuition
+            fees”.
           </p>
 
           <div class="chat-container-label">Start your enquiry</div>
 
-          <!-- 🔹 OpenDialog WebChat will render INSIDE this div -->
+          <!-- 🔹 THIS is where WebChat will appear -->
           <div id="od-webchat"></div>
         </div>
       </section>
     </main>
 
-    <!-- FOOTER (simple but familiar) -->
+    <!-- FOOTER -->
     <footer class="footer">
       <div class="footer-inner">
         <div>
           <strong>Admissions:</strong>
-          <a href="mailto:admissions@nasabudhabi.ae">admissions@nasabudhabi.ae</a>
-          <br />
+          <a href="mailto:admissions@nasabudhabi.ae">admissions@nasabudhabi.ae</a
+          ><br />
           <strong>General:</strong>
           <a href="tel:+97126993333">+971 2 699 3333</a>
         </div>
@@ -358,13 +350,12 @@
       </div>
     </footer>
 
-    <!-- OpenDialog WebChat SDK -->
-    <script src="https://assets.webchat.opendialog.app/opendialog-webchat.umd.mjs"></script>
+    <!-- ✅ Same UMD as your working demo -->
+    <script src="https://opendialog-webchat.pages.dev/opendialog-webchat.umd.mjs"></script>
 
-    <!-- Initialise your WebChat instance -->
+    <!-- Initialise embedded WebChat -->
     <script>
-      // TODO: Replace these placeholder values with your real settings
-      // from OpenDialog (Publish → Interface settings → Get embed code).
+      // 👉 Replace these with the values from OpenDialog (Publish → Interface Settings → Get embed code)
       const settings = {
         url: "https://customer-office.cloud.opendialog.ai", // e.g. https://your-org.cloud.opendialog.ai
         appKey: "1125899916000004|kf9Nv4AuEDYhqyfTvGYfaKeMBaUOSJYqmm2hOoaZ65828fa1",
@@ -372,25 +363,17 @@
         language: "en",
         user: {
           custom: {
-            // Scenario ID or alias you want to load
             selected_scenario: "1125899920000313",
-          },
-        },
-        // Optional: tweak look & feel of the widget
-        customSettings: {
-          openCta: {
-            title: "Ask our AI Admissions Assistant",
-            borderRadius: "16px",
-            width: "320px",
-            height: "72px",
-            background: "#001abf",
           },
         },
       };
 
-      // Attach WebChat to the #od-webchat container (inside the “card” on the right)
+      // Mount SDK into the page element instead of a floating popup
       const webchat = new ODWebChat.OpenDialogChatSDK("#od-webchat");
       webchat.init(settings);
+
+      // Ensure it opens immediately so it looks "embedded"
+      webchat.open();
     </script>
   </body>
 </html>
