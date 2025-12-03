@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Enquiry | NAS Abu Dhabi (AI Agent Demo)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- OpenDialog WebChat styles -->
+    <link
+      rel="stylesheet"
+      href="https://assets.webchat.opendialog.app/style.css"
+    />
+
+    <style>
+      :root {
+        --navy: #00263a;
+        --teal: #00a0a4;
+        --bg-light: #f6f7fb;
+        --text-main: #111827;
+        --text-muted: #4b5563;
+        --nas-yellow: #ffc900;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        color: var(--text-main);
+        background-color: #ffffff;
+      }
+
+      /* Header */
+      .header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .header-inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 16px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .logo-main {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        font-size: 18px;
+        text-transform: uppercase;
+      }
+
+      .logo-sub {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.12em;
+      }
+
+      /* Main Layout */
+      .main-section {
+        display: flex;
+        min-height: calc(100vh - 64px);
+      }
+
+      /* LEFT PANEL – NAS-style hero */
+      .main-left {
+        flex: 1;
+        background: var(--navy);
+        color: #ffffff;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+      }
+
+      .main-left-inner {
+        max-width: 430px;
+        width: 100%;
+        padding: 40px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .nas-logo-block {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .nas-logo-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+        position: relative;
+      }
+
+      .nas-logo-mark::before,
+      .nas-logo-mark::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        border: 2px solid #ffffff;
+      }
+
+      .nas-logo-mark::before {
+        width: 22px;
+        height: 10px;
+        left: 6px;
+        top: 8px;
+      }
+
+      .nas-logo-mark::after {
+        width: 16px;
+        height: 6px;
+        left: 9px;
+        bottom: 8px;
+      }
+
+      .nas-logo-text-main {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        line-height: 1.4;
+      }
+
+      .nas-logo-text-sub {
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        opacity: 0.9;
+      }
+
+      .nas-dot-band {
+        height: 70px;
+        border-radius: 999px;
+        background-image: radial-gradient(circle, #01c6c9 2px, transparent 2px);
+        background-size: 16px 16px;
+        opacity: 0.95;
+        margin: 8px 0 20px;
+      }
+
+      .nas-stat-large {
+        font-size: 46px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .nas-stat-text {
+        font-size: 16px;
+        line-height: 1.4;
+      }
+
+      .nas-highlight-card {
+        margin: 26px 0 22px;
+        background: var(--nas-yellow);
+        border-radius: 16px;
+        padding: 18px 22px;
+        color: #001b2f;
+      }
+
+      .nas-highlight-main {
+        font-family: "Montserrat", sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .nas-highlight-sub {
+        font-size: 14px;
+      }
+
+      .nas-dot-band-bottom {
+        height: 40px;
+        border-radius: 999px;
+        background-image: radial-gradient(circle, #01c6c9 2px, transparent 2px);
+        background-size: 16px 16px;
+        opacity: 0.9;
+        margin: 6px 0 20px;
+      }
+
+      .nas-stat-bottom {
+        margin-top: auto;
+      }
+
+      .nas-bottom-value {
+        font-size: 36px;
+        font-weight: 700;
+      }
+
+      .nas-bottom-text {
+        font-size: 15px;
+      }
+
+      /* RIGHT PANEL */
+      .main-right {
+        flex: 1.15;
+        background: var(--bg-light);
+        display: flex;
+        align-items: center;
+        padding: 40px 16px;
+      }
+
+      .enquiry-card {
+        max-width: 520px;
+        width: 100%;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+        padding: 28px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .enquiry-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+      }
+
+      .enquiry-subtitle {
+        font-size: 16px;
+        color: var(--text-muted);
+        margin-top: 8px;
+      }
+
+      .enquiry-copy {
+        font-size: 15px;
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      .enquiry-copy a {
+        color: var(--teal);
+      }
+
+      /* Embed Chat Styles */
+      .chat-container-label {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-muted);
+        margin-top: 10px;
+        margin-bottom: 4px;
+      }
+
+      #od-webchat {
+        width: 100%;
+        height: 520px;
+      }
+
+      /* 🔥 Ensure iframe is embedded and NOT a popup */
+      #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+      }
+
+      @media (max-width: 900px) {
+        .main-section {
+          flex-direction: column;
+        }
+        .main-left {
+          order: 2;
+        }
+        .main-right {
+          order: 1;
+        }
+        .enquiry-card {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: 100%;
+        }
+        #od-webchat {
+          height: 480px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo-text">
+          <div class="logo-main">Nord Anglia International School Abu Dhabi</div>
+          <div class="logo-sub">Admissions · Enquiry</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="main-section">
+      <!-- LEFT: NAS-style hero panel -->
+      <section class="main-left">
+        <div class="main-left-inner">
+          <div>
+            <div class="nas-logo-block">
+              <div class="nas-logo-mark"></div>
+              <div>
+                <div class="nas-logo-text-main">Nord Anglia International School</div>
+                <div class="nas-logo-text-sub">Abu Dhabi</div>
+              </div>
+            </div>
+
+            <div class="nas-dot-band"></div>
+
+            <div>
+              <div class="nas-stat-large">96%</div>
+              <div class="nas-stat-text">
+                of parents say their child is happy at school
+              </div>
+            </div>
+
+            <div class="nas-highlight-card">
+              <div class="nas-highlight-main">1 in 2</div>
+              <div class="nas-highlight-sub">attend top 100 universities</div>
+            </div>
+
+            <div class="nas-dot-band-bottom"></div>
+          </div>
+
+          <div class="nas-stat-bottom">
+            <div class="nas-bottom-value">65%</div>
+            <div class="nas-bottom-text">A+ or A grades at A-level</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Welcome + Embedded WebChat -->
+      <section class="main-right">
+        <div class="enquiry-card">
+          <h1 class="enquiry-title">Welcome to NAS Abu Dhabi</h1>
+          <p class="enquiry-copy">
+            We’re delighted that you’re considering Nord Anglia School Abu Dhabi for your child’s education.
+            <br /><br />
+            To have the best experience of our school, share your availability for a tour.
+            Our team will respond within 24 hours (Mon–Fri).
+            <br /><br />
+            Questions?
+            <a href="mailto:admissions@nasabudhabi.ae">Email us</a> or
+            <a href="tel:+97126993333">call</a>.
+          </p>
+
+          <div class="chat-container-label">Start your enquiry</div>
+          <div id="od-webchat"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- WebChat embed -->
+    <script>
+      window.openDialogSettings = {
+        url: "https://customer-office.cloud.opendialog.ai",
+        appKey: "1125899916000004|kf9Nv4AuEDYhqyfTvGYfaKeMBaUOSJYqmm2hOoaZ65828fa1",
+        user: {
+          custom: {
+            selected_scenario: "1125899920000313"
+          }
+        },
+        parentEl: "#od-webchat"
+      };
+    </script>
+    <script src="https://assets.webchat.opendialog.app/opendialog-webchat.umd.mjs"></script>
+  </body>
+</html>
