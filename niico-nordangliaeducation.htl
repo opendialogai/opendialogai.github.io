@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Enquiry | NAS Abu Dhabi (AI Agent Demo)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts similar to original site -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- OpenDialog WebChat styles -->
+    <link
+      rel="stylesheet"
+      href="https://assets.webchat.opendialog.app/style.css"
+    />
+
+    <style>
+      :root {
+        --navy: #00263a;
+        --teal: #00a0a4;
+        --bg-light: #f6f7fb;
+        --text-main: #111827;
+        --text-muted: #4b5563;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        color: var(--text-main);
+        background-color: #ffffff;
+      }
+
+      a {
+        color: var(--teal);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* HEADER (simplified from original) */
+      .header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .header-inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 16px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .logo-main {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        font-size: 18px;
+        text-transform: uppercase;
+      }
+
+      .logo-sub {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.12em;
+      }
+
+      .btn-enquire {
+        background: var(--navy);
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 10px 22px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .btn-enquire:hover {
+        opacity: 0.9;
+      }
+
+      /* MAIN LAYOUT (key stats left, enquiry right) */
+      .main-section {
+        display: flex;
+        min-height: calc(100vh - 64px);
+      }
+
+      .main-left {
+        flex: 1;
+        background: var(--navy);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+      }
+
+      .stats-wrapper {
+        max-width: 360px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .stat-pill {
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        padding: 18px 20px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .stat-number {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .stat-text {
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      .main-right {
+        flex: 1.15;
+        background: var(--bg-light);
+        display: flex;
+        align-items: center;
+        padding: 40px 16px;
+      }
+
+      .enquiry-card {
+        max-width: 520px;
+        width: 100%;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+        padding: 28px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .enquiry-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+
+      .enquiry-subtitle {
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+
+      .enquiry-copy {
+        font-size: 14px;
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      .enquiry-copy a {
+        font-weight: 500;
+      }
+
+      .helper-text {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+
+      .chat-container-label {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-muted);
+        margin-top: 10px;
+        margin-bottom: 4px;
+      }
+
+      /* Chat container where OpenDialog will render */
+      #od-webchat {
+        width: 100%;
+        height: 520px; /* adjust as you prefer */
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        background: #f9fafb;
+      }
+
+      /* FOOTER (minimal, recognisable) */
+      .footer {
+        background: var(--navy);
+        color: #ffffff;
+        padding: 24px 16px;
+      }
+
+      .footer-inner {
+        max-width: 1120px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: space-between;
+        font-size: 13px;
+      }
+
+      .footer a {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 900px) {
+        .main-section {
+          flex-direction: column;
+        }
+
+        .main-left,
+        .main-right {
+          flex: none;
+          width: 100%;
+        }
+
+        .main-left {
+          order: 2;
+        }
+
+        .main-right {
+          order: 1;
+        }
+
+        .enquiry-card {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: 100%;
+        }
+
+        #od-webchat {
+          height: 480px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo-text">
+          <div class="logo-main">
+            Nord Anglia International School Abu Dhabi
+          </div>
+          <div class="logo-sub">Admissions · Enquiry</div>
+        </div>
+        <button class="btn-enquire" type="button">Enquire now</button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-section">
+      <!-- LEFT: Key stats (visual match to original page) -->
+      <section class="main-left">
+        <div class="stats-wrapper">
+          <div class="stat-pill">
+            <div class="stat-number">96%</div>
+            <div class="stat-text">
+              of parents say their child is happy at school
+            </div>
+          </div>
+
+          <div class="stat-pill">
+            <div class="stat-number">1 in 2</div>
+            <div class="stat-text">attend top 100 universities</div>
+          </div>
+
+          <div class="stat-pill">
+            <div class="stat-number">65%</div>
+            <div class="stat-text">A+ or A grades at A-level</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Welcome text + AI Agent (WebChat) -->
+      <section class="main-right">
+        <div class="enquiry-card">
+          <div>
+            <h1 class="enquiry-title">Welcome to NAS Abu Dhabi</h1>
+            <p class="enquiry-subtitle">
+              AI Admissions Assistant · Demo powered by OpenDialog
+            </p>
+          </div>
+
+          <div class="enquiry-copy">
+            We’re delighted that you’re considering Nord Anglia School Abu Dhabi
+            for your child’s education.
+            <br /><br />
+            Instead of a long form, you can now chat with our
+            <strong>AI Admissions Assistant</strong>. Ask about the curriculum,
+            school life, tuition fees, or arrange a school visit – all in one
+            conversation.
+            <br /><br />
+            Questions the agent can’t answer? You can still
+            <a href="mailto:admissions@nasabudhabi.ae">email us</a> or
+            <a href="tel:+97126993333">call</a>.
+          </div>
+
+          <p class="helper-text">
+            Tip: Try “Can you help me book a school tour?” or “Tell me about
+            tuition fees”.
+          </p>
+
+          <div class="chat-container-label">Start your enquiry</div>
+
+          <!-- 🔹 OpenDialog WebChat will render INSIDE this div -->
+          <div id="od-webchat"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER (simple but familiar) -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div>
+          <strong>Admissions:</strong>
+          <a href="mailto:admissions@nasabudhabi.ae">admissions@nasabudhabi.ae</a>
+          <br />
+          <strong>General:</strong>
+          <a href="tel:+97126993333">+971 2 699 3333</a>
+        </div>
+        <div>
+          Nord Anglia International School<br />
+          Al Reem Island, United Arab Emirates
+        </div>
+        <div>© 2025 · Demo page · Not an official NAS site</div>
+      </div>
+    </footer>
+
+    <!-- OpenDialog WebChat SDK -->
+    <script src="https://assets.webchat.opendialog.app/opendialog-webchat.umd.mjs"></script>
+
+    <!-- Initialise your WebChat instance -->
+    <script>
+      // TODO: Replace these placeholder values with your real settings
+      // from OpenDialog (Publish → Interface settings → Get embed code).
+      const settings = {
+        url: "https://customer-office.cloud.opendialog.ai", // e.g. https://your-org.cloud.opendialog.ai
+        appKey: "1125899916000004|kf9Nv4AuEDYhqyfTvGYfaKeMBaUOSJYqmm2hOoaZ65828fa1",
+        sdkEnabled: true,
+        language: "en",
+        user: {
+          custom: {
+            // Scenario ID or alias you want to load
+            selected_scenario: "1125899920000313",
+          },
+        },
+        // Optional: tweak look & feel of the widget
+        customSettings: {
+          openCta: {
+            title: "Ask our AI Admissions Assistant",
+            borderRadius: "16px",
+            width: "320px",
+            height: "72px",
+            background: "#001abf",
+          },
+        },
+      };
+
+      // Attach WebChat to the #od-webchat container (inside the “card” on the right)
+      const webchat = new ODWebChat.OpenDialogChatSDK("#od-webchat");
+      webchat.init(settings);
+    </script>
+  </body>
+</html>
