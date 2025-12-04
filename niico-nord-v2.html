@@ -13,23 +13,44 @@
       rel="stylesheet"
     />
 
-    <!-- OpenDialog WebChat styles -->
+    <!-- WebChat base styles (from your tenant) -->
     <link
       rel="stylesheet"
-      href="https://assets.webchat.opendialog.app/style.css"
+      href="https://customer-office.cloud.opendialog.ai/styles/nu-webchat.css"
     />
 
-    <!-- ✅ Define settings BEFORE loading the webchat script -->
+    <!-- ✅ Your OpenDialog settings, with parentEl added -->
     <script>
       window.openDialogSettings = {
         url: "https://customer-office.cloud.opendialog.ai",
-        appKey: "2251799835000001|aeta0dF79cWINiE8bTrSy06pkXEdh4rt0ybU2aVpf9596538",
+        appKey:
+          "2251799835000001|aeta0dF79cWINiE8bTrSy06pkXEdh4rt0ybU2aVpf9596538",
+        // 🔹 Embed inside this element instead of floating
+        parentEl: "#od-webchat",
         user: {
           custom: {
-            selected_scenario: "2251799843000070"
-          }
+            selected_scenario: "2251799843000070",
+            session_lifetime: 0,
+          },
         },
-        parentEl: "#od-webchat"
+
+        customSettings: {
+          openCta: {
+            title: "Hello!👋 Chat with us!",
+            icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+            borderRadius: "50px",
+            width: "280px",
+            height: "80px",
+            background: "#001abf",
+          },
+          additionalMenuLinks: [
+            // You can enable these if you want extra links in the menu
+            // {
+            //   url: "https://docs.opendialog.ai/",
+            //   title: "Check the documentation"
+            // }
+          ],
+        },
       };
     </script>
 
@@ -185,4 +206,210 @@
 
       .nas-stat-text {
         font-size: 16px;
-        line-hei
+        line-height: 1.4;
+      }
+
+      .nas-highlight-card {
+        margin: 26px 0 22px;
+        background: var(--nas-yellow);
+        border-radius: 16px;
+        padding: 18px 22px;
+        color: #001b2f;
+      }
+
+      .nas-highlight-main {
+        font-family: "Montserrat", sans-serif;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .nas-highlight-sub {
+        font-size: 14px;
+      }
+
+      .nas-dot-band-bottom {
+        height: 40px;
+        border-radius: 999px;
+        background-image: radial-gradient(circle, #01c6c9 2px, transparent 2px);
+        background-size: 16px 16px;
+        opacity: 0.9;
+        margin: 6px 0 20px;
+      }
+
+      .nas-stat-bottom {
+        margin-top: auto;
+      }
+
+      .nas-bottom-value {
+        font-size: 36px;
+        font-weight: 700;
+      }
+
+      .nas-bottom-text {
+        font-size: 15px;
+      }
+
+      /* RIGHT PANEL */
+      .main-right {
+        flex: 1.15;
+        background: var(--bg-light);
+        display: flex;
+        align-items: center;
+        padding: 40px 16px;
+      }
+
+      .enquiry-card {
+        max-width: 520px;
+        width: 100%;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
+        padding: 28px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .enquiry-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 40px;
+        font-weight: 700;
+      }
+
+      .enquiry-copy {
+        font-size: 15px;
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      .enquiry-copy a {
+        color: var(--teal);
+      }
+
+      .chat-container-label {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--text-muted);
+        margin-top: 10px;
+        margin-bottom: 4px;
+      }
+
+      #od-webchat {
+        width: 100%;
+        height: 520px;
+      }
+
+      /* Force the iframe to behave like embedded content */
+      #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+      }
+
+      @media (max-width: 900px) {
+        .main-section {
+          flex-direction: column;
+        }
+        .main-left {
+          order: 2;
+        }
+        .main-right {
+          order: 1;
+        }
+        .enquiry-card {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: 100%;
+        }
+        #od-webchat {
+          height: 480px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo-text">
+          <div class="logo-main">Nord Anglia International School Abu Dhabi</div>
+          <div class="logo-sub">Admissions · Enquiry</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Layout -->
+    <main class="main-section">
+      <!-- LEFT -->
+      <section class="main-left">
+        <div class="main-left-inner">
+          <div>
+            <div class="nas-logo-block">
+              <div class="nas-logo-mark"></div>
+              <div>
+                <div class="nas-logo-text-main">
+                  Nord Anglia International School
+                </div>
+                <div class="nas-logo-text-sub">Abu Dhabi</div>
+              </div>
+            </div>
+
+            <div class="nas-dot-band"></div>
+
+            <div>
+              <div class="nas-stat-large">96%</div>
+              <div class="nas-stat-text">
+                of parents say their child is happy at school
+              </div>
+            </div>
+
+            <div class="nas-highlight-card">
+              <div class="nas-highlight-main">1 in 2</div>
+              <div class="nas-highlight-sub">attend top 100 universities</div>
+            </div>
+
+            <div class="nas-dot-band-bottom"></div>
+          </div>
+
+          <div class="nas-stat-bottom">
+            <div class="nas-bottom-value">65%</div>
+            <div class="nas-bottom-text">A+ or A grades at A-level</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT -->
+      <section class="main-right">
+        <div class="enquiry-card">
+          <h1 class="enquiry-title">Welcome to NAS Abu Dhabi</h1>
+          <p class="enquiry-copy">
+            We’re delighted that you’re considering Nord Anglia School Abu Dhabi
+            for your child’s education.
+            <br /><br />
+            To have the best experience of our school, share your availability
+            for a tour. Our team will respond within 24 hours (Mon–Fri).
+            <br /><br />
+            Questions?
+            <a href="mailto:admissions@nasabudhabi.ae">Email us</a> or
+            <a href="tel:+97126993333">call</a>.
+          </p>
+
+          <div class="chat-container-label">Start your enquiry</div>
+          <div id="od-webchat"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- WebChat JS from your environment -->
+    <script src="https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+  </body>
+</html>
