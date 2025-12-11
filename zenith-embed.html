@@ -1,4802 +1,762 @@
-<!
-DOCTYPE
- 
-html
->
-
-<
-html
- 
-lang
-=
-"
-en
-"
->
-
-  
-<
-head
->
-
-    
-<
-meta
- 
-charset
-=
-"
-UTF-8
-"
- 
-/>
-
-    
-<
-title
->
-Claims | Zenith Insurance (AI Agent Demo)
-</
-title
->
-
-    
-<
-meta
- 
-name
-=
-"
-viewport
-"
- 
-content
-=
-"
-width=device-width, initial-scale=1.0
-"
- 
-/>
-
-    
-<!-- Fonts -->
-
-    
-<
-link
- 
-rel
-=
-"
-preconnect
-"
- 
-href
-=
-"
-https://fonts.googleapis.com
-"
- 
-/>
-
-    
-<
-link
- 
-rel
-=
-"
-preconnect
-"
- 
-href
-=
-"
-https://fonts.gstatic.com
-"
- 
-crossorigin
- 
-/>
-
-    
-<
-link
-
-      
-href
-=
-"
-https://fonts.googleapis.com/css2?family=Arial&display=swap
-"
-
-      
-rel
-=
-"
-stylesheet
-"
-
-    
-/>
-
-    
-<!-- WebChat base styles (from your tenant) -->
-
-    
-<
-link
-
-      
-rel
-=
-"
-stylesheet
-"
-
-      
-href
-=
-"
-https://customer-office.cloud.opendialog.ai/styles/nu-webchat.css
-"
-
-    
-/>
-
-    
-<!-- ✅ Your OpenDialog settings, with parentEl added -->
-
-    
-<
-script
->
-
-      
-window
-.
-openDialogSettings
- 
-=
- 
-{
-
-        
-url
-:
- 
-"https://customer-office.cloud.opendialog.ai"
-,
-
-        
-appKey
-:
-
-          
-"YOUR_APP_KEY_HERE"
-,
- 
-// Replace with your actual app key
-
-        
-// 🔹 Embed inside this element instead of floating
-
-        
-parentEl
-:
- 
-"#od-webchat"
-,
-
-        
-user
-:
- 
-{
-
-          
-custom
-:
- 
-{
-
-            
-selected_scenario
-:
- 
-"YOUR_SCENARIO_ID"
-,
- 
-// Replace with your scenario ID
-
-            
-session_lifetime
-:
- 
-0
-,
-
-          
-}
-,
-
-        
-}
-,
-
-        
-customSettings
-:
- 
-{
-
-          
-openCta
-:
- 
-{
-
-            
-title
-:
- 
-"Hello!👋 Chat with us!"
-,
-
-            
-icon
-:
- 
-"https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg"
-,
-
-            
-borderRadius
-:
- 
-"50px"
-,
-
-            
-width
-:
- 
-"280px"
-,
-
-            
-height
-:
- 
-"80px"
-,
-
-            
-background
-:
- 
-"#0066cc"
-,
-
-          
-}
-,
-
-          
-additionalMenuLinks
-:
- 
-[
-]
-,
-
-        
-}
-,
-
-      
-}
-;
-
-    
-</
-script
->
-
-    
-<
-style
->
-
-      
-:root
- 
-{
-
-        
---zenith-blue
-:
- 
-#0066cc
-;
-
-        
---zenith-orange
-:
- 
-#ff9900
-;
-
-        
---zenith-dark-blue
-:
- 
-#004080
-;
-
-        
---bg-light
-:
- 
-#e8e8e8
-;
-
-        
---text-main
-:
- 
-#333333
-;
-
-        
---text-muted
-:
- 
-#666666
-;
-
-        
---border-color
-:
- 
-#d0d0d0
-;
-
-      
-}
-
-      
-*
- 
-{
-
-        
-box-sizing
-:
- border-box
-;
-
-        
-margin
-:
- 
-0
-;
-
-        
-padding
-:
- 
-0
-;
-
-      
-}
-
-      
-body
- 
-{
-
-        
-font-family
-:
- Arial
-,
- Helvetica
-,
- sans-serif
-;
-
-        
-color
-:
- 
-var
-(
---text-main
-)
-;
-
-        
-background-color
-:
- 
-#ffffff
-;
-
-      
-}
-
-      
-/* Header */
-
-      
-.header
- 
-{
-
-        
-background-color
-:
- 
-#ffffff
-;
-
-        
-border-bottom
-:
- 
-1
-px
- solid 
-var
-(
---border-color
-)
-;
-
-      
-}
-
-      
-.header-inner
- 
-{
-
-        
-max-width
-:
- 
-1200
-px
-;
-
-        
-margin
-:
- 
-0
- auto
-;
-
-        
-padding
-:
- 
-20
-px
- 
-24
-px
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-justify-content
-:
- space-between
-;
-
-      
-}
-
-      
-.logo-container
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-gap
-:
- 
-12
-px
-;
-
-      
-}
-
-      
-.zenith-logo
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-flex-direction
-:
- column
-;
-
-        
-align-items
-:
- flex-start
-;
-
-      
-}
-
-      
-.zenith-logo-main
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-gap
-:
- 
-0
-;
-
-      
-}
-
-      
-.zenith-logo-text
- 
-{
-
-        
-font-size
-:
- 
-36
-px
-;
-
-        
-font-weight
-:
- bold
-;
-
-        
-letter-spacing
-:
- 
-2
-px
-;
-
-        
-color
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-      
-}
-
-      
-.zenith-flame
- 
-{
-
-        
-width
-:
- 
-0
-;
-
-        
-height
-:
- 
-0
-;
-
-        
-border-left
-:
- 
-8
-px
- solid 
-transparent
-;
-
-        
-border-right
-:
- 
-8
-px
- solid 
-transparent
-;
-
-        
-border-bottom
-:
- 
-18
-px
- solid 
-var
-(
---zenith-orange
-)
-;
-
-        
-position
-:
- relative
-;
-
-        
-top
-:
- 
-8
-px
-;
-
-        
-margin
-:
- 
-0
- 
-6
-px
-;
-
-      
-}
-
-      
-.zenith-flame
-::before
- 
-{
-
-        
-content
-:
- 
-""
-;
-
-        
-width
-:
- 
-0
-;
-
-        
-height
-:
- 
-0
-;
-
-        
-border-left
-:
- 
-5
-px
- solid 
-transparent
-;
-
-        
-border-right
-:
- 
-5
-px
- solid 
-transparent
-;
-
-        
-border-bottom
-:
- 
-12
-px
- solid 
-#ffb84d
-;
-
-        
-position
-:
- absolute
-;
-
-        
-top
-:
- 
-3
-px
-;
-
-        
-left
-:
- 
--5
-px
-;
-
-      
-}
-
-      
-.zenith-logo-sub
- 
-{
-
-        
-font-size
-:
- 
-14
-px
-;
-
-        
-font-weight
-:
- normal
-;
-
-        
-letter-spacing
-:
- 
-3
-px
-;
-
-        
-color
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-margin-top
-:
- 
--4
-px
-;
-
-        
-padding-left
-:
- 
-2
-px
-;
-
-      
-}
-
-      
-.header-nav
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-gap
-:
- 
-28
-px
-;
-
-        
-align-items
-:
- center
-;
-
-      
-}
-
-      
-.header-nav
- a
- 
-{
-
-        
-text-decoration
-:
- none
-;
-
-        
-color
-:
- 
-var
-(
---text-main
-)
-;
-
-        
-font-size
-:
- 
-13
-px
-;
-
-        
-font-weight
-:
- normal
-;
-
-        
-transition
-:
- color 
-0.2
-s
-;
-
-      
-}
-
-      
-.header-nav
- a
-:hover
- 
-{
-
-        
-color
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-      
-}
-
-      
-/* Orange Navigation Bar */
-
-      
-.nav-bar
- 
-{
-
-        
-background
-:
- 
-var
-(
---zenith-orange
-)
-;
-
-        
-border-bottom
-:
- 
-2
-px
- solid 
-#e68a00
-;
-
-      
-}
-
-      
-.nav-bar-inner
- 
-{
-
-        
-max-width
-:
- 
-1200
-px
-;
-
-        
-margin
-:
- 
-0
- auto
-;
-
-        
-padding
-:
- 
-16
-px
- 
-24
-px
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-gap
-:
- 
-32
-px
-;
-
-      
-}
-
-      
-.nav-bar
- a
- 
-{
-
-        
-color
-:
- 
-var
-(
---text-main
-)
-;
-
-        
-text-decoration
-:
- none
-;
-
-        
-font-size
-:
- 
-15
-px
-;
-
-        
-font-weight
-:
- bold
-;
-
-        
-transition
-:
- color 
-0.2
-s
-;
-
-      
-}
-
-      
-.nav-bar
- a
-:hover
- 
-{
-
-        
-color
-:
- 
-#ffffff
-;
-
-      
-}
-
-      
-.nav-bar-divider
- 
-{
-
-        
-color
-:
- 
-var
-(
---text-main
-)
-;
-
-        
-font-weight
-:
- bold
-;
-
-      
-}
-
-      
-.nav-bar
- 
-.existing-customers
- 
-{
-
-        
-margin-left
-:
- auto
-;
-
-        
-background
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-padding
-:
- 
-10
-px
- 
-20
-px
-;
-
-        
-border-radius
-:
- 
-4
-px
-;
-
-        
-font-weight
-:
- bold
-;
-
-      
-}
-
-      
-.nav-bar
- 
-.existing-customers
-:hover
- 
-{
-
-        
-background
-:
- 
-var
-(
---zenith-dark-blue
-)
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-      
-}
-
-      
-/* Main Layout */
-
-      
-.main-section
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-min-height
-:
- 
-calc
-(
-100
-vh
- 
--
- 
-160
-px
-)
-;
-
-        
-background
-:
- 
-var
-(
---bg-light
-)
-;
-
-      
-}
-
-      
-/* LEFT PANEL – Zenith branded hero */
-
-      
-.main-left
- 
-{
-
-        
-flex
-:
- 
-1
-;
-
-        
-background
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-justify-content
-:
- center
-;
-
-        
-padding
-:
- 
-48
-px
- 
-32
-px
-;
-
-      
-}
-
-      
-.main-left-inner
- 
-{
-
-        
-max-width
-:
- 
-480
-px
-;
-
-        
-width
-:
- 
-100
-%
-;
-
-        
-display
-:
- flex
-;
-
-        
-flex-direction
-:
- column
-;
-
-        
-gap
-:
- 
-40
-px
-;
-
-      
-}
-
-      
-.zenith-branding
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-flex-direction
-:
- column
-;
-
-        
-gap
-:
- 
-24
-px
-;
-
-        
-padding-bottom
-:
- 
-32
-px
-;
-
-        
-border-bottom
-:
- 
-2
-px
- solid 
-rgba
-(
-255
-,
- 
-255
-,
- 
-255
-,
- 
-0.3
-)
-;
-
-      
-}
-
-      
-.zenith-icon-large
- 
-{
-
-        
-width
-:
- 
-80
-px
-;
-
-        
-height
-:
- 
-80
-px
-;
-
-        
-background
-:
- 
-var
-(
---zenith-orange
-)
-;
-
-        
-border-radius
-:
- 
-8
-px
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-justify-content
-:
- center
-;
-
-        
-font-size
-:
- 
-48
-px
-;
-
-        
-font-weight
-:
- bold
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-box-shadow
-:
- 
-0
- 
-4
-px
- 
-16
-px
- 
-rgba
-(
-0
-,
- 
-0
-,
- 
-0
-,
- 
-0.2
-)
-;
-
-        
-letter-spacing
-:
- 
-2
-px
-;
-
-      
-}
-
-      
-.zenith-brand-text
- h2
- 
-{
-
-        
-font-size
-:
- 
-32
-px
-;
-
-        
-font-weight
-:
- bold
-;
-
-        
-margin-bottom
-:
- 
-8
-px
-;
-
-        
-letter-spacing
-:
- 
-1
-px
-;
-
-      
-}
-
-      
-.zenith-brand-text
- p
- 
-{
-
-        
-font-size
-:
- 
-16
-px
-;
-
-        
-opacity
-:
- 
-0.95
-;
-
-        
-letter-spacing
-:
- 
-2
-px
-;
-
-        
-text-transform
-:
- uppercase
-;
-
-      
-}
-
-      
-.feature-list
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-flex-direction
-:
- column
-;
-
-        
-gap
-:
- 
-28
-px
-;
-
-      
-}
-
-      
-.feature-item
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- flex-start
-;
-
-        
-gap
-:
- 
-20
-px
-;
-
-      
-}
-
-      
-.feature-icon
- 
-{
-
-        
-width
-:
- 
-56
-px
-;
-
-        
-height
-:
- 
-56
-px
-;
-
-        
-background
-:
- 
-var
-(
---zenith-orange
-)
-;
-
-        
-border-radius
-:
- 
-8
-px
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-justify-content
-:
- center
-;
-
-        
-font-size
-:
- 
-28
-px
-;
-
-        
-flex-shrink
-:
- 
-0
-;
-
-      
-}
-
-      
-.feature-content
- h3
- 
-{
-
-        
-font-size
-:
- 
-18
-px
-;
-
-        
-font-weight
-:
- 
-700
-;
-
-        
-margin-bottom
-:
- 
-6
-px
-;
-
-      
-}
-
-      
-.feature-content
- p
- 
-{
-
-        
-font-size
-:
- 
-14
-px
-;
-
-        
-line-height
-:
- 
-1.6
-;
-
-        
-opacity
-:
- 
-0.95
-;
-
-      
-}
-
-      
-.trust-badge
- 
-{
-
-        
-background
-:
- 
-rgba
-(
-255
-,
- 
-255
-,
- 
-255
-,
- 
-0.1
-)
-;
-
-        
-border-radius
-:
- 
-16
-px
-;
-
-        
-padding
-:
- 
-24
-px
-;
-
-        
-text-align
-:
- center
-;
-
-        
-margin-top
-:
- 
-20
-px
-;
-
-        
-backdrop-filter
-:
- 
-blur
-(
-10
-px
-)
-;
-
-      
-}
-
-      
-.trust-badge
- h4
- 
-{
-
-        
-font-size
-:
- 
-16
-px
-;
-
-        
-margin-bottom
-:
- 
-12
-px
-;
-
-        
-opacity
-:
- 
-0.9
-;
-
-      
-}
-
-      
-.trust-stats
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-justify-content
-:
- space-around
-;
-
-        
-gap
-:
- 
-16
-px
-;
-
-      
-}
-
-      
-.trust-stat
- 
-{
-
-        
-flex
-:
- 
-1
-;
-
-      
-}
-
-      
-.trust-stat-value
- 
-{
-
-        
-font-size
-:
- 
-32
-px
-;
-
-        
-font-weight
-:
- 
-700
-;
-
-        
-color
-:
- 
-var
-(
---zenith-orange
-)
-;
-
-        
-margin-bottom
-:
- 
-4
-px
-;
-
-      
-}
-
-      
-.trust-stat-label
- 
-{
-
-        
-font-size
-:
- 
-12
-px
-;
-
-        
-opacity
-:
- 
-0.9
-;
-
-      
-}
-
-      
-/* Breadcrumb */
-
-      
-.breadcrumb
- 
-{
-
-        
-max-width
-:
- 
-580
-px
-;
-
-        
-margin
-:
- 
-0
- auto 
-16
-px
-;
-
-        
-padding
-:
- 
-0
- 
-36
-px
-;
-
-        
-font-size
-:
- 
-13
-px
-;
-
-        
-color
-:
- 
-var
-(
---text-muted
-)
-;
-
-      
-}
-
-      
-.breadcrumb
- a
- 
-{
-
-        
-color
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-text-decoration
-:
- none
-;
-
-      
-}
-
-      
-.breadcrumb
- a
-:hover
- 
-{
-
-        
-text-decoration
-:
- underline
-;
-
-      
-}
-
-      
-/* RIGHT PANEL */
-
-      
-.main-right
- 
-{
-
-        
-flex
-:
- 
-1.2
-;
-
-        
-background
-:
- 
-var
-(
---bg-light
-)
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-padding
-:
- 
-48
-px
- 
-24
-px
-;
-
-      
-}
-
-      
-.claims-card
- 
-{
-
-        
-max-width
-:
- 
-580
-px
-;
-
-        
-width
-:
- 
-100
-%
-;
-
-        
-margin
-:
- 
-0
- auto
-;
-
-        
-background
-:
- 
-#ffffff
-;
-
-        
-border-radius
-:
- 
-20
-px
-;
-
-        
-box-shadow
-:
- 
-0
- 
-20
-px
- 
-60
-px
- 
-rgba
-(
-0
-,
- 
-0
-,
- 
-0
-,
- 
-0.12
-)
-;
-
-        
-padding
-:
- 
-40
-px
- 
-36
-px
- 
-36
-px
-;
-
-        
-display
-:
- flex
-;
-
-        
-flex-direction
-:
- column
-;
-
-        
-gap
-:
- 
-20
-px
-;
-
-      
-}
-
-      
-.claims-header
- 
-{
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-gap
-:
- 
-0
-;
-
-        
-padding
-:
- 
-24
-px
- 
-36
-px
-;
-
-        
-margin
-:
- 
--40
-px
- 
--36
-px
- 
-24
-px
- 
--36
-px
-;
-
-        
-background
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-border-radius
-:
- 
-20
-px
- 
-20
-px
- 
-0
- 
-0
-;
-
-      
-}
-
-      
-.claims-icon
- 
-{
-
-        
-width
-:
- 
-64
-px
-;
-
-        
-height
-:
- 
-64
-px
-;
-
-        
-background
-:
- 
-var
-(
---zenith-orange
-)
-;
-
-        
-border-radius
-:
- 
-8
-px
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-justify-content
-:
- center
-;
-
-        
-font-size
-:
- 
-32
-px
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-margin-right
-:
- 
-16
-px
-;
-
-      
-}
-
-      
-.claims-header-text
- h1
- 
-{
-
-        
-font-size
-:
- 
-32
-px
-;
-
-        
-font-weight
-:
- bold
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-margin-bottom
-:
- 
-4
-px
-;
-
-      
-}
-
-      
-.claims-header-text
- p
- 
-{
-
-        
-font-size
-:
- 
-15
-px
-;
-
-        
-color
-:
- 
-rgba
-(
-255
-,
- 
-255
-,
- 
-255
-,
- 
-0.9
-)
-;
-
-      
-}
-
-      
-.claims-intro
- 
-{
-
-        
-font-size
-:
- 
-15
-px
-;
-
-        
-color
-:
- 
-var
-(
---text-main
-)
-;
-
-        
-line-height
-:
- 
-1.7
-;
-
-      
-}
-
-      
-.claims-intro
- strong
- 
-{
-
-        
-color
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-font-weight
-:
- 
-600
-;
-
-      
-}
-
-      
-.claims-intro
- a
- 
-{
-
-        
-color
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-text-decoration
-:
- none
-;
-
-        
-font-weight
-:
- 
-600
-;
-
-      
-}
-
-      
-.claims-intro
- a
-:hover
- 
-{
-
-        
-text-decoration
-:
- underline
-;
-
-      
-}
-
-      
-.info-box
- 
-{
-
-        
-background
-:
- 
-#f0f7ff
-;
-
-        
-border-left
-:
- 
-4
-px
- solid 
-var
-(
---zenith-blue
-)
-;
-
-        
-border-radius
-:
- 
-8
-px
-;
-
-        
-padding
-:
- 
-16
-px
- 
-20
-px
-;
-
-      
-}
-
-      
-.info-box
- p
- 
-{
-
-        
-font-size
-:
- 
-14
-px
-;
-
-        
-color
-:
- 
-var
-(
---text-main
-)
-;
-
-        
-line-height
-:
- 
-1.6
-;
-
-        
-margin
-:
- 
-0
-;
-
-      
-}
-
-      
-.info-box
- strong
- 
-{
-
-        
-color
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-      
-}
-
-      
-.chat-section-label
- 
-{
-
-        
-font-size
-:
- 
-14
-px
-;
-
-        
-font-weight
-:
- bold
-;
-
-        
-text-transform
-:
- uppercase
-;
-
-        
-letter-spacing
-:
- 
-1.2
-px
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-background
-:
- 
-var
-(
---zenith-blue
-)
-;
-
-        
-margin
-:
- 
-8
-px
- 
--36
-px
- 
-12
-px
- 
--36
-px
-;
-
-        
-padding
-:
- 
-12
-px
- 
-36
-px
-;
-
-        
-display
-:
- flex
-;
-
-        
-align-items
-:
- center
-;
-
-        
-gap
-:
- 
-8
-px
-;
-
-      
-}
-
-      
-.chat-section-label
-::before
- 
-{
-
-        
-content
-:
- 
-"💬"
-;
-
-        
-font-size
-:
- 
-18
-px
-;
-
-      
-}
-
-      
-#od-webchat
- 
-{
-
-        
-width
-:
- 
-100
-%
-;
-
-        
-height
-:
- 
-560
-px
-;
-
-        
-border-radius
-:
- 
-16
-px
-;
-
-        
-overflow
-:
- hidden
-;
-
-      
-}
-
-      
-/* Force the iframe to behave like embedded content */
-
-      
-#od-webchat
- 
->
- iframe
-#opendialog-chatwindow
- 
-{
-
-        
-position
-:
- static 
-!important
-;
-
-        
-width
-:
- 
-100
-%
- 
-!important
-;
-
-        
-height
-:
- 
-100
-%
- 
-!important
-;
-
-        
-border-radius
-:
- 
-16
-px
-;
-
-        
-border
-:
- 
-2
-px
- solid 
-var
-(
---border-color
-)
-;
-
-        
-box-shadow
-:
- 
-0
- 
-4
-px
- 
-12
-px
- 
-rgba
-(
-0
-,
- 
-0
-,
- 
-0
-,
- 
-0.08
-)
-;
-
-      
-}
-
-      
-/* Footer */
-
-      
-.footer
- 
-{
-
-        
-background
-:
- 
-#1a1a1a
-;
-
-        
-color
-:
- 
-#ffffff
-;
-
-        
-padding
-:
- 
-32
-px
- 
-24
-px
-;
-
-        
-text-align
-:
- center
-;
-
-      
-}
-
-      
-.footer-content
- 
-{
-
-        
-max-width
-:
- 
-1200
-px
-;
-
-        
-margin
-:
- 
-0
- auto
-;
-
-      
-}
-
-      
-.footer
- p
- 
-{
-
-        
-font-size
-:
- 
-13
-px
-;
-
-        
-opacity
-:
- 
-0.8
-;
-
-        
-line-height
-:
- 
-1.6
-;
-
-      
-}
-
-      
-.footer
- a
- 
-{
-
-        
-color
-:
- 
-var
-(
---zenith-orange
-)
-;
-
-        
-text-decoration
-:
- none
-;
-
-      
-}
-
-      
-.footer
- a
-:hover
- 
-{
-
-        
-text-decoration
-:
- underline
-;
-
-      
-}
-
-      
-/* Responsive */
-
-      
-@media
- 
-(
-max-width
-:
- 
-1024
-px
-)
- 
-{
-
-        
-.main-section
- 
-{
-
-          
-flex-direction
-:
- column
-;
-
-        
-}
-
-        
-.main-left
- 
-{
-
-          
-order
-:
- 
-2
-;
-
-        
-}
-
-        
-.main-right
- 
-{
-
-          
-order
-:
- 
-1
-;
-
-        
-}
-
-        
-.header-nav
- 
-{
-
-          
-display
-:
- none
-;
-
-        
-}
-
-        
-.claims-card
- 
-{
-
-          
-box-shadow
-:
- none
-;
-
-          
-border-radius
-:
- 
-0
-;
-
-          
-max-width
-:
- 
-100
-%
-;
-
-        
-}
-
-        
-#od-webchat
- 
-{
-
-          
-height
-:
- 
-500
-px
-;
-
-        
-}
-
-      
-}
-
-      
-@media
- 
-(
-max-width
-:
- 
-640
-px
-)
- 
-{
-
-        
-.header-inner
- 
-{
-
-          
-padding
-:
- 
-16
-px
-;
-
-        
-}
-
-        
-.logo-main
- 
-{
-
-          
-font-size
-:
- 
-16
-px
-;
-
-        
-}
-
-        
-.claims-header-text
- h1
- 
-{
-
-          
-font-size
-:
- 
-24
-px
-;
-
-        
-}
-
-        
-.trust-stats
- 
-{
-
-          
-flex-direction
-:
- column
-;
-
-          
-gap
-:
- 
-12
-px
-;
-
-        
-}
-
-        
-#od-webchat
- 
-{
-
-          
-height
-:
- 
-450
-px
-;
-
-        
-}
-
-      
-}
-
-    
-</
-style
->
-
-  
-</
-head
->
-
-  
-<
-body
->
-
-    
-<!-- Header -->
-
-    
-<
-header
- 
-class
-=
-"
-header
-"
->
-
-      
-<
-div
- 
-class
-=
-"
-header-inner
-"
->
-
-        
-<
-div
- 
-class
-=
-"
-logo-container
-"
->
-
-          
-<
-div
- 
-class
-=
-"
-zenith-logo
-"
->
-
-            
-<
-div
- 
-class
-=
-"
-zenith-logo-main
-"
->
-
-              
-<
-span
- 
-class
-=
-"
-zenith-logo-text
-"
->
-ZEN
-</
-span
->
-
-              
-<
-div
- 
-class
-=
-"
-zenith-flame
-"
->
-</
-div
->
-
-              
-<
-span
- 
-class
-=
-"
-zenith-logo-text
-"
->
-TH
-</
-span
->
-
-            
-</
-div
->
-
-            
-<
-div
- 
-class
-=
-"
-zenith-logo-sub
-"
->
-INSURANCE
-</
-div
->
-
-          
-</
-div
->
-
-        
-</
-div
->
-
-        
-<
-nav
- 
-class
-=
-"
-header-nav
-"
->
-
-          
-<
-a
- 
-href
-=
-"
-#home
-"
->
-🏠 Home
-</
-a
->
-
-          
-<
-a
- 
-href
-=
-"
-#faqs
-"
->
-❓ FAQs
-</
-a
->
-
-          
-<
-a
- 
-href
-=
-"
-#about
-"
->
-ℹ️ About Us
-</
-a
->
-
-        
-</
-nav
->
-
-      
-</
-div
->
-
-    
-</
-header
->
-
-    
-<!-- Orange Navigation Bar -->
-
-    
-<
-nav
- 
-class
-=
-"
-nav-bar
-"
->
-
-      
-<
-div
- 
-class
-=
-"
-nav-bar-inner
-"
->
-
-        
-<
-a
- 
-href
-=
-"
-#car
-"
->
-Car
-</
-a
->
-
-        
-<
-span
- 
-class
-=
-"
-nav-bar-divider
-"
->
-|
-</
-span
->
-
-        
-<
-a
- 
-href
-=
-"
-#van
-"
->
-Van
-</
-a
->
-
-        
-<
-span
- 
-class
-=
-"
-nav-bar-divider
-"
->
-|
-</
-span
->
-
-        
-<
-a
- 
-href
-=
-"
-#mission
-"
->
-Mission Control
-</
-a
->
-
-        
-<
-span
- 
-class
-=
-"
-nav-bar-divider
-"
->
-|
-</
-span
->
-
-        
-<
-a
- 
-href
-=
-"
-#claims
-"
->
-Claims
-</
-a
->
-
-        
-<
-span
- 
-class
-=
-"
-nav-bar-divider
-"
->
-|
-</
-span
->
-
-        
-<
-a
- 
-href
-=
-"
-#contact
-"
->
-Get In Touch
-</
-a
->
-
-        
-<
-span
- 
-class
-=
-"
-nav-bar-divider
-"
->
-|
-</
-span
->
-
-        
-<
-a
- 
-href
-=
-"
-#blog
-"
->
-Blog
-</
-a
->
-
-        
-<
-a
- 
-href
-=
-"
-#existing
-"
- 
-class
-=
-"
-existing-customers
-"
->
-Existing Customers
-</
-a
->
-
-      
-</
-div
->
-
-    
-</
-nav
->
-
-    
-<!-- Main Layout -->
-
-    
-<
-main
- 
-class
-=
-"
-main-section
-"
->
-
-      
-<!-- LEFT PANEL -->
-
-      
-<
-section
- 
-class
-=
-"
-main-left
-"
->
-
-        
-<
-div
- 
-class
-=
-"
-main-left-inner
-"
->
-
-          
-<
-div
- 
-class
-=
-"
-zenith-branding
-"
->
-
-            
-<
-div
- 
-class
-=
-"
-zenith-icon-large
-"
->
-Z
-</
-div
->
-
-            
-<
-div
- 
-class
-=
-"
-zenith-brand-text
-"
->
-
-              
-<
-h2
->
-ZENITH INSURANCE
-</
-h2
->
-
-              
-<
-p
->
-AI Claims Assistant
-</
-p
->
-
-            
-</
-div
->
-
-          
-</
-div
->
-
-          
-<
-div
- 
-class
-=
-"
-feature-list
-"
->
-
-            
-<
-div
- 
-class
-=
-"
-feature-item
-"
->
-
-              
-<
-div
- 
-class
-=
-"
-feature-icon
-"
->
-⚡
-</
-div
->
-
-              
-<
-div
- 
-class
-=
-"
-feature-content
-"
->
-
-                
-<
-h3
->
-24/7 Emergency Support
-</
-h3
->
-
-                
-<
-p
->
-
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Claims | Zenith Insurance (AI Agent Demo)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arial&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- WebChat base styles (from your tenant) -->
+    <link
+      rel="stylesheet"
+      href="https://customer-office.cloud.opendialog.ai/styles/nu-webchat.css"
+    />
+
+    <!-- ✅ Your OpenDialog settings, with parentEl added -->
+    <script>
+      window.openDialogSettings = {
+        url: "https://customer-office.cloud.opendialog.ai",
+        appKey:
+          "YOUR_APP_KEY_HERE", // Replace with your actual app key
+        // 🔹 Embed inside this element instead of floating
+        parentEl: "#od-webchat",
+        user: {
+          custom: {
+            selected_scenario: "YOUR_SCENARIO_ID", // Replace with your scenario ID
+            session_lifetime: 0,
+          },
+        },
+
+        customSettings: {
+          openCta: {
+            title: "Hello!👋 Chat with us!",
+            icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+            borderRadius: "50px",
+            width: "280px",
+            height: "80px",
+            background: "#0066cc",
+          },
+          additionalMenuLinks: [],
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --zenith-blue: #0066cc;
+        --zenith-orange: #ff9900;
+        --zenith-dark-blue: #004080;
+        --bg-light: #e8e8e8;
+        --text-main: #333333;
+        --text-muted: #666666;
+        --border-color: #d0d0d0;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text-main);
+        background-color: #ffffff;
+      }
+
+      /* Header */
+      .header {
+        background-color: #ffffff;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .zenith-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .zenith-logo-main {
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+
+      .zenith-logo-text {
+        font-size: 36px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        color: var(--zenith-blue);
+      }
+
+      .zenith-flame {
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 18px solid var(--zenith-orange);
+        position: relative;
+        top: 8px;
+        margin: 0 6px;
+      }
+
+      .zenith-flame::before {
+        content: "";
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 12px solid #ffb84d;
+        position: absolute;
+        top: 3px;
+        left: -5px;
+      }
+
+      .zenith-logo-sub {
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: 3px;
+        color: var(--zenith-blue);
+        margin-top: -4px;
+        padding-left: 2px;
+      }
+
+      .header-nav {
+        display: flex;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .header-nav a {
+        text-decoration: none;
+        color: var(--text-main);
+        font-size: 13px;
+        font-weight: normal;
+        transition: color 0.2s;
+      }
+
+      .header-nav a:hover {
+        color: var(--zenith-blue);
+      }
+
+      /* Orange Navigation Bar */
+      .nav-bar {
+        background: var(--zenith-orange);
+        border-bottom: 2px solid #e68a00;
+      }
+
+      .nav-bar-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+
+      .nav-bar a {
+        color: var(--text-main);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: bold;
+        transition: color 0.2s;
+      }
+
+      .nav-bar a:hover {
+        color: #ffffff;
+      }
+
+      .nav-bar-divider {
+        color: var(--text-main);
+        font-weight: bold;
+      }
+
+      .nav-bar .existing-customers {
+        margin-left: auto;
+        background: var(--zenith-blue);
+        color: #ffffff;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+
+      .nav-bar .existing-customers:hover {
+        background: var(--zenith-dark-blue);
+        color: #ffffff;
+      }
+
+      /* Main Layout */
+      .main-section {
+        display: flex;
+        min-height: calc(100vh - 160px);
+        background: var(--bg-light);
+      }
+
+      /* LEFT PANEL – Zenith branded hero */
+      .main-left {
+        flex: 1;
+        background: var(--zenith-blue);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 32px;
+      }
+
+      .main-left-inner {
+        max-width: 480px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      .zenith-branding {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding-bottom: 32px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .zenith-icon-large {
+        width: 80px;
+        height: 80px;
+        background: var(--zenith-orange);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        font-weight: bold;
+        color: #ffffff;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        letter-spacing: 2px;
+      }
+
+      .zenith-brand-text h2 {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        letter-spacing: 1px;
+      }
+
+      .zenith-brand-text p {
+        font-size: 16px;
+        opacity: 0.95;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      .feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .feature-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--zenith-orange);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        flex-shrink: 0;
+      }
+
+      .feature-content h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .feature-content p {
+        font-size: 14px;
+        line-height: 1.6;
+        opacity: 0.95;
+      }
+
+      .trust-badge {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        margin-top: 20px;
+        backdrop-filter: blur(10px);
+      }
+
+      .trust-badge h4 {
+        font-size: 16px;
+        margin-bottom: 12px;
+        opacity: 0.9;
+      }
+
+      .trust-stats {
+        display: flex;
+        justify-content: space-around;
+        gap: 16px;
+      }
+
+      .trust-stat {
+        flex: 1;
+      }
+
+      .trust-stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--zenith-orange);
+        margin-bottom: 4px;
+      }
+
+      .trust-stat-label {
+        font-size: 12px;
+        opacity: 0.9;
+      }
+
+      /* Breadcrumb */
+      .breadcrumb {
+        max-width: 580px;
+        margin: 0 auto 16px;
+        padding: 0 36px;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+
+      .breadcrumb a {
+        color: var(--zenith-blue);
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      /* RIGHT PANEL */
+      .main-right {
+        flex: 1.2;
+        background: var(--bg-light);
+        display: flex;
+        align-items: center;
+        padding: 48px 24px;
+      }
+
+      .claims-card {
+        max-width: 580px;
+        width: 100%;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        padding: 40px 36px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .claims-header {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        padding: 24px 36px;
+        margin: -40px -36px 24px -36px;
+        background: var(--zenith-blue);
+        color: #ffffff;
+        border-radius: 20px 20px 0 0;
+      }
+
+      .claims-icon {
+        width: 64px;
+        height: 64px;
+        background: var(--zenith-orange);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        color: #ffffff;
+        margin-right: 16px;
+      }
+
+      .claims-header-text h1 {
+        font-size: 32px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-bottom: 4px;
+      }
+
+      .claims-header-text p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .claims-intro {
+        font-size: 15px;
+        color: var(--text-main);
+        line-height: 1.7;
+      }
+
+      .claims-intro strong {
+        color: var(--zenith-blue);
+        font-weight: 600;
+      }
+
+      .claims-intro a {
+        color: var(--zenith-blue);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .claims-intro a:hover {
+        text-decoration: underline;
+      }
+
+      .info-box {
+        background: #f0f7ff;
+        border-left: 4px solid var(--zenith-blue);
+        border-radius: 8px;
+        padding: 16px 20px;
+      }
+
+      .info-box p {
+        font-size: 14px;
+        color: var(--text-main);
+        line-height: 1.6;
+        margin: 0;
+      }
+
+      .info-box strong {
+        color: var(--zenith-blue);
+      }
+
+      .chat-section-label {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: #ffffff;
+        background: var(--zenith-blue);
+        margin: 8px -36px 12px -36px;
+        padding: 12px 36px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .chat-section-label::before {
+        content: "💬";
+        font-size: 18px;
+      }
+
+      #od-webchat {
+        width: 100%;
+        height: 560px;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+
+      /* Force the iframe to behave like embedded content */
+      #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 16px;
+        border: 2px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Footer */
+      .footer {
+        background: #1a1a1a;
+        color: #ffffff;
+        padding: 32px 24px;
+        text-align: center;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer p {
+        font-size: 13px;
+        opacity: 0.8;
+        line-height: 1.6;
+      }
+
+      .footer a {
+        color: var(--zenith-orange);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .main-section {
+          flex-direction: column;
+        }
+        
+        .main-left {
+          order: 2;
+        }
+        
+        .main-right {
+          order: 1;
+        }
+
+        .header-nav {
+          display: none;
+        }
+        
+        .claims-card {
+          box-shadow: none;
+          border-radius: 0;
+          max-width: 100%;
+        }
+        
+        #od-webchat {
+          height: 500px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .header-inner {
+          padding: 16px;
+        }
+
+        .logo-main {
+          font-size: 16px;
+        }
+
+        .claims-header-text h1 {
+          font-size: 24px;
+        }
+
+        .trust-stats {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        #od-webchat {
+          height: 450px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo-container">
+          <div class="zenith-logo">
+            <div class="zenith-logo-main">
+              <span class="zenith-logo-text">ZEN</span>
+              <div class="zenith-flame"></div>
+              <span class="zenith-logo-text">TH</span>
+            </div>
+            <div class="zenith-logo-sub">INSURANCE</div>
+          </div>
+        </div>
+        <nav class="header-nav">
+          <a href="#home">🏠 Home</a>
+          <a href="#faqs">❓ FAQs</a>
+          <a href="#about">ℹ️ About Us</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Orange Navigation Bar -->
+    <nav class="nav-bar">
+      <div class="nav-bar-inner">
+        <a href="#car">Car</a>
+        <span class="nav-bar-divider">|</span>
+        <a href="#van">Van</a>
+        <span class="nav-bar-divider">|</span>
+        <a href="#mission">Mission Control</a>
+        <span class="nav-bar-divider">|</span>
+        <a href="#claims">Claims</a>
+        <span class="nav-bar-divider">|</span>
+        <a href="#contact">Get In Touch</a>
+        <span class="nav-bar-divider">|</span>
+        <a href="#blog">Blog</a>
+        <a href="#existing" class="existing-customers">Existing Customers</a>
+      </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <main class="main-section">
+      <!-- LEFT PANEL -->
+      <section class="main-left">
+        <div class="main-left-inner">
+          <div class="zenith-branding">
+            <div class="zenith-icon-large">Z</div>
+            <div class="zenith-brand-text">
+              <h2>ZENITH INSURANCE</h2>
+              <p>AI Claims Assistant</p>
+            </div>
+          </div>
+
+          <div class="feature-list">
+            <div class="feature-item">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-content">
+                <h3>24/7 Emergency Support</h3>
+                <p>
                   Our AI Claims Agent is available around the clock to help you
                   start your claim instantly, any time of day or night.
-                
-</
-p
->
+                </p>
+              </div>
+            </div>
 
-              
-</
-div
->
-
-            
-</
-div
->
-
-            
-<
-div
- 
-class
-=
-"
-feature-item
-"
->
-
-              
-<
-div
- 
-class
-=
-"
-feature-icon
-"
->
-🤖
-</
-div
->
-
-              
-<
-div
- 
-class
-=
-"
-feature-content
-"
->
-
-                
-<
-h3
->
-Intelligent Assistance
-</
-h3
->
-
-                
-<
-p
->
-
+            <div class="feature-item">
+              <div class="feature-icon">🤖</div>
+              <div class="feature-content">
+                <h3>Intelligent Assistance</h3>
+                <p>
                   Get guided through the claims process with smart questions
                   that help capture all the necessary details efficiently.
-                
-</
-p
->
+                </p>
+              </div>
+            </div>
 
-              
-</
-div
->
-
-            
-</
-div
->
-
-            
-<
-div
- 
-class
-=
-"
-feature-item
-"
->
-
-              
-<
-div
- 
-class
-=
-"
-feature-icon
-"
->
-🎯
-</
-div
->
-
-              
-<
-div
- 
-class
-=
-"
-feature-content
-"
->
-
-                
-<
-h3
->
-Fast Claims Processing
-</
-h3
->
-
-                
-<
-p
->
-
+            <div class="feature-item">
+              <div class="feature-icon">🎯</div>
+              <div class="feature-content">
+                <h3>Fast Claims Processing</h3>
+                <p>
                   Submit your claim in minutes and receive immediate
                   confirmation. Our team will follow up within 24 hours.
-                
-</
-p
->
+                </p>
+              </div>
+            </div>
+          </div>
 
-              
-</
-div
->
+          <div class="trust-badge">
+            <h4>Trusted by thousands of customers</h4>
+            <div class="trust-stats">
+              <div class="trust-stat">
+                <div class="trust-stat-value">98%</div>
+                <div class="trust-stat-label">Satisfaction Rate</div>
+              </div>
+              <div class="trust-stat">
+                <div class="trust-stat-value">24hr</div>
+                <div class="trust-stat-label">Average Response</div>
+              </div>
+              <div class="trust-stat">
+                <div class="trust-stat-value">50k+</div>
+                <div class="trust-stat-label">Claims Handled</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            
-</
-div
->
-
+      <!-- RIGHT PANEL -->
+      <section class="main-right">
+        <div style="max-width: 580px; width: 100%; margin: 0 auto;">
+          <div class="breadcrumb">
+            You are here: » <a href="#home">Home</a> » <strong>Claims</strong>
+          </div>
           
-</
-div
->
+          <div class="claims-card">
+          <div class="claims-header">
+            <div class="claims-icon">🛡️</div>
+            <div class="claims-header-text">
+              <h1>Make a Claim</h1>
+              <p>We're here to help you through this</p>
+            </div>
+          </div>
 
-          
-<
-div
- 
-class
-=
-"
-trust-badge
-"
->
-
-            
-<
-h4
->
-Trusted by thousands of customers
-</
-h4
->
-
-            
-<
-div
- 
-class
-=
-"
-trust-stats
-"
->
-
-              
-<
-div
- 
-class
-=
-"
-trust-stat
-"
->
-
-                
-<
-div
- 
-class
-=
-"
-trust-stat-value
-"
->
-98%
-</
-div
->
-
-                
-<
-div
- 
-class
-=
-"
-trust-stat-label
-"
->
-Satisfaction Rate
-</
-div
->
-
-              
-</
-div
->
-
-              
-<
-div
- 
-class
-=
-"
-trust-stat
-"
->
-
-                
-<
-div
- 
-class
-=
-"
-trust-stat-value
-"
->
-24hr
-</
-div
->
-
-                
-<
-div
- 
-class
-=
-"
-trust-stat-label
-"
->
-Average Response
-</
-div
->
-
-              
-</
-div
->
-
-              
-<
-div
- 
-class
-=
-"
-trust-stat
-"
->
-
-                
-<
-div
- 
-class
-=
-"
-trust-stat-value
-"
->
-50k+
-</
-div
->
-
-                
-<
-div
- 
-class
-=
-"
-trust-stat-label
-"
->
-Claims Handled
-</
-div
->
-
-              
-</
-div
->
-
-            
-</
-div
->
-
-          
-</
-div
->
-
-        
-</
-div
->
-
-      
-</
-section
->
-
-      
-<!-- RIGHT PANEL -->
-
-      
-<
-section
- 
-class
-=
-"
-main-right
-"
->
-
-        
-<
-div
- 
-style
-=
-"
-max-width
-:
- 
-580
-px
-;
- 
-width
-:
- 
-100
-%
-;
- 
-margin
-:
- 
-0
- auto
-;
-"
->
-
-          
-<
-div
- 
-class
-=
-"
-breadcrumb
-"
->
-
-            You are here: » 
-<
-a
- 
-href
-=
-"
-#home
-"
->
-Home
-</
-a
->
- » 
-<
-strong
->
-Claims
-</
-strong
->
-
-          
-</
-div
->
-
-          
-<
-div
- 
-class
-=
-"
-claims-card
-"
->
-
-          
-<
-div
- 
-class
-=
-"
-claims-header
-"
->
-
-            
-<
-div
- 
-class
-=
-"
-claims-icon
-"
->
-🛡️
-</
-div
->
-
-            
-<
-div
- 
-class
-=
-"
-claims-header-text
-"
->
-
-              
-<
-h1
->
-Make a Claim
-</
-h1
->
-
-              
-<
-p
->
-We're here to help you through this
-</
-p
->
-
-            
-</
-div
->
-
-          
-</
-div
->
-
-          
-<
-div
- 
-class
-=
-"
-claims-intro
-"
->
-
-            
-<
-p
->
-
+          <div class="claims-intro">
+            <p>
               Being involved in an accident is often an upsetting experience, so
               we aim to straighten things out for you with the minimum of fuss.
-            
-</
-p
->
-
-            
-<
-br
- 
-/>
-
-            
-<
-p
->
-
-              Our 
-<
-strong
->
-AI Claims Agent
-</
-strong
->
- will guide you through the
+            </p>
+            <br />
+            <p>
+              Our <strong>AI Claims Agent</strong> will guide you through the
               process, capturing all the relevant information and explaining
               what happens next.
-            
-</
-p
->
-
-            
-<
-br
- 
-/>
-
-            
-<
-p
->
-
-              
-<
-strong
->
-The most important thing is to start your claim as soon as
-              possible.
-</
-strong
->
- Don't worry if some information is missing – you
+            </p>
+            <br />
+            <p>
+              <strong>The most important thing is to start your claim as soon as
+              possible.</strong> Don't worry if some information is missing – you
               can always provide that later.
-            
-</
-p
->
+            </p>
+          </div>
 
-          
-</
-div
->
-
-          
-<
-div
- 
-class
-=
-"
-info-box
-"
->
-
-            
-<
-p
->
-
-              
-<
-strong
->
-💡 Quick Tip:
-</
-strong
->
- Have your policy number,
+          <div class="info-box">
+            <p>
+              <strong>💡 Quick Tip:</strong> Have your policy number,
               registration, and accident details ready to speed up the process.
               If you don't have them, that's okay – the agent will help you.
-            
-</
-p
->
+            </p>
+          </div>
 
-          
-</
-div
->
+          <div class="chat-section-label">Start Your Claim Now</div>
+          <div id="od-webchat"></div>
 
-          
-<
-div
- 
-class
-=
-"
-chat-section-label
-"
->
-Start Your Claim Now
-</
-div
->
+          <div class="info-box" style="background: #fff4e6; border-left-color: var(--zenith-orange)">
+            <p>
+              <strong>Need help?</strong> Call our 24/7 helpline at
+              <a href="tel:0330123456">0330 123 456</a> or email
+              <a href="mailto:claims@zenith-insure.com">claims@zenith-insure.com</a>
+            </p>
+          </div>
+        </div>
+        </div>
+      </section>
+    </main>
 
-          
-<
-div
- 
-id
-=
-"
-od-webchat
-"
->
-</
-div
->
-
-          
-<
-div
- 
-class
-=
-"
-info-box
-"
- 
-style
-=
-"
-background
-:
- 
-#fff4e6
-;
- 
-border-left-color
-:
- 
-var
-(
---zenith-orange
-)
-"
->
-
-            
-<
-p
->
-
-              
-<
-strong
->
-Need help?
-</
-strong
->
- Call our 24/7 helpline at
-              
-<
-a
- 
-href
-=
-"
-tel:0330123456
-"
->
-0330 123 456
-</
-a
->
- or email
-              
-<
-a
- 
-href
-=
-"
-mailto:claims@zenith-insure.com
-"
->
-claims@zenith-insure.com
-</
-a
->
-
-            
-</
-p
->
-
-          
-</
-div
->
-
-        
-</
-div
->
-
-        
-</
-div
->
-
-      
-</
-section
->
-
-    
-</
-main
->
-
-    
-<!-- Footer -->
-
-    
-<
-footer
- 
-class
-=
-"
-footer
-"
->
-
-      
-<
-div
- 
-class
-=
-"
-footer-content
-"
->
-
-        
-<
-p
->
-
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p>
           © 2024 Zenith Insurance. This is a demonstration of OpenDialog's AI
           Claims Agent capabilities.
-        
-</
-p
->
-
-        
-<
-p
- 
-style
-=
-"
-margin-top
-:
- 
-12
-px
-"
->
-
+        </p>
+        <p style="margin-top: 12px">
           Zenith Insurance is a trading name of BISL Limited. Authorised and
           regulated by the Financial Conduct Authority.
-        
-</
-p
->
+        </p>
+      </div>
+    </footer>
 
-      
-</
-div
->
-
-    
-</
-footer
->
-
-    
-<!-- WebChat JS from your environment -->
-
-    
-<
-script
- 
-src
-=
-"
-https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js
-"
->
-</
-script
->
-
-  
-</
-body
->
-
-</
-html
->
-
-
-
-
-
+    <!-- WebChat JS from your environment -->
+    <script src="https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+  </body>
+</html>
