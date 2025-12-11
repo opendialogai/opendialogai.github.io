@@ -14,22 +14,27 @@
             background-attachment: fixed;
         }
     </style>
+    /* chatui header */
+    <link rel="stylesheet" href="https://opendialog-chatui.pages.dev/style.css">
 </head>
 <body>
+    <div id="od-webchat"></div>
     <!-- Your page content goes here -->
-    <script>
-    sessionStorage.clear();  
-        window.openDialogSettings = {
-      url: 'https://iceinsuretech.cloud.opendialog.ai',
-      appKey: '2251799814000000|h0m2nuQC1HUeoj8n5e9nyO8nmXvSv5AtYfMInUjId267889c',
-      user: {
-        custom: {
-          selected_scenario: '2251799814000000'
-        }
-      },
-    };
+   <script src="https://opendialog-chatui.pages.dev/opendialog-webchat.umd.mjs"></script>
+<script type="module" src="https://opendialog-selma.pages.dev/selma-integration.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const options = {
+      odUrl: 'https://iceinsuretech.cloud.opendialog.ai',
+      appKey: '1125899908000001|ayAq7el77MSf32ScfpshN93t6aT69Py6t75xNrj513d3459f',
+      odScenario: '1125899909000092',
+      parentElement: '#od-webchat',
+      layout: 'minimal',
+    }
+    const instance = new SelmaIntegration(options);
+    instance.setup();
+  });
 </script>
-<script src='https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js'></script>
 </body>
 
 </html>
