@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Claims | Allianz - Intelligent Vehicle Solutions (AI Demo)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Fonts - Clean sans-serif to match Allianz Neo feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- WebChat base styles -->
+    <link
+      rel="stylesheet"
+      href="https://iceinsuretech.cloud.opendialog.ai/styles/nu-webchat.css"
+    />
+
+    <!-- OpenDialog settings -->
+    <script>
+      window.openDialogSettings = {
+        url: "https://iceinsuretech.cloud.opendialog.ai",
+        appKey: "1125899908000001|ayAq7el77MSf32ScfpshN93t6aT69Py6t75xNrj513d3459f",
+        parentEl: "#od-webchat",
+        user: {
+          custom: {
+            selected_scenario: "1125899909000092",
+            session_lifetime: 0,
+          },
+        },
+        customSettings: {
+          openCta: {
+            title: "Hello!👋 Chat with us!",
+            icon: "https://iceinsuretech.cloud.opendialog.ai/images/cta-chat-open.svg",
+            borderRadius: "50px",
+            width: "280px",
+            height: "80px",
+            background: "#003781",
+          },
+          additionalMenuLinks: [],
+          embedded: true,
+          fullWidth: true,
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        /* Allianz Brand Palette */
+        --allianz-blue: #003781;
+        --allianz-blue-light: #1461a5;
+        --allianz-blue-pale: #e8f0f8;
+        --allianz-blue-hover: #002a63;
+        --allianz-dark: #1a1a1a;
+        --allianz-green: #3DA556;
+        --bg-light: #f7f7f7;
+        --bg-white: #ffffff;
+        --text-primary: #414141;
+        --text-secondary: #6b6b6b;
+        --text-light: #999999;
+        --border-color: #e0e0e0;
+        --border-light: #eeeeee;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--text-primary);
+        background-color: var(--bg-white);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* ===== HEADER ===== */
+      .header {
+        background-color: var(--bg-white);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo-container img {
+        height: 40px;
+        width: auto;
+      }
+
+      .header-nav {
+        display: flex;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .header-nav a {
+        text-decoration: none;
+        color: var(--text-primary);
+        font-size: 14px;
+        font-weight: 600;
+        transition: color 0.2s;
+        letter-spacing: 0.01em;
+      }
+
+      .header-nav a:hover {
+        color: var(--allianz-blue);
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        transition: background 0.2s;
+        color: var(--text-primary);
+      }
+
+      .header-btn:hover {
+        background: var(--bg-light);
+      }
+
+      .header-btn svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .header-login {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 20px;
+        background: var(--allianz-blue);
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background 0.2s;
+        letter-spacing: 0.02em;
+      }
+
+      .header-login:hover {
+        background: var(--allianz-blue-hover);
+      }
+
+      /* ===== BREADCRUMB ===== */
+      .breadcrumb-bar {
+        background: var(--bg-light);
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .breadcrumb-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 12px 24px;
+        font-size: 13px;
+        color: var(--text-light);
+      }
+
+      .breadcrumb-inner a {
+        color: var(--allianz-blue);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .breadcrumb-inner a:hover {
+        text-decoration: underline;
+      }
+
+      .breadcrumb-inner span {
+        margin: 0 6px;
+        color: var(--text-light);
+      }
+
+      /* ===== MAIN LAYOUT ===== */
+      .main-section {
+        display: flex;
+        min-height: calc(100vh - 120px);
+        background: var(--bg-white);
+      }
+
+      /* LEFT PANEL - Allianz Hero */
+      .main-left {
+        flex: 1;
+        background: var(--allianz-blue);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 48px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Subtle geometric pattern overlay */
+      .main-left::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 80%;
+        height: 200%;
+        background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .main-left::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: var(--allianz-green);
+      }
+
+      .main-left-inner {
+        max-width: 460px;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        padding: 6px 14px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 3px;
+      }
+
+      .hero-heading {
+        font-size: 44px;
+        font-weight: 300;
+        line-height: 1.15;
+        margin-bottom: 20px;
+      }
+
+      .hero-heading strong {
+        font-weight: 700;
+        display: block;
+      }
+
+      .hero-text {
+        font-size: 15px;
+        line-height: 1.7;
+        opacity: 0.9;
+        font-weight: 300;
+      }
+
+      .feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 40px;
+        padding-top: 32px;
+        border-top: 1px solid rgba(255,255,255,0.15);
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .feature-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .feature-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: #ffffff;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .feature-content h3 {
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+
+      .feature-content p {
+        font-size: 13px;
+        opacity: 0.85;
+        line-height: 1.5;
+        font-weight: 300;
+      }
+
+      /* ===== RIGHT PANEL ===== */
+      .main-right {
+        flex: 1.2;
+        background: var(--bg-white);
+        display: flex;
+        align-items: center;
+        padding: 48px 32px;
+      }
+
+      .claims-card {
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .claims-header {
+        margin-bottom: 24px;
+      }
+
+      .claims-header h1 {
+        font-size: 32px;
+        font-weight: 300;
+        color: var(--allianz-dark);
+        margin-bottom: 4px;
+      }
+
+      .claims-header h1 strong {
+        font-weight: 700;
+      }
+
+      .claims-header p {
+        font-size: 15px;
+        color: var(--text-secondary);
+        font-weight: 400;
+      }
+
+      .claims-intro {
+        font-size: 14px;
+        color: var(--text-primary);
+        line-height: 1.75;
+        margin-bottom: 24px;
+      }
+
+      .claims-intro strong {
+        color: var(--allianz-blue);
+        font-weight: 600;
+      }
+
+      .info-box {
+        background: var(--allianz-blue-pale);
+        border-left: 3px solid var(--allianz-blue);
+        border-radius: 0 4px 4px 0;
+        padding: 16px 20px;
+        margin-bottom: 28px;
+      }
+
+      .info-box p {
+        font-size: 13px;
+        color: var(--text-primary);
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .info-box strong {
+        color: var(--allianz-blue);
+        font-weight: 600;
+      }
+
+      .chat-section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--allianz-blue);
+      }
+
+      .chat-section-icon {
+        width: 28px;
+        height: 28px;
+        background: var(--allianz-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .chat-section-icon svg {
+        width: 14px;
+        height: 14px;
+        fill: #ffffff;
+      }
+
+      .chat-section-label {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--allianz-dark);
+      }
+
+      /* ===== WEBCHAT EMBED ===== */
+      #od-webchat {
+        width: 100%;
+        height: 600px;
+        border-radius: 6px;
+        overflow: visible;
+        box-shadow: 0 2px 12px rgba(0, 55, 129, 0.08);
+      }
+
+      #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+      }
+
+      #od-webchat iframe {
+        min-width: 100% !important;
+      }
+
+      /* ===== HELP SECTION ===== */
+      .help-section {
+        margin-top: 20px;
+        padding: 16px 20px;
+        background: var(--bg-light);
+        border-left: 3px solid var(--allianz-green);
+        border-radius: 0 4px 4px 0;
+      }
+
+      .help-section p {
+        font-size: 13px;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .help-section a {
+        color: var(--allianz-blue);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .help-section a:hover {
+        text-decoration: underline;
+      }
+
+      /* ===== FOOTER ===== */
+      .footer {
+        background: var(--allianz-dark);
+        color: #ffffff;
+        padding: 40px 24px;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 24px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+
+      .footer-brand img {
+        height: 32px;
+        filter: brightness(0) invert(1);
+        margin-bottom: 12px;
+      }
+
+      .footer-brand p {
+        font-size: 12px;
+        opacity: 0.6;
+        max-width: 300px;
+        line-height: 1.5;
+      }
+
+      .footer-demo-badge {
+        display: inline-block;
+        padding: 6px 14px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .footer-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .footer-bottom p {
+        font-size: 12px;
+        opacity: 0.5;
+        line-height: 1.5;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .footer-links a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 12px;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+      }
+
+      .footer-links a:hover {
+        opacity: 0.9;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1024px) {
+        .main-section {
+          flex-direction: column;
+        }
+        
+        .main-left {
+          order: 2;
+          padding: 40px 24px;
+        }
+        
+        .main-right {
+          order: 1;
+          padding: 32px 24px;
+        }
+
+        .header-nav {
+          display: none;
+        }
+
+        .hero-heading {
+          font-size: 36px;
+        }
+        
+        #od-webchat {
+          height: 500px;
+        }
+
+        .footer-top {
+          flex-direction: column;
+          gap: 16px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .header-inner {
+          padding: 12px 16px;
+        }
+
+        .logo-container img {
+          height: 32px;
+        }
+
+        .claims-header h1 {
+          font-size: 26px;
+        }
+
+        .hero-heading {
+          font-size: 28px;
+        }
+
+        #od-webchat {
+          height: 450px;
+        }
+
+        .breadcrumb-bar {
+          display: none;
+        }
+
+        .header-login span {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo-container">
+          <img 
+            src="https://www.allianz.co.uk/content/dam/onemarketing/system/allianz-logo.svg" 
+            alt="Allianz" 
+          />
+        </div>
+        
+        <nav class="header-nav">
+          <a href="#personal">Personal</a>
+          <a href="#business">Business</a>
+          <a href="#claims">Claims</a>
+          <a href="#newsroom">Newsroom</a>
+          <a href="#who-we-are">Who we are</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="header-btn" aria-label="Search">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </button>
+          <button class="header-login">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            <span>My Allianz</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-bar">
+      <div class="breadcrumb-inner">
+        <a href="#">Home</a>
+        <span>›</span>
+        <a href="#">Claims</a>
+        <span>›</span>
+        Make a claim
+      </div>
+    </div>
+
+    <!-- Main Layout -->
+    <main class="main-section">
+      <!-- LEFT PANEL -->
+      <section class="main-left">
+        <div class="main-left-inner">
+          <div class="hero-badge">AI-Powered Claims</div>
+          <h2 class="hero-heading">
+            Submit your claim
+            <strong>24 hours a day</strong>
+          </h2>
+          <p class="hero-text">
+            Our intelligent AI Claims Agent is here to support you around the clock. 
+            Get immediate assistance and start your claim in minutes, any time of day or night.
+          </p>
+
+          <div class="feature-list">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="feature-content">
+                <h3>Instant Support</h3>
+                <p>Available 24/7/365 to help you when you need it most</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div class="feature-content">
+                <h3>Intelligent Guidance</h3>
+                <p>Smart questions capture all necessary details efficiently</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="feature-content">
+                <h3>Fast Processing</h3>
+                <p>Immediate confirmation with 24-hour team follow-up</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL -->
+      <section class="main-right">
+        <div class="claims-card">
+          <div class="claims-header">
+            <h1>Make a <strong>Claim</strong></h1>
+            <p>We're here to help you through this</p>
+          </div>
+
+          <div class="claims-intro">
+            <p>
+              Being involved in an accident is often an upsetting experience, so
+              we aim to straighten things out for you with the minimum of fuss.
+            </p>
+            <br />
+            <p>
+              Our <strong>AI Claims Agent</strong> will guide you through the
+              process, capturing all the relevant information and explaining
+              what happens next.
+            </p>
+            <br />
+            <p>
+              <strong>The most important thing is to start your claim as soon as
+              possible.</strong> Don't worry if some information is missing – you
+              can always provide that later.
+            </p>
+          </div>
+
+          <div class="info-box">
+            <p>
+              <strong>Quick Tip:</strong> Have your policy number,
+              vehicle registration, and accident details ready to speed up the process.
+              If you don't have them, that's okay – the agent will help you.
+            </p>
+          </div>
+
+          <div class="chat-section-header">
+            <div class="chat-section-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="chat-section-label">Start Your Claim Now</div>
+          </div>
+          
+          <div id="od-webchat"></div>
+
+          <div class="help-section">
+            <p>
+              <strong>Need help?</strong> Call our 24/7 helpline at
+              <a href="tel:03448486462">0344 848 6462</a> or
+              <a href="mailto:claims@allianz.co.uk">email us</a>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <img 
+              src="https://www.allianz.co.uk/content/dam/onemarketing/system/allianz-logo.svg" 
+              alt="Allianz"
+            />
+            <p>
+              This is a demonstration of OpenDialog's AI Claims Agent integrated 
+              with Allianz's brand experience.
+            </p>
+          </div>
+          <div class="footer-demo-badge">AI Claims Demo</div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © 2024 Allianz Intelligent Vehicle Solutions.
+            Number One, Great Exhibition Way, Kirkstall Forge, Leeds, LS5 3BF.<br>
+            Allianz is a trading name of Zenith Vehicle Contracts Limited and is 
+            authorised and regulated by the Financial Conduct Authority.
+          </p>
+          <div class="footer-links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Cookies</a>
+            <a href="#">Accessibility</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- WebChat JS -->
+    <script src="https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+    
+    <!-- Force full width on the embedded chat -->
+    <script>
+      setTimeout(function() {
+        const iframe = document.querySelector('#od-webchat iframe');
+        if (iframe) {
+          try {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const style = iframeDoc.createElement('style');
+            style.textContent = `
+              body, html {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+              }
+              .chat-window, .chat-container, [class*="chat"] {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+              }
+            `;
+            iframeDoc.head.appendChild(style);
+          } catch (e) {
+            console.log('Cross-origin restriction - webchat styles managed internally');
+          }
+        }
+      }, 2000);
+    </script>
+  </body>
+</html>
