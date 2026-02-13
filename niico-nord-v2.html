@@ -21,38 +21,37 @@
 
     <!-- ✅ Your OpenDialog settings, with parentEl added -->
     <script>
-      window.openDialogSettings = {
-        url: "https://customer-office.cloud.opendialog.ai",
-        appKey:
-          "2251799835000001|aeta0dF79cWINiE8bTrSy06pkXEdh4rt0ybU2aVpf9596538",
-        // 🔹 Embed inside this element instead of floating
-        parentEl: "#od-webchat",
-        user: {
-          custom: {
-            selected_scenario: "2251799843000070",
-            session_lifetime: 0,
-          },
-        },
+    window.openDialogSettings = {
+      url: 'https://niico.cloud.opendialog.ai',
+      appKey: '1125899909000000|jZn8GIQwyEcOjoWvWnx0w6hlb9ZOBFauZ24kxikz60921c4a',
+      user: {
+        custom: {
+          selected_scenario: '1125899911000000',
+          session_lifetime: 0
+        }
+      },
 
-        customSettings: {
-          openCta: {
-            title: "Hello!👋 Chat with us!",
-            icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
-            borderRadius: "50px",
-            width: "280px",
-            height: "80px",
-            background: "#001abf",
-          },
-          additionalMenuLinks: [
-            // You can enable these if you want extra links in the menu
-            // {
-            //   url: "https://docs.opendialog.ai/",
-            //   title: "Check the documentation"
-            // }
-          ],
-        },
-      };
-    </script>
+      customSettings: {
+
+        openCta: {
+          title: "Hello! Chat with us!",
+          icon: "https://niico.cloud.opendialog.ai/images/cta-chat-open.svg",
+          borderRadius: "50px",
+          width: "280px",
+          height: "80px",
+          background: "#001ABF",
+        },
+        additionalMenuLinks: [
+          // uncomment and adjust if you want to add any link(s)
+          //{
+          //   url: "https://docs.opendialog.ai/",
+          //   title: "Check the documentation"
+          // }
+        ]
+      },
+        };
+</script>
+<script src='https://niico.cloud.opendialog.ai/dist/nu-webchat-js'></script>
 
     <style>
       :root {
