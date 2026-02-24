@@ -5,6 +5,7 @@
     <title>Make a claim | Aviva Ireland - AI Claims Agent Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Fonts (Aviva site uses Source Sans; this is close + widely available) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,13 +13,13 @@
       rel="stylesheet"
     />
 
-    <!-- OpenDialog WebChat base styles (UPDATED URL) -->
+    <!-- OpenDialog WebChat base styles (same as your prior working demo) -->
     <link
       rel="stylesheet"
       href="https://customer-office.cloud.opendialog.ai/styles/nu-webchat.css"
     />
 
-    <!-- OpenDialog settings (UPDATED CREDENTIALS) -->
+    <!-- OpenDialog settings (UNCHANGED from your previous page) -->
     <script>
       window.openDialogSettings = {
         url: "https://customer-office.cloud.opendialog.ai",
@@ -49,27 +50,38 @@
 
     <style>
       :root {
+        /* Aviva-like palette */
         --aviva-yellow: #ffd900;
         --aviva-navy: #0f2d52;
         --aviva-ink: #0b1f3a;
         --aviva-sky: #eaf3ff;
+
         --bg: #ffffff;
         --bg-soft: #f6f8fb;
         --text: #10243f;
         --muted: #55657a;
         --border: #e3e8ef;
+
         --radius: 14px;
       }
 
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       body {
-        font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
         color: var(--text);
         background: var(--bg);
         line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
 
+      /* Header */
       header {
         position: sticky;
         top: 0;
@@ -85,19 +97,64 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 16px;
       }
 
-      .brand img { height: 34px; }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 220px;
+      }
+
+      .brand img {
+        height: 34px;
+        width: auto;
+        display: block;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .nav a:hover {
+        opacity: 1;
+        color: var(--aviva-navy);
+      }
 
       .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
         padding: 10px 14px;
         border-radius: 999px;
         background: var(--aviva-yellow);
-        font-weight: 800;
-        text-decoration: none;
         color: #111;
+        font-weight: 800;
+        font-size: 14px;
+        text-decoration: none;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+        white-space: nowrap;
       }
 
+      .cta:hover {
+        filter: brightness(0.98);
+      }
+
+      /* Hero */
       .hero {
         background: linear-gradient(180deg, var(--aviva-sky), #ffffff 70%);
         border-bottom: 1px solid var(--border);
@@ -115,20 +172,33 @@
 
       .hero-copy h1 {
         font-size: 42px;
+        line-height: 1.08;
+        letter-spacing: -0.6px;
         color: var(--aviva-ink);
         margin-bottom: 10px;
       }
 
       .hero-copy p {
+        font-size: 16px;
         color: var(--muted);
+        max-width: 62ch;
+      }
+
+      .hero-image {
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 10px 28px rgba(15, 45, 82, 0.12);
+        border: 1px solid rgba(15, 45, 82, 0.08);
+        background: #fff;
       }
 
       .hero-image img {
         width: 100%;
-        border-radius: var(--radius);
-        box-shadow: 0 10px 28px rgba(15, 45, 82, 0.12);
+        height: auto;
+        display: block;
       }
 
+      /* Main */
       .main {
         max-width: 1200px;
         margin: 0 auto;
@@ -136,6 +206,7 @@
         display: grid;
         grid-template-columns: 0.95fr 1.05fr;
         gap: 22px;
+        align-items: start;
       }
 
       .card {
@@ -143,59 +214,228 @@
         border: 1px solid var(--border);
         border-radius: var(--radius);
         padding: 18px;
+        box-shadow: 0 1px 0 rgba(16, 36, 63, 0.03);
       }
 
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 12px;
+        margin-bottom: 14px;
+        border-bottom: 2px solid rgba(15, 45, 82, 0.12);
+      }
+
+      .section-title .icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: var(--aviva-navy);
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+      }
+
+      .section-title .icon svg {
+        width: 16px;
+        height: 16px;
+        fill: #fff;
+      }
+
+      .section-title h2 {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--aviva-ink);
+      }
+
+      .intro p {
+        color: var(--text);
+        font-size: 15px;
+      }
+
+      .hint {
+        margin-top: 14px;
+        background: var(--bg-soft);
+        border-radius: 12px;
+        border: 1px solid rgba(15, 45, 82, 0.08);
+        padding: 14px;
+      }
+
+      .hint strong {
+        color: var(--aviva-navy);
+      }
+
+      .contacts {
+        margin-top: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .contact-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        align-items: center;
+        padding: 10px 12px;
+        border: 1px dashed rgba(15, 45, 82, 0.22);
+        border-radius: 12px;
+        background: #fff;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(255, 217, 0, 0.25);
+        border: 1px solid rgba(255, 217, 0, 0.5);
+        font-weight: 800;
+        font-size: 12px;
+        color: #2c2c2c;
+      }
+
+      .contact-row a {
+        color: var(--aviva-navy);
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .contact-row a:hover {
+        text-decoration: underline;
+      }
+
+      /* Webchat embed */
       #od-webchat {
         width: 100%;
         height: 640px;
+        border-radius: 12px;
+        overflow: visible;
       }
 
       #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
         width: 100% !important;
+        max-width: 100% !important;
         height: 100% !important;
         border-radius: 12px;
         border: 1px solid var(--border);
+        box-shadow: 0 8px 24px rgba(16, 36, 63, 0.08);
       }
 
+      #od-webchat iframe {
+        min-width: 100% !important;
+      }
+
+      /* Footer */
       footer {
         background: var(--aviva-navy);
         color: #fff;
         padding: 34px 20px;
         border-top: 6px solid var(--aviva-yellow);
-        text-align: center;
       }
 
+      .footer-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: flex-start;
+      }
+
+      .footer-inner p {
+        opacity: 0.85;
+        font-size: 12px;
+        max-width: 75ch;
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .footer-links a {
+        color: #fff;
+        text-decoration: none;
+        opacity: 0.9;
+        font-weight: 700;
+        font-size: 12px;
+      }
+
+      .footer-links a:hover {
+        text-decoration: underline;
+        opacity: 1;
+      }
+
+      /* Responsive */
       @media (max-width: 980px) {
-        .hero-inner,
+        .hero-inner {
+          grid-template-columns: 1fr;
+        }
         .main {
           grid-template-columns: 1fr;
         }
-        #od-webchat { height: 560px; }
+        .nav {
+          display: none;
+        }
+        .hero-copy h1 {
+          font-size: 34px;
+        }
+        #od-webchat {
+          height: 560px;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .hero-copy h1 {
+          font-size: 28px;
+        }
+        #od-webchat {
+          height: 520px;
+        }
       }
     </style>
   </head>
 
   <body>
-
     <header>
       <div class="header-inner">
-        <a class="brand" href="https://www.aviva.ie/">
-          <img src="https://static.aviva.io/assets/logo/aviva-logo.svg" alt="Aviva" />
-        </a>
-        <a class="cta" href="#chat">Start a claim</a>
+        <div class="brand">
+          <!-- Aviva official logo SVG -->
+          <a href="https://www.aviva.ie/" aria-label="Aviva Ireland home">
+            <img
+              src="https://static.aviva.io/assets/logo/aviva-logo.svg"
+              alt="Aviva"
+            />
+          </a>
+        </div>
+
+        <nav class="nav" aria-label="Top navigation">
+          <a href="https://www.aviva.ie/insurance/">Insurance</a>
+          <a href="https://www.aviva.ie/about-and-support/contact-us/">Contact us</a>
+          <a href="https://www.aviva.ie/claims/" aria-current="page">Claims</a>
+        </nav>
+
+        <a class="cta" href="#chat">Start a claim with our AI agent</a>
       </div>
     </header>
 
-    <section class="hero">
+    <section class="hero" aria-label="Hero">
       <div class="hero-inner">
         <div class="hero-copy">
           <h1>Make a claim</h1>
           <p>
-            Because life can be complicated, we’ve made sure our claims process isn’t.
-            Use our AI Claims Agent to get started anytime.
+            Because life can be complicated, we’ve made sure our claims process
+            isn’t. Use our AI Claims Agent to get started any time, then a claims
+            adviser can follow up if needed.
           </p>
         </div>
-        <div class="hero-image">
+
+        <div class="hero-image" aria-hidden="true">
+          <!-- Aviva Ireland claims hero image (from your page source) -->
           <img
             src="https://static.aviva.io/content/dam/aviva-public/ie/claims/aviva-claims-hero-retina.$16x9-desktop-12cols$.jpg?$16x9-desktop-12cols$"
             alt=""
@@ -205,26 +445,123 @@
     </section>
 
     <main class="main">
-      <section class="card">
-        <h2>How we can help</h2>
+      <!-- Left: guidance + contact -->
+      <section class="card intro" aria-label="Claim guidance">
+        <div class="section-title">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              />
+            </svg>
+          </div>
+          <h2>How we can help</h2>
+        </div>
+
         <p>
-          Our AI Claims Agent will guide you through a few quick questions to capture
-          what happened and what support you need next.
+          Our <strong>AI Claims Agent</strong> will guide you through a few quick
+          questions to capture what happened and what support you need next.
         </p>
+
+        <div class="hint">
+          <p>
+            <strong>Tip:</strong> If you have them, keep your policy number,
+            vehicle registration, and incident details to hand. If you don’t,
+            you can still start now and add details later.
+          </p>
+        </div>
+
+        <div class="contacts" aria-label="Key contact details">
+          <div class="contact-row">
+            <span class="pill">Car claims (24/7)</span>
+            <span>Call:</span>
+            <a href="tel:1800147147">1800 147 147</a>
+            <span>From abroad:</span>
+            <a href="tel:+35318986400">+353 1 89 86 400</a>
+            <span>Email:</span>
+            <a href="mailto:motorclaimsireland@aviva.com">motorclaimsireland@aviva.com</a>
+          </div>
+
+          <div class="contact-row">
+            <span class="pill">Home claims (Mon–Fri)</span>
+            <span>Call:</span>
+            <a href="tel:1800147147">1800 147 147</a>
+            <span>Email:</span>
+            <a href="mailto:propertyclaims@aviva.com">propertyclaims@aviva.com</a>
+          </div>
+
+          <div class="contact-row">
+            <span class="pill">Life claims</span>
+            <span>Call:</span>
+            <a href="tel:1800159159">1800 159 159</a>
+            <span>Email:</span>
+            <a href="mailto:lifeclaims.ireland@aviva.com">lifeclaims.ireland@aviva.com</a>
+          </div>
+        </div>
       </section>
 
-      <section class="card" id="chat">
-        <h2>Start your claim now</h2>
+      <!-- Right: embedded webchat -->
+      <section class="card" id="chat" aria-label="AI Claims Agent">
+        <div class="section-title">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              />
+            </svg>
+          </div>
+          <h2>Start your claim now</h2>
+        </div>
+
         <div id="od-webchat"></div>
       </section>
     </main>
 
     <footer>
-      Demo integration of OpenDialog AI Agent into an Aviva Ireland-style claims journey.
+      <div class="footer-inner">
+        <div>
+          <p>
+            <strong>Demo page:</strong> Example integration of an OpenDialog AI Claims
+            Agent into an Aviva Ireland-style claims experience.
+          </p>
+          <p style="margin-top: 10px;">
+            Aviva Insurance Ireland DAC (trading as Aviva) is regulated by the Central
+            Bank of Ireland. This page is a demo and not an official Aviva page.
+          </p>
+        </div>
+
+        <div class="footer-links" aria-label="Footer links">
+          <a href="https://www.aviva.ie/about-and-support/privacy/">Privacy</a>
+          <a href="https://www.aviva.ie/about-and-support/terms/">Terms</a>
+          <a href="https://www.aviva.ie/about-and-support/cookie-policy/">Cookies</a>
+        </div>
+      </div>
     </footer>
 
-    <!-- UPDATED SCRIPT SOURCE -->
+    <!-- OpenDialog WebChat JS (same as your prior working demo) -->
     <script src="https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js"></script>
 
+    <!-- Optional: attempt to force full-width inside iframe (same pattern as your existing page) -->
+    <script>
+      setTimeout(function () {
+        const iframe = document.querySelector("#od-webchat iframe");
+        if (iframe) {
+          try {
+            const iframeDoc =
+              iframe.contentDocument || iframe.contentWindow.document;
+            const style = iframeDoc.createElement("style");
+            style.textContent = `
+              body, html { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; }
+              .chat-window, .chat-container, [class*="chat"] { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
+            `;
+            iframeDoc.head.appendChild(style);
+          } catch (e) {
+            console.log(
+              "Cross-origin restriction - webchat styles managed internally"
+            );
+          }
+        }
+      }, 2000);
+    </script>
   </body>
 </html>
