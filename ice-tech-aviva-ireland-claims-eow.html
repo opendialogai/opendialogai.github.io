@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Make a claim | Aviva Ireland - AI Claims Agent Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- OpenDialog WebChat base styles (UPDATED URL) -->
+    <link
+      rel="stylesheet"
+      href="https://customer-office.cloud.opendialog.ai/styles/nu-webchat.css"
+    />
+
+    <!-- OpenDialog settings (UPDATED CREDENTIALS) -->
+    <script>
+      window.openDialogSettings = {
+        url: "https://customer-office.cloud.opendialog.ai",
+        appKey:
+          "1125899919000000|EsIXmRxfGY2tMH5w6EJJ2QE6qWm9af8rnmF6TyRj5452b6b1",
+        parentEl: "#od-webchat",
+        user: {
+          custom: {
+            selected_scenario: "1125899924000000",
+            session_lifetime: 0,
+          },
+        },
+        customSettings: {
+          openCta: {
+            title: "Hello! 👋 Chat with us!",
+            icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+            borderRadius: "50px",
+            width: "280px",
+            height: "80px",
+            background: "#0F2D52",
+          },
+          additionalMenuLinks: [],
+          embedded: true,
+          fullWidth: true,
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --aviva-yellow: #ffd900;
+        --aviva-navy: #0f2d52;
+        --aviva-ink: #0b1f3a;
+        --aviva-sky: #eaf3ff;
+        --bg: #ffffff;
+        --bg-soft: #f6f8fb;
+        --text: #10243f;
+        --muted: #55657a;
+        --border: #e3e8ef;
+        --radius: 14px;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand img { height: 34px; }
+
+      .cta {
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: var(--aviva-yellow);
+        font-weight: 800;
+        text-decoration: none;
+        color: #111;
+      }
+
+      .hero {
+        background: linear-gradient(180deg, var(--aviva-sky), #ffffff 70%);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .hero-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 26px 20px 28px;
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 18px;
+        align-items: center;
+      }
+
+      .hero-copy h1 {
+        font-size: 42px;
+        color: var(--aviva-ink);
+        margin-bottom: 10px;
+      }
+
+      .hero-copy p {
+        color: var(--muted);
+      }
+
+      .hero-image img {
+        width: 100%;
+        border-radius: var(--radius);
+        box-shadow: 0 10px 28px rgba(15, 45, 82, 0.12);
+      }
+
+      .main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 22px 20px 50px;
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 22px;
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+      }
+
+      #od-webchat {
+        width: 100%;
+        height: 640px;
+      }
+
+      #od-webchat > iframe#opendialog-chatwindow {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+
+      footer {
+        background: var(--aviva-navy);
+        color: #fff;
+        padding: 34px 20px;
+        border-top: 6px solid var(--aviva-yellow);
+        text-align: center;
+      }
+
+      @media (max-width: 980px) {
+        .hero-inner,
+        .main {
+          grid-template-columns: 1fr;
+        }
+        #od-webchat { height: 560px; }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="header-inner">
+        <a class="brand" href="https://www.aviva.ie/">
+          <img src="https://static.aviva.io/assets/logo/aviva-logo.svg" alt="Aviva" />
+        </a>
+        <a class="cta" href="#chat">Start a claim</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <h1>Make a claim</h1>
+          <p>
+            Because life can be complicated, we’ve made sure our claims process isn’t.
+            Use our AI Claims Agent to get started anytime.
+          </p>
+        </div>
+        <div class="hero-image">
+          <img
+            src="https://static.aviva.io/content/dam/aviva-public/ie/claims/aviva-claims-hero-retina.$16x9-desktop-12cols$.jpg?$16x9-desktop-12cols$"
+            alt=""
+          />
+        </div>
+      </div>
+    </section>
+
+    <main class="main">
+      <section class="card">
+        <h2>How we can help</h2>
+        <p>
+          Our AI Claims Agent will guide you through a few quick questions to capture
+          what happened and what support you need next.
+        </p>
+      </section>
+
+      <section class="card" id="chat">
+        <h2>Start your claim now</h2>
+        <div id="od-webchat"></div>
+      </section>
+    </main>
+
+    <footer>
+      Demo integration of OpenDialog AI Agent into an Aviva Ireland-style claims journey.
+    </footer>
+
+    <!-- UPDATED SCRIPT SOURCE -->
+    <script src="https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+
+  </body>
+</html>
