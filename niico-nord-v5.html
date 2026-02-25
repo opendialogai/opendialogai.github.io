@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Selma | Embedded AI Assistant</title>
+
+    <!-- OpenDialog WebChat CSS (same host as your webchat JS include) -->
+    <link
+      rel="stylesheet"
+      href="https://customer-office.cloud.opendialog.ai/styles/nu-webchat.css"
+    />
+
+    <style>
+      :root {
+        --navy: #0b1c3f;
+        --navy-2: #0a1733;
+        --white: #ffffff;
+        --border: rgba(255, 255, 255, 0.12);
+        --shadow: 0 18px 50px rgba(2, 6, 23, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: #fff;
+        color: #0b1220;
+      }
+
+      /* Simple shell inspired by your source layout:
+         a two-column section where the right side holds the embedded chat. */
+      .section {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .left {
+        background: linear-gradient(180deg, var(--navy), var(--navy-2));
+        color: var(--white);
+        padding: 44px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 18px;
+      }
+
+      .kicker {
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        font-size: 12px;
+      }
+
+      .title {
+        font-size: 44px;
+        line-height: 1.05;
+        letter-spacing: -0.8px;
+        font-weight: 800;
+      }
+
+      .copy {
+        opacity: 0.9;
+        max-width: 60ch;
+        line-height: 1.6;
+      }
+
+      .stats {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .stat {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 14px 14px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 2px;
+      }
+
+      .stat span {
+        display: block;
+        opacity: 0.85;
+        font-size: 13px;
+      }
+
+      .right {
+        background: #ffffff;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .right-head {
+        padding: 18px 18px;
+        border-bottom: 1px solid #e6e8f2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .right-head h2 {
+        font-size: 16px;
+        letter-spacing: -0.2px;
+      }
+
+      .badge {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #f3f4f6;
+        color: #374151;
+        font-weight: 700;
+      }
+
+      /* Chat container */
+      #od-webchat {
+        width: 100%;
+        height: calc(100vh - 58px);
+      }
+
+      /* Force iframe to be embedded/in-flow */
+      #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        border: 0 !important;
+      }
+
+      #od-webchat iframe {
+        min-width: 100% !important;
+      }
+
+      /* Belt & braces: hide any launcher / CTA UI if the library injects it */
+      .nu-webchat-launcher,
+      .nu-webchat-open-cta,
+      [data-testid="nu-webchat-launcher"],
+      [data-testid="nu-webchat-open-cta"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+
+      @media (max-width: 980px) {
+        .section {
+          grid-template-columns: 1fr;
+        }
+        .title {
+          font-size: 34px;
+        }
+        #od-webchat {
+          height: 70vh;
+        }
+      }
+    </style>
+
+    <!-- OpenDialog settings from your source, adjusted to FORCE EMBED -->
+    <script>
+      window.openDialogSettings = {
+        // NOTE: your source shows this URL, but it contains an invisible character.
+        // I’ve normalized it to a plain domain so it doesn’t break in browsers.
+        url: "https://niico.cloud.opendialog.ai",
+
+        // From your source
+        appKey: "1125899909000000|jZn8GIQwyEcOjoWvWnx0w6hlb9ZOBFauZ24kxikz60921c4a",
+
+        // Must match container below
+        parentEl: "#od-webchat",
+
+        user: {
+          custom: {
+            selected_scenario: "1125899911000000",
+            session_lifetime: 0,
+          },
+        },
+
+        // Key: force embedded mode and disable any launcher behaviour
+        customSettings: {
+          embedded: true,
+          fullWidth: true,
+          launcher: false,
+          additionalMenuLinks: [],
+
+          // Remove/avoid openCta so it doesn't prefer “popup entry”
+          // (Leaving this out is intentional)
+        },
+      };
+    </script>
+  </head>
+
+  <body>
+    <section class="section">
+      <div class="left">
+        <div class="kicker">Selma • Embedded assistant</div>
+        <div class="title">Enquire with Selma</div>
+        <p class="copy">
+          Selma is embedded directly on this page (no popup). Ask a question to get
+          started, and the assistant will guide you through the journey.
+        </p>
+
+        <div class="stats" aria-label="Example stats">
+          <div class="stat">
+            <strong>Fast</strong>
+            <span>Guided, step-by-step flow</span>
+          </div>
+          <div class="stat">
+            <strong>24/7</strong>
+            <span>Start anytime, continue later</span>
+          </div>
+          <div class="stat">
+            <strong>Secure</strong>
+            <span>Session-based interaction</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="right-head">
+          <h2>Selma (embedded)</h2>
+          <div class="badge">Inline experience</div>
+        </div>
+
+        <!-- OpenDialog mounts here -->
+        <div id="od-webchat"></div>
+      </div>
+    </section>
+
+    <!-- WebChat JS include (exactly as in your source) -->
+    <script src="https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+
+    <!-- Optional: small post-load sizing nudge -->
+    <script>
+      setTimeout(() => {
+        const iframe = document.querySelector("#od-webchat iframe");
+        if (iframe) {
+          iframe.style.width = "100%";
+          iframe.style.height = "100%";
+          iframe.style.border = "0";
+        }
+      }, 1200);
+    </script>
+  </body>
+</html>
