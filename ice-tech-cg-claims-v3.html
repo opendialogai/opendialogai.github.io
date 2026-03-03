@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Collinson Travel Insurance Portal | AI Claims Assistant (Embedded)</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- OpenDialog WebChat styles (host MUST match url) -->
+    <link
+      rel="stylesheet"
+      href="https://iceinsuretech.cloud.opendialog.ai/styles/nu-webchat.css"
+    />
+
+    <!-- OpenDialog settings (EMBEDDED) -->
+    <script>
+      window.openDialogSettings = {
+        url: "https://iceinsuretech.cloud.opendialog.ai",
+        appKey:
+          "1125899910000000|qdPw2lfUh0wH56n0v5WGGXTjTy80neTohUXcjfH5fef89eae",
+        parentEl: "#od-webchat",
+        user: {
+          custom: {
+            selected_scenario: "1125899914000000",
+            session_lifetime: 0,
+          },
+        },
+        customSettings: {
+          embedded: true,
+          fullWidth: true,
+          launcher: false,
+          additionalMenuLinks: [],
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --panel: #ffffff;
+        --border: #e7e9f2;
+        --text: #0b1220;
+        --muted: #586174;
+
+        --navy-1: #0b1628;
+        --navy-2: #0a1424;
+
+        --magenta: #8b0a5c;
+        --magenta-2: #a20a6a;
+
+        --shadow: 0 14px 36px rgba(2, 6, 23, 0.08);
+        --radius-lg: 14px;
+        --radius-md: 12px;
+        --radius-sm: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ====== APP LAYOUT ====== */
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+      }
+
+      /* ====== SIDEBAR ====== */
+      .sidebar {
+        background: linear-gradient(180deg, var(--navy-1), var(--navy-2));
+        color: #e7ebf5;
+        padding: 22px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 10px 6px;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 10px;
+        background: radial-gradient(circle at 35% 35%, #ff4da6, #d20b7a);
+        box-shadow: 0 10px 20px rgba(210, 11, 122, 0.22);
+      }
+
+      .brand-name {
+        font-weight: 700;
+        letter-spacing: -0.2px;
+      }
+
+      .nav {
+        margin-top: 8px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .nav a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 12px;
+        border-radius: 10px;
+        color: #d9e0f2;
+        font-weight: 600;
+        font-size: 13px;
+        opacity: 0.95;
+      }
+
+      .nav a:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .nav a.active {
+        background: linear-gradient(
+          90deg,
+          rgba(139, 10, 92, 0.95),
+          rgba(162, 10, 106, 0.85)
+        );
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(139, 10, 92, 0.22);
+      }
+
+      .nav .ico {
+        width: 18px;
+        height: 18px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .spacer {
+        flex: 1;
+      }
+
+      .user {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 14px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .user-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 10px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.12);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        color: #fff;
+      }
+
+      .user-meta {
+        line-height: 1.2;
+      }
+
+      .user-meta .name {
+        font-weight: 700;
+        font-size: 12px;
+        color: #fff;
+      }
+
+      .user-meta .tier {
+        font-size: 11px;
+        opacity: 0.8;
+      }
+
+      .signout {
+        font-size: 12px;
+        opacity: 0.85;
+        padding: 8px 10px;
+      }
+
+      /* ====== MAIN ====== */
+      .main {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .topbar {
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .support {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #5c6477;
+      }
+
+      .support .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #2ad17f;
+        box-shadow: 0 0 0 6px rgba(42, 209, 127, 0.14);
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .bell {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #fff;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .bell svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--magenta);
+      }
+
+      .content {
+        padding: 26px 22px 36px;
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .page-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .breadcrumbs {
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--magenta);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .breadcrumbs svg {
+        width: 14px;
+        height: 14px;
+        fill: var(--magenta);
+      }
+
+      h1 {
+        font-size: 32px;
+        letter-spacing: -0.8px;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .primary-btn {
+        background: var(--magenta);
+        color: #fff;
+        border: 0;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 14px 26px rgba(139, 10, 92, 0.22);
+        white-space: nowrap;
+      }
+
+      .primary-btn:hover {
+        filter: brightness(0.97);
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 18px 0 22px;
+      }
+
+      .portal {
+        display: grid;
+        grid-template-columns: 1.7fr 1fr;
+        gap: 22px;
+        align-items: start;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: -0.2px;
+        margin-bottom: 12px;
+      }
+
+      .shield {
+        width: 28px;
+        height: 28px;
+        border-radius: 10px;
+        background: rgba(139, 10, 92, 0.10);
+        display: grid;
+        place-items: center;
+      }
+
+      .shield svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--magenta);
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+      }
+
+      .card-pad {
+        padding: 18px 18px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        border: 1px solid rgba(139, 10, 92, 0.22);
+        color: var(--magenta);
+        background: rgba(139, 10, 92, 0.06);
+      }
+
+      .policy-title {
+        margin-top: 10px;
+        font-weight: 800;
+        font-size: 18px;
+      }
+
+      .policy-id {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .grid3 {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .kv {
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+        margin-top: 12px;
+      }
+
+      .kv .label {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #6b7280;
+        margin-bottom: 6px;
+      }
+
+      .kv .value {
+        font-weight: 700;
+        color: var(--magenta);
+        font-size: 13px;
+      }
+
+      .chips {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        border-top: 1px solid var(--border);
+        padding-top: 12px;
+      }
+
+      .chip {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #fafbff;
+        font-weight: 700;
+        font-size: 12px;
+        color: #3a4257;
+      }
+
+      .chip svg {
+        width: 14px;
+        height: 14px;
+        fill: var(--magenta);
+      }
+
+      .card-link {
+        margin-top: 14px;
+        border-top: 1px solid var(--border);
+        padding-top: 14px;
+        font-weight: 800;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--magenta);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Right column: Chat + Quick actions */
+      .chat-card {
+        overflow: hidden;
+      }
+
+      .chat-head {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: #fff;
+      }
+
+      .chat-head strong {
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .tag {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(139, 10, 92, 0.08);
+        color: var(--magenta);
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      #od-webchat {
+        width: 100%;
+        height: 660px; /* taller since it replaces the assistance card */
+        background: #fff;
+      }
+
+      #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+      }
+
+      #od-webchat iframe {
+        min-width: 100% !important;
+      }
+
+      /* Belt & braces: hide any launcher/CTA if injected */
+      .nu-webchat-launcher,
+      .nu-webchat-open-cta,
+      [data-testid="nu-webchat-launcher"],
+      [data-testid="nu-webchat-open-cta"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+
+      .chat-foot {
+        padding: 12px 16px 14px;
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--muted);
+        background: #fff;
+      }
+
+      .quick-actions {
+        margin-top: 14px;
+      }
+
+      .qa-title {
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+
+      .qa-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .qa-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 12px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: #fff;
+      }
+
+      .qa-item svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--magenta);
+        flex: 0 0 auto;
+      }
+
+      .qa-item span {
+        font-weight: 700;
+        color: #2f364a;
+        font-size: 13px;
+      }
+
+      /* ====== RESPONSIVE ====== */
+      @media (max-width: 1060px) {
+        .portal {
+          grid-template-columns: 1fr;
+        }
+        #od-webchat {
+          height: 600px;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+        .content {
+          padding: 22px 16px 28px;
+        }
+      }
+
+      @media (max-width: 520px) {
+        h1 {
+          font-size: 26px;
+        }
+        #od-webchat {
+          height: 560px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Sidebar -->
+      <aside class="sidebar" aria-label="Sidebar navigation">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-name">Collinson</div>
+        </div>
+
+        <nav class="nav">
+          <a class="active" href="#">
+            <span class="ico" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Travel Home
+          </a>
+          <a href="#">
+            <span class="ico" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M3 5a2 2 0 0 1 2-2h8l6 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm10 0v5h5"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Travel Claims
+          </a>
+          <a href="#">
+            <span class="ico" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M6 2h9l3 3v17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1v3h3"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Policy Docs
+          </a>
+          <a href="#">
+            <span class="ico" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1Zm1 17h-2v-2h2Zm1.9-7.7-.9.9V13h-2v-2.6l1.4-1.4a1.8 1.8 0 1 0-3.1-1.3H8.3a3.8 3.8 0 1 1 6.6 2.6Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Global Support
+          </a>
+        </nav>
+
+        <div class="spacer"></div>
+
+        <div class="user">
+          <div class="user-card">
+            <div class="avatar" aria-hidden="true">AJ</div>
+            <div class="user-meta">
+              <div class="name">ALEX JOHNSON</div>
+              <div class="tier">PREMIUM TRAVEL TIER</div>
+            </div>
+          </div>
+          <div class="signout">↩︎ Sign Out</div>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        <div class="topbar">
+          <div class="support">
+            <span class="dot" aria-hidden="true"></span>
+            <span>GLOBAL SUPPORT ACTIVE</span>
+          </div>
+
+          <div class="top-actions">
+            <button class="bell" type="button" aria-label="Notifications">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 1 0-14 0v5l-2 2v1h18v-1l-2-2Z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="page-head">
+            <div>
+              <div class="breadcrumbs">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.2L19 8v8l-7 3.9L5 16V8l7-3.8Z"
+                  />
+                </svg>
+                <span>TRAVEL PROTECTION</span>
+              </div>
+              <h1>Travel Insurance Portal</h1>
+              <div class="subtitle">
+                Manage your global travel policies and active claims.
+              </div>
+            </div>
+
+            <button
+              class="primary-btn"
+              type="button"
+              onclick="document.querySelector('#assistant')?.scrollIntoView({behavior:'smooth'});"
+            >
+              Make a Travel Claim
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="portal">
+            <!-- Left: policy cards -->
+            <section aria-label="Active policies">
+              <div class="section-title">
+                <div class="shield" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"
+                    />
+                  </svg>
+                </div>
+                <div>Your Active Policy</div>
+              </div>
+
+              <div class="card" style="margin-bottom: 18px;">
+                <div class="card-pad">
+                  <span class="pill">Active</span>
+
+                  <div class="policy-title">Annual Multi-Trip Premium</div>
+                  <div class="policy-id">TRV-2026-X99</div>
+
+                  <div class="grid3">
+                    <div class="kv">
+                      <div class="label">Region</div>
+                      <div class="value">Worldwide (excl. USA/Canada)</div>
+                    </div>
+                    <div class="kv">
+                      <div class="label">Medical limit</div>
+                      <div class="value">£10,000,000 Medical</div>
+                    </div>
+                    <div class="kv">
+                      <div class="label">Expiry date</div>
+                      <div class="value">Jan 15, 2027</div>
+                    </div>
+                  </div>
+
+                  <div class="chips" aria-label="Key highlights">
+                    <div class="chip">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"
+                        />
+                      </svg>
+                      Emergency Medical
+                    </div>
+                    <div class="chip">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M7 4h10v2H7V4Zm-2 4h14v2H5V8Zm2 4h10v2H7v-2Zm-2 4h14v2H5v-2Z"
+                        />
+                      </svg>
+                      Trip Cancellation
+                    </div>
+                    <div class="chip">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M6 7h12l-1 14H7L6 7Zm2-4h8l1 3H7l1-3Z"
+                        />
+                      </svg>
+                      Personal Baggage
+                    </div>
+                    <div class="chip">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M3 12h18v2H3v-2Zm2-7h14v2H5V5Zm0 14h14v2H5v-2Z"
+                        />
+                      </svg>
+                      Flight Delay
+                    </div>
+                  </div>
+
+                  <a class="card-link" href="#" aria-label="View full policy documents">
+                    <span>VIEW FULL POLICY DOCUMENTS</span> →
+                  </a>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-pad">
+                  <span class="pill">Active</span>
+
+                  <div class="policy-title">Winter Sports Extension</div>
+                  <div class="policy-id">TRV-2026-S12</div>
+
+                  <div class="grid3">
+                    <div class="kv">
+                      <div class="label">Region</div>
+                      <div class="value">Europe Only</div>
+                    </div>
+                    <div class="kv">
+                      <div class="label">Medical limit</div>
+                      <div class="value">Ski Equipment Cover</div>
+                    </div>
+                    <div class="kv">
+                      <div class="label">Expiry date</div>
+                      <div class="value">Mar 30, 2026</div>
+                    </div>
+                  </div>
+
+                  <div class="chips" aria-label="Key highlights">
+                    <div class="chip">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M7 21 3 17l2-2 4 4-2 2Zm14-2-4-4 2-2 4 4-2 2Z" />
+                      </svg>
+                      Ski Hire
+                    </div>
+                    <div class="chip">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 15h-2v-2h2Zm0-4h-2V7h2Z"
+                        />
+                      </svg>
+                      Piste Closure
+                    </div>
+                    <div class="chip">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"
+                        />
+                      </svg>
+                      Search and Rescue
+                    </div>
+                  </div>
+
+                  <a class="card-link" href="#" aria-label="View full policy documents">
+                    <span>VIEW FULL POLICY DOCUMENTS</span> →
+                  </a>
+                </div>
+              </div>
+            </section>
+
+            <!-- Right: Embedded chat replaces the former "Need Assistance" section -->
+            <aside aria-label="AI assistant" id="assistant">
+              <div class="card chat-card">
+                <div class="chat-head">
+                  <strong>AI Claims Assistant</strong>
+                  <span class="tag">Embedded</span>
+                </div>
+
+                <div id="od-webchat"></div>
+
+                <div class="chat-foot">
+                  This is a demo portal UI with an embedded OpenDialog assistant.
+                </div>
+              </div>
+
+              <!-- Keep Quick Actions below the chat (as per screenshot layout style) -->
+              <div class="card quick-actions" style="margin-top: 14px;">
+                <div class="card-pad">
+                  <div class="qa-title">Quick Actions</div>
+                  <div class="qa-list">
+                    <div class="qa-item">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4 0-8 2-8 6h2c0-2.7 3-4 6-4s6 1.3 6 4h2c0-4-4-6-8-6Z"
+                        />
+                      </svg>
+                      <span>Update Personal Details</span>
+                    </div>
+                    <div class="qa-item">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm7 8h-2v-2h-2v-2h2v-2h2v2h2v2h-2v2Z"
+                        />
+                      </svg>
+                      <span>Add Travel Companion</span>
+                    </div>
+                    <div class="qa-item">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M12 16 7 11h3V4h4v7h3l-5 5Zm-7 4h14v2H5v-2Z"
+                        />
+                      </svg>
+                      <span>Download App</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- OpenDialog WebChat JS (host MUST match url) -->
+    <script src="https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+
+    <!-- Optional: ensure iframe sizes correctly after load -->
+    <script>
+      setTimeout(function () {
+        const iframe = document.querySelector("#od-webchat iframe");
+        if (iframe) {
+          iframe.style.width = "100%";
+          iframe.style.height = "100%";
+          iframe.style.border = "0";
+        }
+      }, 1200);
+    </script>
+  </body>
+</html>
