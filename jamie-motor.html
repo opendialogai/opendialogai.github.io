@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>OD Insure - Customer Portal Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 
+      ============================================================
+      WEBCHAT CONFIG - Update these settings for your Jamie agent
+      ============================================================
+    -->
+    <link
+      rel="stylesheet"
+      href="https://customer-office.cloud.opendialog.ai/styles/nu-webchat.css"
+    />
+    <script>
+      window.openDialogSettings = {
+        url: 'https://customer-office.cloud.opendialog.ai',
+        appKey: '1125899916000004|kf9Nv4AuEDYhqyfTvGYfaKeMBaUOSJYqmm2hOoaZ65828fa1',
+        parentEl: "#od-webchat",
+        user: {
+          custom: {
+            selected_scenario: '1125899920000313',
+            session_lifetime: 0
+          }
+        },
+        customSettings: {
+          openCta: {
+            title: "Hello!👋 Chat with us!",
+            icon: "https://customer-office.cloud.opendialog.ai/images/cta-chat-open.svg",
+            borderRadius: "50px",
+            width: "280px",
+            height: "80px",
+            background: "#001abf",
+          },
+          additionalMenuLinks: [],
+          embedded: true,
+          fullWidth: true,
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --od-blue: #3347E0;
+        --od-blue-hover: #2838C0;
+        --od-blue-light: #EDF0FF;
+        --od-teal: #2BCBBA;
+        --od-teal-dark: #1AA89A;
+        --bg-page: #EDF0F8;
+        --bg-card: #ffffff;
+        --text-primary: #1a1a2e;
+        --text-secondary: #5c5f7a;
+        --text-light: #8e90a6;
+        --border-color: #e0e3f0;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--text-primary);
+        background-color: var(--bg-page);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ===== HEADER ===== */
+      .header {
+        background: var(--bg-card);
+        padding: 0 24px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border-color);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .od-logo-circle {
+        width: 40px;
+        height: 40px;
+        background: var(--od-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
+
+      .od-logo-text {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--od-blue);
+        letter-spacing: -0.3px;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .header-bell {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.2s;
+      }
+
+      .header-bell:hover {
+        background: var(--bg-page);
+      }
+
+      .header-bell svg {
+        width: 20px;
+        height: 20px;
+        color: var(--text-secondary);
+      }
+
+      .header-user {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .header-menu {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background 0.2s;
+      }
+
+      .header-menu:hover {
+        background: var(--bg-page);
+      }
+
+      .header-menu span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: var(--text-primary);
+        border-radius: 1px;
+      }
+
+      /* ===== MAIN GRID ===== */
+      .dashboard {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .dashboard-split {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .left-cards {
+        flex: 3;
+        min-width: 0;
+      }
+
+      .cards-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .right-chat {
+        flex: 2;
+        min-width: 0;
+        position: sticky;
+        top: 76px;
+      }
+
+      /* Card base */
+      .card {
+        background: var(--bg-card);
+        border-radius: 12px;
+        padding: 24px;
+        border: 1px solid var(--border-color);
+      }
+
+      .card-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+      }
+
+      .card-subtitle {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+      }
+
+      .card-title-sm {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 6px;
+      }
+
+      .card-text {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+        line-height: 1.5;
+      }
+
+      /* Outline button */
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 18px;
+        border: 1.5px solid var(--od-blue);
+        border-radius: 100px;
+        background: transparent;
+        color: var(--od-blue);
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+
+      .btn-outline:hover {
+        background: var(--od-blue);
+        color: #ffffff;
+      }
+
+      .btn-solid-white {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 100px;
+        background: #ffffff;
+        color: var(--od-teal-dark);
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-solid-white:hover {
+        background: #f0f0f0;
+      }
+
+      .btn-solid-dark {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 100px;
+        background: var(--text-primary);
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-solid-dark:hover {
+        background: #000;
+      }
+
+      /* ===== POLICIES CARD ===== */
+      .card-policies {
+        grid-column: 1 / 3;
+      }
+
+      .policy-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: var(--bg-page);
+        border-radius: 8px;
+        margin-bottom: 16px;
+      }
+
+      .policy-row-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .policy-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+      }
+
+      .policy-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .policy-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .policy-arrow {
+        color: var(--text-light);
+        font-size: 18px;
+      }
+
+      /* ===== JAMIE CHAT CARD ===== */
+      .card-jamie {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        overflow: visible;
+        height: calc(100vh - 108px);
+      }
+
+      .jamie-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+
+      #od-webchat {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        min-height: 500px;
+        position: relative;
+      }
+
+      /* Only target the actual chat iframe */
+      #od-webchat > iframe#opendialog-chatwindow {
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        height: 100% !important;
+        border: none !important;
+        border-radius: 12px !important;
+      }
+
+      /* ===== ALERT CARD ===== */
+      .card-alert {
+        background: linear-gradient(145deg, var(--od-teal), var(--od-teal-dark));
+        border: none;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+      }
+
+      .alert-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+
+      .alert-label {
+        font-size: 14px;
+        font-weight: 600;
+        opacity: 0.9;
+      }
+
+      .alert-info-icon {
+        width: 32px;
+        height: 32px;
+        border: 2px solid rgba(255,255,255,0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .alert-heading {
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1.25;
+        margin-bottom: 20px;
+      }
+
+      /* ===== PROMOTION ===== */
+      .card-promo {
+        grid-column: 1 / 3;
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .promo-content {
+        padding: 24px;
+        flex-shrink: 0;
+      }
+
+      .promo-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-light);
+        margin-bottom: 4px;
+      }
+
+      .promo-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 8px;
+      }
+
+      .promo-text {
+        font-size: 13px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        margin-bottom: 16px;
+      }
+
+      .promo-image {
+        flex: 1;
+        min-height: 180px;
+        background: linear-gradient(180deg, #e8e0d4 0%, #d4cdc2 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .promo-image::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: 
+          linear-gradient(180deg, rgba(232, 224, 212, 0.3) 0%, rgba(180, 170, 155, 0.6) 100%);
+      }
+
+      .promo-image-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-light);
+        font-size: 13px;
+        font-weight: 500;
+        position: relative;
+        z-index: 1;
+        background: linear-gradient(135deg, #f5efe6 0%, #e8ddd0 40%, #d4c8b8 100%);
+      }
+
+      /* ===== FAQs ===== */
+      .card-faq {
+        grid-column: 1 / 3;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1024px) {
+        .dashboard-split {
+          flex-direction: column;
+        }
+
+        .right-chat {
+          position: static;
+        }
+
+        .card-jamie {
+          height: 500px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .cards-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card-policies,
+        .card-promo,
+        .card-faq {
+          grid-column: 1;
+        }
+
+        .dashboard {
+          padding: 16px;
+        }
+
+        .header {
+          padding: 0 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-logo">
+        <div class="od-logo-circle">OD</div>
+        <div class="od-logo-text">Insure</div>
+      </div>
+
+      <div class="header-right">
+        <div class="header-bell">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </div>
+        <div class="header-user">Sandra Smith</div>
+        <div class="header-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard -->
+    <main class="dashboard">
+      <div class="dashboard-split">
+
+        <!-- LEFT: Cards -->
+        <div class="left-cards">
+          <div class="cards-grid">
+
+            <!-- Policies and Inboxes -->
+            <div class="card card-policies">
+              <div class="card-title">Policies and inboxes</div>
+              <div class="card-subtitle">View and manage your insurance</div>
+
+              <div class="policy-row">
+                <div class="policy-row-left">
+                  <div class="policy-icon">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="6" width="22" height="12" rx="2"/>
+                      <circle cx="7" cy="12" r="2"/>
+                      <path d="M1 10h22"/>
+                    </svg>
+                  </div>
+                  <div class="policy-name">Audi e-Tron – NL20 HXT</div>
+                </div>
+                <div class="policy-arrow">›</div>
+              </div>
+
+              <button class="btn-outline">Show 3 Old Policies</button>
+            </div>
+
+            <!-- Alert -->
+            <div class="card card-alert">
+              <div>
+                <div class="alert-top">
+                  <div class="alert-label">Alert</div>
+                  <div class="alert-info-icon">i</div>
+                </div>
+                <div class="alert-heading">Please upload the documents for your Audi e-Tron policy</div>
+              </div>
+              <button class="btn-solid-white">Send documents</button>
+            </div>
+
+            <!-- Coming Up -->
+            <div class="card card-coming-up">
+              <div class="card-title-sm">Coming up</div>
+              <div class="card-text">No upcoming events</div>
+              <button class="btn-outline">Your calendar</button>
+            </div>
+
+            <!-- Your Account -->
+            <div class="card card-account">
+              <div class="card-title-sm">Your account</div>
+              <div class="card-text">View and edit your account details</div>
+              <button class="btn-outline">Your account</button>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="card card-contact">
+              <div class="card-title-sm">Contact us</div>
+              <div class="card-text">Find out how you can email or call us</div>
+              <button class="btn-outline">Get in touch</button>
+            </div>
+
+            <!-- Promotion -->
+            <div class="card card-promo">
+              <div class="promo-content">
+                <div class="promo-label">Promotion</div>
+                <div class="promo-title">Home Insurance</div>
+                <div class="promo-text">From one of the leading specialist home insurance brokers in the UK</div>
+                <button class="btn-solid-dark">Find out more</button>
+              </div>
+              <div class="promo-image">
+                <div class="promo-image-placeholder">
+                  🏠 Home Insurance
+                </div>
+              </div>
+            </div>
+
+            <!-- Get a Quote -->
+            <div class="card card-quote">
+              <div class="card-title-sm">Get a quote</div>
+              <div class="card-text">Click below for a free callback to discuss a quote on a new policy</div>
+              <button class="btn-outline">Get quote</button>
+            </div>
+
+            <!-- Latest News -->
+            <div class="card card-news">
+              <div class="card-title-sm">Latest news</div>
+              <div class="card-text">The best touring cars of the 90s</div>
+              <button class="btn-outline">Read</button>
+            </div>
+
+            <!-- FAQs -->
+            <div class="card card-faq">
+              <div class="card-title-sm">FAQs</div>
+              <div class="card-text">A vast array of answers to some of our customers' most frequently asked questions</div>
+              <button class="btn-outline">Find an answer</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: Jamie Chat -->
+        <div class="right-chat">
+          <div class="card card-jamie">
+            <div class="jamie-body">
+              <div id="od-webchat"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- WebChat JS -->
+    <script src="https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+
+    <script>
+      // Force the webchat iframe to fill its container
+      function forceFullWidth() {
+        var iframe = document.querySelector('#od-webchat iframe#opendialog-chatwindow');
+        if (iframe) {
+          iframe.style.cssText += 'position:static!important;width:100%!important;max-width:100%!important;min-width:100%!important;height:100%!important;border:none!important;border-radius:12px!important;';
+        }
+      }
+
+      setTimeout(forceFullWidth, 1500);
+      setTimeout(forceFullWidth, 3000);
+      setTimeout(forceFullWidth, 5000);
+    </script>
+  </body>
+</html>
