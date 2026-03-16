@@ -353,7 +353,7 @@
         display: flex;
         flex-direction: column;
         padding: 0;
-        overflow: hidden;
+        overflow: visible;
         height: calc(100vh - 108px);
       }
 
@@ -370,35 +370,17 @@
         height: 100%;
         min-height: 500px;
         position: relative;
-        overflow: visible;
       }
 
-      /* Force ALL iframes and webchat elements to fill container */
-      #od-webchat > iframe,
-      #od-webchat > iframe#opendialog-chatwindow,
-      #od-webchat > div,
-      #od-webchat > div > iframe {
+      /* Only target the actual chat iframe */
+      #od-webchat > iframe#opendialog-chatwindow {
         position: static !important;
         width: 100% !important;
         max-width: 100% !important;
         min-width: 100% !important;
         height: 100% !important;
-        min-height: 100% !important;
         border: none !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        right: auto !important;
-        bottom: auto !important;
-        left: 0 !important;
-        top: 0 !important;
-      }
-
-      /* Override any CTA / floating button styles */
-      #od-webchat [class*="cta"],
-      #od-webchat [class*="launcher"],
-      #od-webchat [class*="open"],
-      #od-webchat [class*="bubble"] {
-        display: none !important;
+        border-radius: 12px !important;
       }
 
       /* ===== ALERT CARD ===== */
@@ -693,58 +675,17 @@
     <script src="https://customer-office.cloud.opendialog.ai/dist/nu-webchat-js"></script>
 
     <script>
-      // Force the webchat to fill its container
+      // Force the webchat iframe to fill its container
       function forceFullWidth() {
-        const container = document.querySelector('#od-webchat');
-        if (!container) return;
-        
-        // Target all possible iframe/div children
-        const elements = container.querySelectorAll('iframe, div');
-        elements.forEach(function(el) {
-          el.style.cssText += 'position:static!important;width:100%!important;max-width:100%!important;min-width:100%!important;height:100%!important;min-height:100%!important;border:none!important;border-radius:0!important;box-shadow:none!important;right:auto!important;bottom:auto!important;left:0!important;top:0!important;';
-        });
-
-        // Try to inject CSS into iframe
-        const iframes = container.querySelectorAll('iframe');
-        iframes.forEach(function(iframe) {
-          try {
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            const style = iframeDoc.createElement('style');
-            style.textContent = `
-              body, html {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                height: 100% !important;
-              }
-              .chat-window, .chat-container, [class*="chat"], [class*="Chat"], [class*="webchat"], [class*="Webchat"] {
-                width: 100% !important;
-                max-width: 100% !important;
-                height: 100% !important;
-                margin: 0 !important;
-                position: static !important;
-              }
-            `;
-            iframeDoc.head.appendChild(style);
-          } catch (e) {
-            // CORS blocked
-          }
-        });
+        var iframe = document.querySelector('#od-webchat iframe#opendialog-chatwindow');
+        if (iframe) {
+          iframe.style.cssText += 'position:static!important;width:100%!important;max-width:100%!important;min-width:100%!important;height:100%!important;border:none!important;border-radius:12px!important;';
+        }
       }
 
-      // Run multiple times to catch late-loading elements
-      setTimeout(forceFullWidth, 1000);
-      setTimeout(forceFullWidth, 2000);
-      setTimeout(forceFullWidth, 3500);
+      setTimeout(forceFullWidth, 1500);
+      setTimeout(forceFullWidth, 3000);
       setTimeout(forceFullWidth, 5000);
-
-      // Also watch for DOM changes
-      const observer = new MutationObserver(forceFullWidth);
-      const target = document.querySelector('#od-webchat');
-      if (target) {
-        observer.observe(target, { childList: true, subtree: true });
-      }
     </script>
   </body>
 </html>
