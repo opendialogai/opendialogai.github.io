@@ -178,16 +178,33 @@
 
       /* ===== MAIN GRID ===== */
       .dashboard {
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
         padding: 24px;
       }
 
-      .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1.1fr;
-        grid-template-rows: auto auto auto auto;
+      .dashboard-split {
+        display: flex;
         gap: 16px;
+        align-items: flex-start;
+      }
+
+      .left-cards {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .cards-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .right-chat {
+        flex: 1;
+        min-width: 0;
+        position: sticky;
+        top: 76px;
       }
 
       /* Card base */
@@ -288,7 +305,6 @@
       /* ===== POLICIES CARD ===== */
       .card-policies {
         grid-column: 1 / 3;
-        grid-row: 1;
       }
 
       .policy-row {
@@ -334,43 +350,11 @@
 
       /* ===== JAMIE CHAT CARD ===== */
       .card-jamie {
-        grid-column: 3;
-        grid-row: 1 / 3;
         display: flex;
         flex-direction: column;
         padding: 0;
         overflow: hidden;
-      }
-
-      .jamie-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 20px 14px;
-        border-bottom: 1px solid var(--border-color);
-      }
-
-      .jamie-header-title {
-        font-size: 15px;
-        font-weight: 800;
-        color: var(--text-primary);
-        line-height: 1.3;
-      }
-
-      .jamie-menu-dots {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        cursor: pointer;
-        padding: 4px;
-      }
-
-      .jamie-menu-dots span {
-        display: block;
-        width: 4px;
-        height: 4px;
-        background: var(--text-light);
-        border-radius: 50%;
+        height: calc(100vh - 108px);
       }
 
       .jamie-body {
@@ -382,7 +366,7 @@
       #od-webchat {
         flex: 1;
         width: 100%;
-        min-height: 420px;
+        min-height: 500px;
       }
 
       #od-webchat > iframe#opendialog-chatwindow {
@@ -399,8 +383,6 @@
 
       /* ===== ALERT CARD ===== */
       .card-alert {
-        grid-column: 1;
-        grid-row: 2;
         background: linear-gradient(145deg, var(--od-teal), var(--od-teal-dark));
         border: none;
         color: #ffffff;
@@ -442,28 +424,9 @@
         margin-bottom: 20px;
       }
 
-      /* ===== COMING UP CARD ===== */
-      .card-coming-up {
-        grid-column: 2;
-        grid-row: 2;
-      }
-
-      /* ===== YOUR ACCOUNT ===== */
-      .card-account {
-        grid-column: 1;
-        grid-row: 3;
-      }
-
-      /* ===== CONTACT US ===== */
-      .card-contact {
-        grid-column: 2;
-        grid-row: 3;
-      }
-
       /* ===== PROMOTION ===== */
       .card-promo {
-        grid-column: 3;
-        grid-row: 3 / 5;
+        grid-column: 1 / 3;
         padding: 0;
         overflow: hidden;
         display: flex;
@@ -504,7 +467,6 @@
         overflow: hidden;
       }
 
-      /* Simple illustrative room image via CSS */
       .promo-image::before {
         content: '';
         position: absolute;
@@ -527,73 +489,34 @@
         background: linear-gradient(135deg, #f5efe6 0%, #e8ddd0 40%, #d4c8b8 100%);
       }
 
-      /* ===== GET A QUOTE ===== */
-      .card-quote {
-        grid-column: 1;
-        grid-row: 4;
-      }
-
-      /* ===== LATEST NEWS ===== */
-      .card-news {
-        grid-column: 2;
-        grid-row: 4;
-      }
-
       /* ===== FAQs ===== */
       .card-faq {
-        grid-column: 3;
-        grid-row: 5;
+        grid-column: 1 / 3;
       }
 
       /* ===== RESPONSIVE ===== */
       @media (max-width: 1024px) {
-        .grid {
-          grid-template-columns: 1fr 1fr;
-          grid-template-rows: auto;
+        .dashboard-split {
+          flex-direction: column;
         }
 
-        .card-policies {
-          grid-column: 1 / 3;
-          grid-row: auto;
+        .right-chat {
+          position: static;
         }
 
         .card-jamie {
-          grid-column: 1 / 3;
-          grid-row: auto;
-        }
-
-        .card-alert { grid-column: 1; grid-row: auto; }
-        .card-coming-up { grid-column: 2; grid-row: auto; }
-        .card-account { grid-column: 1; grid-row: auto; }
-        .card-contact { grid-column: 2; grid-row: auto; }
-        .card-promo { grid-column: 1 / 3; grid-row: auto; }
-        .card-quote { grid-column: 1; grid-row: auto; }
-        .card-news { grid-column: 2; grid-row: auto; }
-        .card-faq { grid-column: 1 / 3; grid-row: auto; }
-
-        #od-webchat {
-          min-height: 450px;
+          height: 500px;
         }
       }
 
       @media (max-width: 640px) {
-        .grid {
+        .cards-grid {
           grid-template-columns: 1fr;
         }
 
         .card-policies,
-        .card-jamie,
         .card-promo,
         .card-faq {
-          grid-column: 1;
-        }
-
-        .card-alert,
-        .card-coming-up,
-        .card-account,
-        .card-contact,
-        .card-quote,
-        .card-news {
           grid-column: 1;
         }
 
@@ -632,114 +555,115 @@
       </div>
     </header>
 
-    <!-- Dashboard Grid -->
+    <!-- Dashboard -->
     <main class="dashboard">
-      <div class="grid">
+      <div class="dashboard-split">
 
-        <!-- Policies and Inboxes -->
-        <div class="card card-policies">
-          <div class="card-title">Policies and inboxes</div>
-          <div class="card-subtitle">View and manage your insurance</div>
+        <!-- LEFT: Cards -->
+        <div class="left-cards">
+          <div class="cards-grid">
 
-          <div class="policy-row">
-            <div class="policy-row-left">
-              <div class="policy-icon">
-                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="1" y="6" width="22" height="12" rx="2"/>
-                  <circle cx="7" cy="12" r="2"/>
-                  <path d="M1 10h22"/>
-                </svg>
+            <!-- Policies and Inboxes -->
+            <div class="card card-policies">
+              <div class="card-title">Policies and inboxes</div>
+              <div class="card-subtitle">View and manage your insurance</div>
+
+              <div class="policy-row">
+                <div class="policy-row-left">
+                  <div class="policy-icon">
+                    <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="6" width="22" height="12" rx="2"/>
+                      <circle cx="7" cy="12" r="2"/>
+                      <path d="M1 10h22"/>
+                    </svg>
+                  </div>
+                  <div class="policy-name">Audi e-Tron – NL20 HXT</div>
+                </div>
+                <div class="policy-arrow">›</div>
               </div>
-              <div class="policy-name">Audi e-Tron – NL20 HXT</div>
+
+              <button class="btn-outline">Show 3 Old Policies</button>
             </div>
-            <div class="policy-arrow">›</div>
-          </div>
 
-          <button class="btn-outline">Show 3 Old Policies</button>
+            <!-- Alert -->
+            <div class="card card-alert">
+              <div>
+                <div class="alert-top">
+                  <div class="alert-label">Alert</div>
+                  <div class="alert-info-icon">i</div>
+                </div>
+                <div class="alert-heading">Please upload the documents for your Audi e-Tron policy</div>
+              </div>
+              <button class="btn-solid-white">Send documents</button>
+            </div>
+
+            <!-- Coming Up -->
+            <div class="card card-coming-up">
+              <div class="card-title-sm">Coming up</div>
+              <div class="card-text">No upcoming events</div>
+              <button class="btn-outline">Your calendar</button>
+            </div>
+
+            <!-- Your Account -->
+            <div class="card card-account">
+              <div class="card-title-sm">Your account</div>
+              <div class="card-text">View and edit your account details</div>
+              <button class="btn-outline">Your account</button>
+            </div>
+
+            <!-- Contact Us -->
+            <div class="card card-contact">
+              <div class="card-title-sm">Contact us</div>
+              <div class="card-text">Find out how you can email or call us</div>
+              <button class="btn-outline">Get in touch</button>
+            </div>
+
+            <!-- Promotion -->
+            <div class="card card-promo">
+              <div class="promo-content">
+                <div class="promo-label">Promotion</div>
+                <div class="promo-title">Home Insurance</div>
+                <div class="promo-text">From one of the leading specialist home insurance brokers in the UK</div>
+                <button class="btn-solid-dark">Find out more</button>
+              </div>
+              <div class="promo-image">
+                <div class="promo-image-placeholder">
+                  🏠 Home Insurance
+                </div>
+              </div>
+            </div>
+
+            <!-- Get a Quote -->
+            <div class="card card-quote">
+              <div class="card-title-sm">Get a quote</div>
+              <div class="card-text">Click below for a free callback to discuss a quote on a new policy</div>
+              <button class="btn-outline">Get quote</button>
+            </div>
+
+            <!-- Latest News -->
+            <div class="card card-news">
+              <div class="card-title-sm">Latest news</div>
+              <div class="card-text">The best touring cars of the 90s</div>
+              <button class="btn-outline">Read</button>
+            </div>
+
+            <!-- FAQs -->
+            <div class="card card-faq">
+              <div class="card-title-sm">FAQs</div>
+              <div class="card-text">A vast array of answers to some of our customers' most frequently asked questions</div>
+              <button class="btn-outline">Find an answer</button>
+            </div>
+
+          </div>
         </div>
 
-        <!-- Jamie Chat -->
-        <div class="card card-jamie">
-          <div class="jamie-header">
-            <div class="jamie-header-title">Got a question about your policy? Ask Jamie</div>
-            <div class="jamie-menu-dots">
-              <span></span>
-              <span></span>
-              <span></span>
+        <!-- RIGHT: Jamie Chat -->
+        <div class="right-chat">
+          <div class="card card-jamie">
+            <div class="jamie-body">
+              <div id="od-webchat"></div>
             </div>
           </div>
-          <div class="jamie-body">
-            <div id="od-webchat"></div>
-          </div>
-        </div>
-
-        <!-- Alert -->
-        <div class="card card-alert">
-          <div>
-            <div class="alert-top">
-              <div class="alert-label">Alert</div>
-              <div class="alert-info-icon">i</div>
-            </div>
-            <div class="alert-heading">Please upload the documents for your Audi e-Tron policy</div>
-          </div>
-          <button class="btn-solid-white">Send documents</button>
-        </div>
-
-        <!-- Coming Up -->
-        <div class="card card-coming-up">
-          <div class="card-title-sm">Coming up</div>
-          <div class="card-text">No upcoming events</div>
-          <button class="btn-outline">Your calendar</button>
-        </div>
-
-        <!-- Your Account -->
-        <div class="card card-account">
-          <div class="card-title-sm">Your account</div>
-          <div class="card-text">View and edit your account details</div>
-          <button class="btn-outline">Your account</button>
-        </div>
-
-        <!-- Contact Us -->
-        <div class="card card-contact">
-          <div class="card-title-sm">Contact us</div>
-          <div class="card-text">Find out how you can email or call us</div>
-          <button class="btn-outline">Get in touch</button>
-        </div>
-
-        <!-- Promotion -->
-        <div class="card card-promo">
-          <div class="promo-content">
-            <div class="promo-label">Promotion</div>
-            <div class="promo-title">Home Insurance</div>
-            <div class="promo-text">From one of the leading specialist home insurance brokers in the UK</div>
-            <button class="btn-solid-dark">Find out more</button>
-          </div>
-          <div class="promo-image">
-            <div class="promo-image-placeholder">
-              🏠 Home Insurance
-            </div>
-          </div>
-        </div>
-
-        <!-- Get a Quote -->
-        <div class="card card-quote">
-          <div class="card-title-sm">Get a quote</div>
-          <div class="card-text">Click below for a free callback to discuss a quote on a new policy</div>
-          <button class="btn-outline">Get quote</button>
-        </div>
-
-        <!-- Latest News -->
-        <div class="card card-news">
-          <div class="card-title-sm">Latest news</div>
-          <div class="card-text">The best touring cars of the 90s</div>
-          <button class="btn-outline">Read</button>
-        </div>
-
-        <!-- FAQs -->
-        <div class="card card-faq">
-          <div class="card-title-sm">FAQs</div>
-          <div class="card-text">A vast array of answers to some of our customers' most frequently asked questions</div>
-          <button class="btn-outline">Find an answer</button>
         </div>
 
       </div>
