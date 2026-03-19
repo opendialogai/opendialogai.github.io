@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Insurance Portal | AI Claims Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://iceinsuretech.cloud.opendialog.ai/styles/nu-webchat.css">
+<style>
+  :root {
+    --brand-primary:   #003366;
+    --brand-secondary: #0066CC;
+    --brand-accent:    #E8401C;
+    --brand-light:     #EAF2FF;
+    --brand-text:      #0D1B2A;
+    --brand-muted:     #5E7A99;
+    --brand-border:    #C8D9EE;
+    --brand-nav-bg:    #002855;
+    --brand-card-bg:   #FFFFFF;
+    --brand-page-bg:   #F0F4FA;
+    --left-nav-w:      220px;
+    --admin-sw:        320px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--brand-page-bg);
+    color: var(--brand-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ─── DEMO RIBBON ─── */
+  .demo-ribbon {
+    background: #1A1A2E;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .demo-ribbon span { color: #7ECFFF; }
+
+  /* ─── APP SHELL ─── */
+  .app-shell {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ══════════════════════════════════
+     LEFT NAV
+  ══════════════════════════════════ */
+  .left-nav {
+    width: var(--left-nav-w);
+    background: var(--brand-nav-bg);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    transition: background 0.3s;
+    z-index: 90;
+  }
+
+  .left-nav-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    min-height: 80px;
+  }
+
+  .nav-logo-mark {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: var(--brand-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+    flex-shrink: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .nav-logo-mark.has-image {
+    width: 100%;
+    height: auto;
+    min-height: 44px;
+    background: transparent;
+    border-radius: 0;
+    padding: 0 4px;
+  }
+
+  .nav-logo-mark img {
+    width: 100%;
+    max-height: 52px;
+    object-fit: contain;
+    display: none;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s;
+  }
+
+  .nav-logo-mark.has-image img { display: block; }
+  .nav-logo-mark.has-image span { display: none; }
+  .nav-logo-mark.logo-dark img { filter: none; }
+
+  .left-nav-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .nav-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--brand-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #fff;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .nav-user-name { font-size: 12px; font-weight: 700; color: #fff; }
+  .nav-user-tier { font-size: 10px; color: rgba(255,255,255,0.48); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1px; }
+
+  .left-nav-links { list-style: none; padding: 10px 8px; flex: 1; }
+  .left-nav-links li { margin-bottom: 2px; }
+
+  .left-nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 10px;
+    border-radius: 8px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .left-nav-links a svg { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.7; }
+  .left-nav-links a:hover, .left-nav-links a.active { color: #fff; background: rgba(255,255,255,0.12); }
+  .left-nav-links a.active svg { opacity: 1; }
+
+  .left-nav-footer {
+    padding: 12px 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .support-pill {
+    background: rgba(126,207,255,0.14);
+    border: 1px solid rgba(126,207,255,0.22);
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #7ECFFF;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .signout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    padding: 7px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .signout-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .signout-btn svg { width: 12px; height: 12px; }
+
+  /* Admin button in nav */
+  .nav-admin-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: calc(100% - 28px);
+    margin: 0 14px 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 9px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .nav-admin-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .nav-admin-btn:hover { background: rgba(255,255,255,0.16); color: #fff; border-color: rgba(255,255,255,0.3); }
+
+  /* ══════════════════════════════════
+     MAIN BODY
+  ══════════════════════════════════ */
+  .main-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow-y: auto;
+    height: 100vh;
+  }
+
+  .top-bar {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+    padding: 22px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .top-bar-left h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .top-bar-left p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.62);
+    margin-top: 3px;
+  }
+
+  .claim-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brand-accent);
+    color: #fff;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .claim-cta:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .claim-cta svg { width: 14px; height: 14px; }
+
+  /* ─── CONTENT GRID ─── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 430px;
+    gap: 22px;
+    padding: 24px 28px 40px;
+    align-items: start;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--brand-muted);
+    margin-bottom: 12px;
+  }
+
+  /* ─── POLICY CARDS ─── */
+  .policy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .policy-card {
+    background: var(--brand-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--brand-border);
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0,30,80,0.06);
+    transition: box-shadow 0.2s;
+  }
+  .policy-card:hover { box-shadow: 0 6px 20px rgba(0,30,80,0.10); }
+
+  .policy-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .policy-status {
+    background: #E6F9F0;
+    color: #1A7A4A;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .policy-ref {
+    font-size: 10px;
+    color: var(--brand-muted);
+    font-weight: 600;
+    font-family: 'Sora', monospace;
+  }
+
+  .policy-name {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--brand-text);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .policy-meta { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .policy-meta-row { display: flex; justify-content: space-between; font-size: 12px; }
+  .meta-label { color: var(--brand-muted); }
+  .meta-value { color: var(--brand-text); font-weight: 600; text-align: right; }
+
+  .policy-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .policy-tag {
+    background: var(--brand-light);
+    color: var(--brand-secondary);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .policy-link {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--brand-secondary);
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: color 0.3s;
+  }
+  .policy-link:hover { text-decoration: underline; }
+
+  /* ─── QUICK ACTIONS ─── */
+  .quick-actions-card {
+    background: var(--brand-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--brand-border);
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0,30,80,0.06);
+  }
+
+  .qa-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--brand-text);
+    margin-bottom: 12px;
+  }
+
+  .qa-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  .qa-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    background: var(--brand-light);
+    border: 1px solid var(--brand-border);
+    border-radius: 10px;
+    padding: 14px 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--brand-text);
+    transition: all 0.2s;
+    text-align: left;
+    line-height: 1.3;
+  }
+  .qa-btn svg { width: 18px; height: 18px; color: var(--brand-secondary); transition: color 0.2s; }
+  .qa-btn:hover { background: var(--brand-secondary); color: #fff; border-color: var(--brand-secondary); }
+  .qa-btn:hover svg { color: #fff; }
+
+  /* ══════════════════════════════════
+     RIGHT COLUMN
+  ══════════════════════════════════ */
+  .right-col { display: flex; flex-direction: column; gap: 14px; }
+
+  /* 24/7 Helpline */
+  .helpline-card {
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+    border-radius: 14px;
+    padding: 16px 18px;
+    transition: background 0.3s;
+  }
+
+  .helpline-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .helpline-icon svg { width: 18px; height: 18px; color: #fff; }
+
+  .helpline-title {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+
+  .helpline-number {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .helpline-text {
+    font-size: 11px;
+    color: rgba(255,255,255,0.68);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .helpline-btn {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 7px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    width: 100%;
+  }
+  .helpline-btn:hover { background: rgba(255,255,255,0.28); }
+
+  /* AI Claims Assistant */
+  .ai-panel {
+    background: var(--brand-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--brand-border);
+    box-shadow: 0 2px 8px rgba(0,30,80,0.06);
+    overflow: hidden;
+  }
+
+  .ai-panel-header {
+    background: linear-gradient(135deg, #1A1A2E, #2E3A5C);
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ai-icon {
+    width: 30px;
+    height: 30px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ai-icon svg { width: 16px; height: 16px; color: #fff; }
+
+  .ai-panel-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px; color: #fff; }
+  .ai-panel-sub { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+
+  .ai-status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #4ECDA4; margin-left: auto; flex-shrink: 0;
+    box-shadow: 0 0 6px #4ECDA4;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .ai-embed-area {
+    background: #F7F9FC;
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    gap: 0;
+    text-align: center;
+  }
+
+  .ai-embed-icon {
+    width: 52px; height: 52px;
+    background: var(--brand-light);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    transition: background 0.3s;
+  }
+  .ai-embed-icon svg { width: 26px; height: 26px; color: var(--brand-secondary); }
+
+  .ai-embed-label { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px; color: var(--brand-text); }
+  .ai-embed-desc { font-size: 12px; color: var(--brand-muted); max-width: 210px; line-height: 1.5; }
+
+  .ai-embed-badge {
+    background: var(--brand-light);
+    color: var(--brand-secondary);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  /* ══════════════════════════════════
+     ADMIN SIDEBAR
+  ══════════════════════════════════ */
+  .admin-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 900;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .admin-overlay.open { opacity: 1; pointer-events: all; }
+
+  .admin-sidebar {
+    position: fixed; top: 0; right: 0;
+    width: var(--admin-sw); height: 100vh;
+    background: #fff;
+    z-index: 901;
+    box-shadow: -8px 0 40px rgba(0,0,0,0.18);
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .admin-sidebar.open { transform: translateX(0); }
+
+  .admin-header {
+    background: #1A1A2E;
+    padding: 18px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .admin-header-left { display: flex; align-items: center; gap: 10px; }
+  .admin-icon-badge { width:32px; height:32px; background:rgba(255,255,255,0.12); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+  .admin-icon-badge svg { width:16px; height:16px; color:#fff; }
+  .admin-title { font-family:'Sora',sans-serif; font-weight:700; font-size:14px; color:#fff; }
+  .admin-sub { font-size:11px; color:rgba(255,255,255,0.5); margin-top:1px; }
+  .admin-close { width:28px; height:28px; background:rgba(255,255,255,0.1); border:none; border-radius:6px; color:rgba(255,255,255,0.8); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; transition:all 0.2s; }
+  .admin-close:hover { background:rgba(255,255,255,0.2); color:#fff; }
+
+  .admin-body { flex:1; overflow-y:auto; padding:20px; }
+
+  .admin-section { margin-bottom:24px; }
+  .admin-section-title { font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:#8892A4; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid #EEF0F5; }
+
+  .admin-field { margin-bottom:12px; }
+  .admin-label { font-size:12px; font-weight:600; color:#3A4554; margin-bottom:5px; display:block; }
+  .admin-input { width:100%; border:1px solid #DDE3EE; border-radius:7px; padding:8px 11px; font-family:'DM Sans',sans-serif; font-size:13px; color:#1A2535; background:#FAFBFD; transition:border-color 0.2s; }
+  .admin-input:focus { outline:none; border-color:#0066CC; background:#fff; }
+
+  .color-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .color-field { display:flex; flex-direction:column; gap:4px; }
+  .color-field label { font-size:11px; font-weight:600; color:#5E6F85; }
+  .color-wrap { display:flex; align-items:center; gap:8px; background:#FAFBFD; border:1px solid #DDE3EE; border-radius:7px; padding:5px 10px; cursor:pointer; transition:border-color 0.2s; }
+  .color-wrap:focus-within { border-color:#0066CC; }
+  .color-wrap input[type="color"] { width:22px; height:22px; border:none; border-radius:4px; padding:0; cursor:pointer; background:none; }
+  .color-hex { font-size:12px; font-family:'Sora',monospace; color:#3A4554; font-weight:600; flex:1; border:none; background:none; width:60px; }
+  .color-hex:focus { outline:none; }
+
+  .nav-link-item { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .nav-link-item input { flex:1; border:1px solid #DDE3EE; border-radius:6px; padding:7px 10px; font-family:'DM Sans',sans-serif; font-size:12px; color:#1A2535; background:#FAFBFD; transition:border-color 0.2s; }
+  .nav-link-item input:focus { outline:none; border-color:#0066CC; }
+  .nav-remove { width:26px; height:26px; border:1px solid #DDE3EE; background:#fff; border-radius:6px; color:#C0432C; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; }
+  .nav-remove:hover { background:#FFF0ED; border-color:#C0432C; }
+  .add-nav-btn { width:100%; border:1px dashed #C8D3E5; background:#F6F8FC; border-radius:6px; padding:8px; font-size:12px; font-weight:600; color:#5E6F85; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+  .add-nav-btn:hover { border-color:#0066CC; color:#0066CC; background:#EAF2FF; }
+
+  .logo-upload-area { border:2px dashed #C8D3E5; border-radius:8px; padding:16px; text-align:center; cursor:pointer; transition:all 0.2s; background:#FAFBFD; position:relative; }
+  .logo-upload-area:hover { border-color:#0066CC; background:#EAF2FF; }
+  .logo-upload-area input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+  .logo-preview { max-height:40px; max-width:140px; object-fit:contain; display:none; margin:0 auto; }
+  .logo-upload-text { font-size:12px; color:#8892A4; font-weight:500; line-height:1.5; }
+  .logo-upload-icon { font-size:22px; margin-bottom:4px; }
+
+  .preset-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .preset-btn { border:2px solid transparent; border-radius:8px; padding:8px 6px; cursor:pointer; text-align:center; transition:all 0.2s; background:#F6F8FC; font-size:11px; font-weight:600; color:#5E6F85; font-family:'DM Sans',sans-serif; }
+  .preset-btn:hover { border-color:#0066CC; }
+  .preset-btn.active { border-color:#0066CC; color:#0066CC; background:#EAF2FF; }
+  .preset-swatch { display:flex; gap:3px; justify-content:center; margin-bottom:5px; }
+  .swatch-dot { width:12px; height:12px; border-radius:50%; }
+
+  .admin-actions { padding:16px 20px; border-top:1px solid #EEF0F5; display:flex; gap:10px; flex-shrink:0; background:#FAFBFD; }
+  .btn-apply { flex:1; background:#003366; color:#fff; border:none; border-radius:8px; padding:10px; font-family:'Sora',sans-serif; font-weight:700; font-size:13px; cursor:pointer; transition:all 0.2s; }
+  .btn-apply:hover { background:#0066CC; }
+  .btn-reset { background:#fff; color:#5E6F85; border:1px solid #DDE3EE; border-radius:8px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-weight:600; font-size:12px; cursor:pointer; transition:all 0.2s; }
+  .btn-reset:hover { border-color:#C0432C; color:#C0432C; }
+
+  /* Admin toggle moved to left nav */
+</style>
+</head>
+<body>
+
+<div class="demo-ribbon">Demo Environment — <span>Admin Branding Controls Active</span></div>
+
+<div class="app-shell">
+
+  <!-- ════════════ LEFT NAV ════════════ -->
+  <nav class="left-nav" id="leftNav">
+
+    <div class="left-nav-logo">
+      <div class="nav-logo-mark" id="navLogoMark">
+        <img id="navLogoImg" src="" alt="logo">
+        <span id="navLogoLetter">C</span>
+      </div>
+    </div>
+
+    <div class="left-nav-user">
+      <div class="nav-avatar">AJ</div>
+      <div>
+        <div class="nav-user-name">Alex Johnson</div>
+        <div class="nav-user-tier">Premium Travel</div>
+      </div>
+    </div>
+
+    <ul class="left-nav-links" id="navLinks">
+      <li><a href="#" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Travel Home</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Travel Claims</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Policy Docs</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        Global Support</a></li>
+    </ul>
+
+    <!-- Admin Controls button in nav -->
+    <button class="nav-admin-btn" onclick="openAdmin()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      Admin Controls
+    </button>
+
+    <div class="left-nav-footer">
+      <div class="support-pill">Global Support Active</div>
+      <button class="signout-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+
+  </nav>
+
+  <!-- ════════════ MAIN BODY ════════════ -->
+  <div class="main-body">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <h1 id="heroTitle">Travel Insurance Portal</h1>
+        <p id="heroSub">Manage your global travel policies and active claims.</p>
+      </div>
+      <a href="#" class="claim-cta" id="claimCta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <span id="claimCtaLabel">Make a Travel Claim</span>
+      </a>
+    </div>
+
+    <!-- Content grid: centre + right -->
+    <div class="content-grid">
+
+      <!-- Centre: policies + quick actions -->
+      <div>
+        <div class="section-label">Your Active Policies</div>
+        <div class="policy-grid">
+
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <span class="policy-status">Active</span>
+              <span class="policy-ref">TRV-2026-X99</span>
+            </div>
+            <div class="policy-name">Annual Multi-Trip Premium</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">Region</span><span class="meta-value">Worldwide (excl. USA/Canada)</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Medical limit</span><span class="meta-value">£10,000,000</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Expiry</span><span class="meta-value">Jan 15, 2027</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Emergency Medical</span>
+              <span class="policy-tag">Trip Cancellation</span>
+              <span class="policy-tag">Personal Baggage</span>
+              <span class="policy-tag">Flight Delay</span>
+            </div>
+            <a href="#" class="policy-link">VIEW FULL POLICY DOCUMENTS →</a>
+          </div>
+
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <span class="policy-status">Active</span>
+              <span class="policy-ref">TRV-2026-S12</span>
+            </div>
+            <div class="policy-name">Winter Sports Extension</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">Region</span><span class="meta-value">Europe Only</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Cover</span><span class="meta-value">Ski Equipment Cover</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Expiry</span><span class="meta-value">Mar 30, 2026</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Ski Hire</span>
+              <span class="policy-tag">Piste Closure</span>
+              <span class="policy-tag">Search &amp; Rescue</span>
+            </div>
+            <a href="#" class="policy-link">VIEW FULL POLICY DOCUMENTS →</a>
+          </div>
+
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions-card">
+          <div class="qa-title">Quick Actions</div>
+          <div class="qa-grid">
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Update Personal Details
+            </button>
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              Add Travel Companion
+            </button>
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              Download App
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: helpline then AI assistant -->
+      <div class="right-col">
+
+        <div class="helpline-card">
+          <div class="helpline-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="helpline-title">24/7 Emergency Line</div>
+          <div class="helpline-number">+44 800 123 4567</div>
+          <div class="helpline-text">Our global assistance team is available around the clock for emergency support while travelling.</div>
+          <button class="helpline-btn">Contact Support →</button>
+        </div>
+
+        <div class="ai-panel">
+          <div class="ai-embed-area" id="aiEmbedArea" style="min-height:550px;padding:0;background:#fff;">
+            <div id="od-webchat" style="width:100%;height:100%;min-height:550px;"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /content-grid -->
+
+  </div><!-- /main-body -->
+</div><!-- /app-shell -->
+
+<!-- Admin toggle moved into left nav -->
+
+<div class="admin-overlay" id="adminOverlay" onclick="closeAdmin()"></div>
+
+<!-- Admin sidebar -->
+<div class="admin-sidebar" id="adminSidebar">
+
+  <div class="admin-header">
+    <div class="admin-header-left">
+      <div class="admin-icon-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+      </div>
+      <div>
+        <div class="admin-title">Branding Controls</div>
+        <div class="admin-sub">Demo customisation panel</div>
+      </div>
+    </div>
+    <button class="admin-close" onclick="closeAdmin()">✕</button>
+  </div>
+
+  <div class="admin-body">
+
+    <div class="admin-section">
+      <div class="admin-section-title">Quick Theme Presets</div>
+      <div class="preset-grid">
+        <button class="preset-btn active" id="preset-collinson" onclick="applyPreset('collinson')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#003366"></div><div class="swatch-dot" style="background:#0066CC"></div><div class="swatch-dot" style="background:#E8401C"></div></div>Collinson
+        </button>
+        <button class="preset-btn" id="preset-aviva" onclick="applyPreset('aviva')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#5C1F7A"></div><div class="swatch-dot" style="background:#8B31B5"></div><div class="swatch-dot" style="background:#E8401C"></div></div>Aviva
+        </button>
+        <button class="preset-btn" id="preset-axa" onclick="applyPreset('axa')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#00008F"></div><div class="swatch-dot" style="background:#FF1721"></div><div class="swatch-dot" style="background:#fff;border:1px solid #ddd"></div></div>AXA
+        </button>
+        <button class="preset-btn" id="preset-lloyds" onclick="applyPreset('lloyds')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#006A4E"></div><div class="swatch-dot" style="background:#00A36C"></div><div class="swatch-dot" style="background:#FDB913"></div></div>Lloyds
+        </button>
+        <button class="preset-btn" id="preset-zurich" onclick="applyPreset('zurich')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#003399"></div><div class="swatch-dot" style="background:#0055CC"></div><div class="swatch-dot" style="background:#CC0000"></div></div>Zurich
+        </button>
+        <button class="preset-btn" id="preset-custom" onclick="applyPreset('custom')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#ccc"></div><div class="swatch-dot" style="background:#aaa"></div><div class="swatch-dot" style="background:#888"></div></div>Custom
+        </button>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">Logo &amp; Identity</div>
+      <div class="admin-field">
+        <label class="admin-label">Logo Upload <span style="color:#8892A4;font-weight:400">(auto-extracts colours)</span></label>
+        <div class="logo-upload-area">
+          <input type="file" accept="image/*" id="logoFileInput" onchange="handleLogoUpload(event)">
+          <div id="logoUploadContent">
+            <div class="logo-upload-icon">🖼</div>
+            <div class="logo-upload-text">Click to upload logo<br><small>PNG, SVG, JPG — colours auto-detected</small></div>
+          </div>
+          <img id="logoPreviewImg" class="logo-preview" src="" alt="">
+        </div>
+      </div>
+
+      <!-- Extracted colours preview -->
+      <div id="extractedColoursPanel" style="display:none">
+        <div style="font-size:11px;font-weight:700;color:#5E6F85;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+          <span>✦</span> Colours extracted from logo
+        </div>
+        <div id="extractedSwatches" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;"></div>
+        <button onclick="applyExtractedColours()" style="width:100%;background:linear-gradient(135deg,#1A1A2E,#2E3A5C);color:#fff;border:none;border-radius:7px;padding:9px;font-family:'Sora',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          ✦ Apply Extracted Colours
+        </button>
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">Logo Mark Background</label>
+        <div class="color-wrap">
+          <input type="color" id="colorLogoMark" value="#E8401C" oninput="syncHex(this,'hexLogoMark')">
+          <input class="color-hex" id="hexLogoMark" value="#E8401C" oninput="syncColor(this,'colorLogoMark')" maxlength="7">
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">Brand Colours</div>
+      <div class="color-row">
+        <div class="color-field"><label>Primary</label><div class="color-wrap"><input type="color" id="colorPrimary" value="#003366" oninput="syncHex(this,'hexPrimary')"><input class="color-hex" id="hexPrimary" value="#003366" oninput="syncColor(this,'colorPrimary')" maxlength="7"></div></div>
+        <div class="color-field"><label>Secondary</label><div class="color-wrap"><input type="color" id="colorSecondary" value="#0066CC" oninput="syncHex(this,'hexSecondary')"><input class="color-hex" id="hexSecondary" value="#0066CC" oninput="syncColor(this,'colorSecondary')" maxlength="7"></div></div>
+        <div class="color-field"><label>Accent / CTA</label><div class="color-wrap"><input type="color" id="colorAccent" value="#E8401C" oninput="syncHex(this,'hexAccent')"><input class="color-hex" id="hexAccent" value="#E8401C" oninput="syncColor(this,'colorAccent')" maxlength="7"></div></div>
+        <div class="color-field"><label>Nav Background</label><div class="color-wrap"><input type="color" id="colorNav" value="#002855" oninput="syncHex(this,'hexNav')"><input class="color-hex" id="hexNav" value="#002855" oninput="syncColor(this,'colorNav')" maxlength="7"></div></div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">Navigation Links</div>
+      <div id="navLinksEditor"></div>
+      <button class="add-nav-btn" onclick="addNavLink()">+ Add link</button>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">Page Content</div>
+      <div class="admin-field"><label class="admin-label">Portal Title</label><input class="admin-input" type="text" id="inputHeroTitle" value="Travel Insurance Portal"></div>
+      <div class="admin-field"><label class="admin-label">Subtitle</label><input class="admin-input" type="text" id="inputHeroSub" value="Manage your global travel policies and active claims."></div>
+      <div class="admin-field"><label class="admin-label">CTA Button Label</label><input class="admin-input" type="text" id="inputCtaLabel" value="Make a Travel Claim"></div>
+    </div>
+
+    <!-- AI Widget Embed -->
+    <div class="admin-section">
+      <div class="admin-section-title">AI Claims Assistant</div>
+
+      <div style="background:#F6F8FC;border:1px solid #DDE3EE;border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#8892A4;margin-bottom:4px;">Connected Instance</div>
+        <div style="font-size:12px;font-weight:600;color:#3A4554;">iceinsuretech.cloud.opendialog.ai</div>
+      </div>
+
+      <div class="admin-field">
+        <label class="admin-label">App Key</label>
+        <input class="admin-input" type="text" id="inputAppKey"
+          value="1125899910000000|qdPw2lfUh0wH56n0v5WGGXTjTy80neTohUXcjfH5fef89eae"
+          placeholder="e.g. 1125899910000000|xxxxxx..."
+          style="font-family:monospace;font-size:11px;">
+      </div>
+
+      <div class="admin-field">
+        <label class="admin-label">Scenario ID</label>
+        <input class="admin-input" type="text" id="inputScenarioId"
+          value="1125899914000000"
+          placeholder="e.g. 1125899914000000"
+          style="font-family:monospace;font-size:11px;">
+      </div>
+
+      <div style="font-size:11px;color:#8892A4;margin-bottom:12px;line-height:1.6;padding:8px 10px;background:#FFFBF0;border:1px solid #F0E0A0;border-radius:6px;">
+        💡 Only these two values change between demos. Get them from your OpenDialog dashboard.
+      </div>
+
+      <button onclick="applyEmbedCode()" style="width:100%;background:linear-gradient(135deg,#1A1A2E,#2E3A5C);color:#fff;border:none;border-radius:7px;padding:9px;font-family:'Sora',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'" id="applyEmbedBtn">
+        ↻ Load Widget
+      </button>
+      <button onclick="clearEmbedCode()" style="width:100%;margin-top:6px;background:#fff;color:#8892A4;border:1px solid #DDE3EE;border-radius:7px;padding:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#C0432C';this.style.color='#C0432C'" onmouseout="this.style.borderColor='#DDE3EE';this.style.color='#8892A4'">
+        ✕ Reset to Default
+      </button>
+    </div>
+
+  </div>
+
+  <div class="admin-actions">
+    <button class="btn-apply" onclick="applyChanges()">Apply Changes</button>
+    <button class="btn-reset" onclick="resetDefaults()">Reset</button>
+  </div>
+
+</div>
+
+<script>
+  function openAdmin()  { document.getElementById('adminSidebar').classList.add('open'); document.getElementById('adminOverlay').classList.add('open'); renderNavEditor(); }
+  function closeAdmin() { document.getElementById('adminSidebar').classList.remove('open'); document.getElementById('adminOverlay').classList.remove('open'); }
+
+  function syncHex(el,hexId)   { document.getElementById(hexId).value = el.value; }
+  function syncColor(el,cId)   { if(/^#[0-9A-Fa-f]{6}$/.test(el.value)) document.getElementById(cId).value = el.value; }
+
+  // ─── Extracted colours store ───────────────────────────
+  let _extracted = { primary:'#003366', secondary:'#0066CC', accent:'#E8401C', nav:'#002855', logo:'#E8401C' };
+
+  function handleLogoUpload(e) {
+    const f = e.target.files[0]; if(!f) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const imgEl = document.getElementById('logoPreviewImg');
+      imgEl.src = ev.target.result;
+      imgEl.style.display = 'block';
+      document.getElementById('logoUploadContent').style.display = 'none';
+      // Expand logo mark immediately on upload
+      const mark = document.getElementById('navLogoMark');
+      document.getElementById('navLogoImg').src = ev.target.result;
+      mark.classList.add('has-image');
+      mark.style.background = 'transparent';
+
+      // Wait for image to fully load then extract
+      const tempImg = new Image();
+      tempImg.crossOrigin = 'anonymous';
+      tempImg.onload = () => extractColours(tempImg);
+      tempImg.src = ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  }
+
+  function extractColours(img) {
+    // Draw image to hidden canvas and sample pixels
+    const canvas = document.createElement('canvas');
+    const size = 80; // downscale for speed
+    canvas.width = size; canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, size, size);
+
+    const data = ctx.getImageData(0, 0, size, size).data;
+    const buckets = {};
+
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+      if (a < 30) continue; // skip transparent
+      // skip very near-white and near-black (background noise)
+      const brightness = (r + g + b) / 3;
+      if (brightness > 235 || brightness < 15) continue;
+
+      // Quantise into 32-step buckets to group similar shades
+      const qr = Math.round(r/32)*32, qg = Math.round(g/32)*32, qb = Math.round(b/32)*32;
+      const key = `${qr},${qg},${qb}`;
+      buckets[key] = (buckets[key] || 0) + 1;
+    }
+
+    // Sort by frequency
+    const sorted = Object.entries(buckets)
+      .sort((a,b) => b[1]-a[1])
+      .slice(0, 20)
+      .map(([key]) => {
+        const [r,g,b] = key.split(',').map(Number);
+        return { r, g, b, hex: rgbToHex(r,g,b), hsl: rgbToHsl(r,g,b) };
+      });
+
+    if (!sorted.length) return;
+
+    // Pick roles: darkest saturated = primary/nav, mid saturated = secondary, most saturated bright = accent
+    const bySaturation = [...sorted].sort((a,b) => b.hsl.s - a.hsl.s);
+    const byLightness  = [...sorted].sort((a,b) => a.hsl.l - b.hsl.l);
+
+    // Primary: darkest, saturated
+    const primary = byLightness.find(c => c.hsl.s > 0.15) || byLightness[0];
+    // Nav: same family, slightly darker
+    const nav = darken(primary, 0.08);
+    // Secondary: saturated but lighter than primary
+    const secondary = bySaturation.find(c => c.hex !== primary.hex && c.hsl.l > primary.hsl.l + 0.08)
+      || lighten(primary, 0.25);
+    // Accent: highest saturation, warmest hue (red/orange/yellow range)
+    const accent = bySaturation.find(c =>
+      c.hsl.h >= 0 && c.hsl.h <= 60 && c.hsl.s > 0.4 && c.hsl.l > 0.3
+    ) || bySaturation[0];
+
+    _extracted = {
+      primary:   primary.hex,
+      secondary: secondary.hex || secondary,
+      accent:    accent.hex,
+      nav:       nav,
+      logo:      primary.hex
+    };
+
+    // Show top 6 swatches
+    const top6 = sorted.slice(0,6);
+    showExtractedSwatches(top6);
+  }
+
+  function showExtractedSwatches(colours) {
+    const panel = document.getElementById('extractedColoursPanel');
+    const swatchEl = document.getElementById('extractedSwatches');
+    swatchEl.innerHTML = '';
+
+    colours.forEach(c => {
+      const div = document.createElement('div');
+      div.title = c.hex;
+      div.style.cssText = `width:32px;height:32px;border-radius:6px;background:${c.hex};
+        border:2px solid rgba(0,0,0,0.1);cursor:pointer;transition:transform 0.15s;
+        box-shadow:0 2px 6px rgba(0,0,0,0.15)`;
+      div.onmouseover = () => div.style.transform = 'scale(1.15)';
+      div.onmouseout  = () => div.style.transform = 'scale(1)';
+      div.onclick = () => {
+        // clicking a swatch copies it to clipboard label
+        div.style.outline = '2px solid #0066CC';
+        setTimeout(()=>div.style.outline='',1200);
+      };
+      // Show hex on hover via tooltip (title already set)
+      swatchEl.appendChild(div);
+    });
+
+    // Add role labels
+    const roles = document.createElement('div');
+    roles.style.cssText = 'font-size:10px;color:#8892A4;margin-top:4px;line-height:1.6;width:100%';
+    roles.innerHTML = `
+      <span style="display:inline-flex;align-items:center;gap:4px;margin-right:8px">
+        <span style="width:10px;height:10px;border-radius:50%;background:${_extracted.primary};display:inline-block"></span>Primary
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:4px;margin-right:8px">
+        <span style="width:10px;height:10px;border-radius:50%;background:${_extracted.secondary};display:inline-block"></span>Secondary
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:4px">
+        <span style="width:10px;height:10px;border-radius:50%;background:${_extracted.accent};display:inline-block"></span>Accent
+      </span>`;
+    swatchEl.appendChild(roles);
+
+    panel.style.display = 'block';
+  }
+
+  function applyExtractedColours() {
+    setF('colorPrimary',   'hexPrimary',   _extracted.primary);
+    setF('colorSecondary', 'hexSecondary', _extracted.secondary);
+    setF('colorAccent',    'hexAccent',    _extracted.accent);
+    setF('colorNav',       'hexNav',       _extracted.nav);
+    setF('colorLogoMark',  'hexLogoMark',  _extracted.primary);
+
+    // Flash the button
+    const btn = document.querySelector('#extractedColoursPanel button');
+    btn.textContent = '✓ Colours Applied!';
+    btn.style.background = 'linear-gradient(135deg,#1A7A4A,#2EAA6A)';
+    setTimeout(()=>{
+      btn.textContent = '✦ Apply Extracted Colours';
+      btn.style.background = 'linear-gradient(135deg,#1A1A2E,#2E3A5C)';
+    }, 2000);
+  }
+
+  // ─── Colour utilities ───────────────────────────────────
+  function rgbToHex(r,g,b) {
+    return '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+  }
+
+  function rgbToHsl(r,g,b) {
+    r/=255; g/=255; b/=255;
+    const max=Math.max(r,g,b), min=Math.min(r,g,b);
+    let h,s,l=(max+min)/2;
+    if(max===min){ h=s=0; }
+    else {
+      const d=max-min;
+      s=l>0.5?d/(2-max-min):d/(max+min);
+      switch(max){
+        case r: h=((g-b)/d+(g<b?6:0))/6; break;
+        case g: h=((b-r)/d+2)/6; break;
+        case b: h=((r-g)/d+4)/6; break;
+      }
+    }
+    return { h: h*360, s, l };
+  }
+
+  function darken(color, amount) {
+    const r=parseInt(color.hex.slice(1,3),16);
+    const g=parseInt(color.hex.slice(3,5),16);
+    const b=parseInt(color.hex.slice(5,7),16);
+    return rgbToHex(
+      Math.max(0,Math.round(r*(1-amount))),
+      Math.max(0,Math.round(g*(1-amount))),
+      Math.max(0,Math.round(b*(1-amount)))
+    );
+  }
+
+  function lighten(color, amount) {
+    const r=parseInt(color.hex.slice(1,3),16);
+    const g=parseInt(color.hex.slice(3,5),16);
+    const b=parseInt(color.hex.slice(5,7),16);
+    return rgbToHex(
+      Math.min(255,Math.round(r+(255-r)*amount)),
+      Math.min(255,Math.round(g+(255-g)*amount)),
+      Math.min(255,Math.round(b+(255-b)*amount))
+    );
+  }
+
+  const navIconsSVG = [
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>`,
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>`
+  ];
+
+  let navItems = ['Travel Home','Travel Claims','Policy Docs','Global Support'];
+
+  function renderNavEditor() {
+    const c = document.getElementById('navLinksEditor'); c.innerHTML='';
+    navItems.forEach((item,idx)=>{
+      const d=document.createElement('div'); d.className='nav-link-item';
+      d.innerHTML=`<input type="text" value="${item}" placeholder="Link label" onchange="navItems[${idx}]=this.value"><button class="nav-remove" onclick="removeNavLink(${idx})">×</button>`;
+      c.appendChild(d);
+    });
+  }
+
+  function addNavLink()       { navItems.push('New Link'); renderNavEditor(); }
+  function removeNavLink(idx) { navItems.splice(idx,1); renderNavEditor(); }
+
+  function applyChanges() {
+    const r = document.documentElement.style;
+    const p = document.getElementById('colorPrimary').value;
+    const s = document.getElementById('colorSecondary').value;
+    const a = document.getElementById('colorAccent').value;
+    const n = document.getElementById('colorNav').value;
+    const l = document.getElementById('colorLogoMark').value;
+
+    r.setProperty('--brand-primary',   p);
+    r.setProperty('--brand-secondary', s);
+    r.setProperty('--brand-accent',    a);
+    r.setProperty('--brand-nav-bg',    n);
+    r.setProperty('--brand-light',     hexToLight(s));
+
+    const logoMark = document.getElementById('navLogoMark');
+    const preview  = document.getElementById('logoPreviewImg');
+    const navImg   = document.getElementById('navLogoImg');
+
+    if (preview.src && preview.style.display !== 'none') {
+      navImg.src = preview.src;
+      logoMark.classList.add('has-image');
+      logoMark.style.background = 'transparent';
+    } else {
+      logoMark.classList.remove('has-image');
+      logoMark.style.background = l;
+    }
+
+    document.getElementById('navLinks').innerHTML = navItems.map((item,i)=>`
+      <li><a href="#" ${i===0?'class="active"':''}>
+        ${navIconsSVG[i]||navIconsSVG[navIconsSVG.length-1]}
+        ${item}</a></li>`).join('');
+
+    document.getElementById('heroTitle').textContent    = document.getElementById('inputHeroTitle').value;
+    document.getElementById('heroSub').textContent      = document.getElementById('inputHeroSub').value;
+    document.getElementById('claimCtaLabel').textContent= document.getElementById('inputCtaLabel').value;
+
+    const btn = document.querySelector('.btn-apply');
+    btn.textContent='✓ Applied!'; btn.style.background='#1A7A4A';
+    setTimeout(()=>{ btn.textContent='Apply Changes'; btn.style.background=''; }, 1800);
+  }
+
+  const presets = {
+    collinson:{ primary:'#003366', secondary:'#0066CC', accent:'#E8401C', nav:'#002855', logo:'#E8401C', name:'Collinson' },
+    aviva:    { primary:'#5C1F7A', secondary:'#8B31B5', accent:'#E8401C', nav:'#3D1050', logo:'#5C1F7A', name:'Aviva' },
+    axa:      { primary:'#00008F', secondary:'#1414A0', accent:'#FF1721', nav:'#00006F', logo:'#00008F', name:'AXA' },
+    lloyds:   { primary:'#006A4E', secondary:'#00A36C', accent:'#FDB913', nav:'#005040', logo:'#006A4E', name:'Lloyds' },
+    zurich:   { primary:'#003399', secondary:'#0055CC', accent:'#CC0000', nav:'#002277', logo:'#003399', name:'Zurich' },
+    custom:   null
+  };
+
+  function applyPreset(key) {
+    document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('preset-'+key).classList.add('active');
+    if (!presets[key]) return;
+    const p=presets[key];
+    setF('colorPrimary',  'hexPrimary',  p.primary);
+    setF('colorSecondary','hexSecondary',p.secondary);
+    setF('colorAccent',   'hexAccent',   p.accent);
+    setF('colorNav',      'hexNav',      p.nav);
+    setF('colorLogoMark', 'hexLogoMark', p.logo);
+    // brand name field removed
+  }
+
+  function setF(cId,hId,v){ document.getElementById(cId).value=v; document.getElementById(hId).value=v; }
+
+  function resetDefaults() {
+    applyPreset('collinson');
+    document.getElementById('inputHeroTitle').value='Travel Insurance Portal';
+    document.getElementById('inputHeroSub').value='Manage your global travel policies and active claims.';
+    document.getElementById('inputCtaLabel').value='Make a Travel Claim';
+    navItems=['Travel Home','Travel Claims','Policy Docs','Global Support'];
+    renderNavEditor();
+    document.getElementById('logoPreviewImg').style.display='none';
+    document.getElementById('logoUploadContent').style.display='block';
+    document.getElementById('logoFileInput').value='';
+    const mark = document.getElementById('navLogoMark');
+    mark.classList.remove('has-image');
+    document.getElementById('navLogoImg').src='';
+    mark.style.background='';
+    applyChanges();
+  }
+
+  function hexToLight(hex) {
+    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},0.10)`;
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    renderNavEditor();
+  });
+
+  // ─── OpenDialog Webchat (direct embed) ──────────────────
+  // Read overrides from sessionStorage (set by Admin Controls)
+  var _storedAppKey    = sessionStorage.getItem('od_appKey')    || '1125899910000000|qdPw2lfUh0wH56n0v5WGGXTjTy80neTohUXcjfH5fef89eae';
+  var _storedScenario  = sessionStorage.getItem('od_scenario')  || '1125899914000000';
+
+  window.openDialogSettings = {
+    url: 'https://iceinsuretech.cloud.opendialog.ai',
+    appKey: _storedAppKey,
+    parentEl: '#od-webchat',
+    user: {
+      custom: {
+        selected_scenario: _storedScenario,
+        session_lifetime: 0
+      }
+    },
+    customSettings: {
+      openCta: {
+        title: "Hello!👋 Chat with us!",
+        icon: "https://iceinsuretech.cloud.opendialog.ai/images/cta-chat-open.svg",
+        borderRadius: "50px",
+        width: "280px",
+        height: "80px",
+        background: "#001abf"
+      },
+      additionalMenuLinks: [],
+      embedded: true,
+      fullWidth: true,
+    }
+  };
+
+  // Pre-fill the admin inputs with current values
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('inputAppKey').value    = _storedAppKey;
+    document.getElementById('inputScenarioId').value = _storedScenario;
+  });
+
+  // ─── Embed code functions ──────────────────────────────
+  function applyEmbedCode() {
+    const appKey     = document.getElementById('inputAppKey').value.trim();
+    const scenarioId = document.getElementById('inputScenarioId').value.trim();
+    if (!appKey || !scenarioId) {
+      alert('Please enter both App Key and Scenario ID.');
+      return;
+    }
+
+    // Save to sessionStorage and reload — the SDK needs a fresh page to reinitialise
+    sessionStorage.setItem('od_appKey',   appKey);
+    sessionStorage.setItem('od_scenario', scenarioId);
+
+    const btn = document.getElementById('applyEmbedBtn');
+    btn.textContent = '✓ Reloading…';
+    btn.style.background = 'linear-gradient(135deg,#1A7A4A,#2EAA6A)';
+
+    setTimeout(() => location.reload(), 300);
+  }
+
+    function clearEmbedCode() {
+    sessionStorage.removeItem('od_appKey');
+    sessionStorage.removeItem('od_scenario');
+    location.reload();
+  }
+</script>
+
+<!-- OpenDialog Webchat JS -->
+<script src="https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+
+<style>
+  /* Force webchat iframe to fill the AI panel */
+  #od-webchat > iframe#opendialog-chatwindow {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: 100% !important;
+    min-height: 550px !important;
+    border: none !important;
+    border-radius: 14px !important;
+  }
+</style>
+
+</body>
+</html>
