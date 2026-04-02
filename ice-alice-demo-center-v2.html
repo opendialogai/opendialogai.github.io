@@ -716,7 +716,42 @@
     }
   }
 
+  // ── Polling ────────────────────────────────────────────
+  var _pollInterval  = null;
+  var _pollMs        = 10000; // check every 10 seconds
+  var _lastJsonStr   = null;  // track last payload to detect changes
+
+  function startPolling(url) {
+    stopPolling(); // clear any existing timer first
+    _pollInterval = setInterval(async function() {
+      try {
+        var data    = await fetchViaProxy(url);
+        var jsonStr = JSON.stringify(data);
+        if (jsonStr !== _lastJsonStr) {
+          _lastJsonStr = jsonStr;
+          applyGistToUI(data);
+        }
+        // Update the "last checked" time in status even if no change
+        var now = new Date().toLocaleTimeString('en-GB');
+        var name = (data.policyholder || {}).name || null;
+        setGistStatus('ok', 'Live \u2014 checked ' + now + (name ? ' \u2014 ' + name : ''));
+      } catch(e) {
+        setGistStatus('error', 'Poll failed: ' + e.message);
+      }
+    }, _pollMs);
+  }
+
+  function stopPolling() {
+    if (_pollInterval) {
+      clearInterval(_pollInterval);
+      _pollInterval = null;
+    }
+    _lastJsonStr = null;
+  }
+  // ── End polling ─────────────────────────────────────────
+
   function clearGistData() {
+    stopPolling();
     sessionStorage.removeItem('od_gist_url');
     _gistLoadedData = null;
     var badge = document.getElementById('gistLiveBadge');
@@ -733,6 +768,25 @@
     document.getElementById('navAvatar').textContent   = savedInit.toUpperCase();
   }
 
+  // Patch applyGistToUI to record the payload for change detection
+  var _originalApplyGistToUI = applyGistToUI;
+  applyGistToUI = function(data) {
+    _lastJsonStr = JSON.stringify(data);
+    _originalApplyGistToUI(data);
+  };
+
+  // Patch loadGistData to start polling after a successful load
+  var _originalLoadGistData = loadGistData;
+  loadGistData = async function() {
+    await _originalLoadGistData();
+    // If load succeeded (badge visible), start polling
+    var badge = document.getElementById('gistLiveBadge');
+    if (badge && badge.classList.contains('visible')) {
+      var url = (document.getElementById('inputGistUrl') || {}).value || '';
+      if (url) startPolling(url);
+    }
+  };
+
   // Auto-restore Gist URL from sessionStorage on page load
   window.addEventListener('DOMContentLoaded', function() {
     var savedUrl = sessionStorage.getItem('od_gist_url');
@@ -744,6 +798,7 @@
         try {
           var data = await fetchViaProxy(savedUrl);
           applyGistToUI(data);
+          startPolling(savedUrl); // begin polling after restore
         } catch(e) {
           setGistStatus('error', 'Auto-restore failed: ' + e.message);
         }
