@@ -675,29 +675,77 @@
     return url;
   }
 
-  // Try fetching via multiple CORS proxies in sequence
-  async function fetchViaProxy(url) {
-    var clean = normaliseGistUrl(url);
-    var bust  = '&_=' + Date.now();
+  // Extract the Gist ID from a raw githubusercontent URL
+  // e.g. https://gist.githubusercontent.com/user/GIST_ID/raw/...
+  function extractGistId(url) {
+    var m = url.match(/gist\.githubusercontent\.com\/[^/]+\/([a-f0-9]+)\/raw/i);
+    return m ? m[1] : null;
+  }
 
+  // Fetch the latest Gist content, always bypassing CDN cache.
+  //
+  // The GitHub Gist API (api.github.com/gists/{id}) always returns the
+  // current version regardless of which commit-pinned raw URL was pasted in.
+  // The raw CDN URL is only used as a last resort.
+  async function fetchViaProxy(url) {
+    var clean  = normaliseGistUrl(url);
+    var gistId = extractGistId(url);
+    var bust   = Date.now();
+    var lastErr = null;
+
+    // ── Primary: GitHub Gist API — always latest, no CDN cache ──────────
+    if (gistId) {
+      try {
+        var apiUrl = 'https://api.github.com/gists/' + gistId;
+        var res = await fetch(apiUrl, {
+          headers: {
+            'Accept':        'application/vnd.github.v3+json',
+            'Cache-Control': 'no-cache, no-store',
+            'Pragma':        'no-cache'
+          },
+          cache: 'no-store'
+        });
+        if (res.ok) {
+          var gistMeta = await res.json();
+          var files    = gistMeta.files || {};
+          var names    = Object.keys(files);
+          var fileName = names.find(function(n){ return n.endsWith('.json'); }) || names[0];
+          var file     = files[fileName];
+
+          if (file) {
+            // If content is truncated GitHub provides a raw_url for the full file
+            if (file.truncated && file.raw_url) {
+              var rawRes = await fetch(file.raw_url, { cache: 'no-store' });
+              if (rawRes.ok) return await rawRes.json();
+            }
+            // Normal case — content is inline
+            if (file.content) return JSON.parse(file.content);
+          }
+        }
+      } catch(e) {
+        lastErr = e;
+        // Fall through to proxy attempts
+      }
+    }
+
+    // ── Fallback: CORS proxies (last resort) ─────────────────────────────
     var proxies = [
-      'https://api.allorigins.win/raw?url=' + encodeURIComponent(clean) + bust,
-      'https://corsproxy.io/?'              + encodeURIComponent(clean) + bust,
-      'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(clean),
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(clean + '?bust=' + bust),
+      'https://corsproxy.io/?'              + encodeURIComponent(clean) + '&_=' + bust,
+      'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(clean) + '&_=' + bust,
     ];
 
-    var lastErr = null;
     for (var i = 0; i < proxies.length; i++) {
       try {
-        var res = await fetch(proxies[i]);
-        if (!res.ok) throw new Error('HTTP ' + res.status + ' via proxy ' + (i+1));
-        var data = await res.json();
-        return data;
+        var res = await fetch(proxies[i], { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status + ' via proxy ' + (i + 1));
+        return await res.json();
       } catch(e) {
         lastErr = e;
       }
     }
-    throw lastErr || new Error('All proxies failed');
+
+    throw lastErr || new Error('All fetch attempts failed');
   }
 
   async function loadGistData() {
