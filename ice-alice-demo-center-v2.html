@@ -724,8 +724,13 @@
             if (!parsed && file.content) parsed = JSON.parse(file.content);
 
             if (parsed) {
-              // Stamp with the Gist's updated_at so the version guard can compare
-              parsed._gistUpdatedAt = gistMeta.updated_at || null;
+              // Use history[0].version (commit SHA) as the canonical version id.
+              // The SHA is a cryptographic hash of the content — same SHA = same
+              // content, different SHA = different version. Unlike updated_at it
+              // is never re-used, so we can use it to lock forward progression.
+              var history           = gistMeta.history || [];
+              parsed._gistSha       = history.length ? history[0].version      : null;
+              parsed._gistUpdatedAt = history.length ? history[0].committed_at : (gistMeta.updated_at || null);
               return parsed;
             }
           }
@@ -773,43 +778,70 @@
   }
 
   // ── Polling ────────────────────────────────────────────
-  var _pollInterval    = null;
-  var _pollMs          = 10000; // check every 10 seconds
-  var _lastJsonStr     = null;  // last applied payload (for change detection)
-  var _lastUpdatedAt   = null;  // ISO timestamp of last applied Gist version
+  var _pollInterval  = null;
+  var _pollMs        = 10000;  // check every 10 seconds
+  var _lastJsonStr   = null;   // last applied payload string
+  var _lastSha       = null;   // commit SHA of last applied version
+  var _lastCommitTs  = null;   // committed_at of last applied version
 
-  // Only apply data if it is genuinely newer than what's already displayed.
-  // This prevents a stale CDN response from overwriting fresher data.
-  function isNewer(data) {
-    var ts = data._gistUpdatedAt || null;
-    if (!ts || !_lastUpdatedAt) return true;          // no timestamp to compare, allow
-    return new Date(ts) > new Date(_lastUpdatedAt);   // only accept if strictly newer
+  // Version guard — compare incoming response against what's already displayed.
+  // Returns:
+  //   'same'    — identical to current, skip silently
+  //   'newer'   — confirmed newer, apply it
+  //   'older'   — confirmed older (stale CDN), discard
+  //   'unknown' — no version info, apply cautiously
+  function classifyVersion(data) {
+    var sha = data._gistSha       || null;
+    var ts  = data._gistUpdatedAt || null;
+
+    // SHA match = definitely the same commit
+    if (sha && _lastSha && sha === _lastSha)   return 'same';
+
+    // SHA mismatch — use committed_at to determine order
+    if (sha && _lastSha && sha !== _lastSha) {
+      if (!ts || !_lastCommitTs)               return 'newer'; // can't order, assume newer
+      return new Date(ts) > new Date(_lastCommitTs) ? 'newer' : 'older';
+    }
+
+    // No SHA available — fall back to timestamp only
+    if (ts && _lastCommitTs) {
+      if (new Date(ts) < new Date(_lastCommitTs)) return 'older';
+      if (new Date(ts) > new Date(_lastCommitTs)) return 'newer';
+      return 'same';
+    }
+
+    return 'unknown';
   }
 
   function startPolling(url) {
-    stopPolling(); // clear any existing timer first
+    stopPolling();
     _pollInterval = setInterval(async function() {
       try {
-        var data    = await fetchViaProxy(url);
-        var jsonStr = JSON.stringify(data);
+        var data      = await fetchViaProxy(url);
+        var jsonStr   = JSON.stringify(data);
+        var verdict   = classifyVersion(data);
+        var now       = new Date().toLocaleTimeString('en-GB');
+        var name      = (data.policyholder || {}).name || null;
 
-        // Guard: never apply a response that is older than what we already show
-        if (!isNewer(data)) {
-          var now = new Date().toLocaleTimeString('en-GB');
-          setGistStatus('ok', 'Live \u2014 checked ' + now + ' \u2014 awaiting update\u2026');
+        if (verdict === 'older') {
+          // Stale CDN response — discard, do not touch the UI
+          setGistStatus('ok', 'Live — checked ' + now + ' — awaiting sync…');
           return;
         }
 
-        // Apply only when content has actually changed
-        if (jsonStr !== _lastJsonStr) {
-          _lastJsonStr   = jsonStr;
-          _lastUpdatedAt = data._gistUpdatedAt || null;
-          applyGistToUI(data);
+        if (verdict === 'same' || jsonStr === _lastJsonStr) {
+          // No change — just update the checked time
+          setGistStatus('ok', 'Live — checked ' + now + (name ? ' — ' + name : ''));
+          return;
         }
 
-        var now  = new Date().toLocaleTimeString('en-GB');
-        var name = (data.policyholder || {}).name || null;
-        setGistStatus('ok', 'Live \u2014 checked ' + now + (name ? ' \u2014 ' + name : ''));
+        // newer or unknown — apply
+        _lastJsonStr  = jsonStr;
+        _lastSha      = data._gistSha       || null;
+        _lastCommitTs = data._gistUpdatedAt || null;
+        applyGistToUI(data);
+        setGistStatus('ok', 'Live — checked ' + now + (name ? ' — ' + name : ''));
+
       } catch(e) {
         setGistStatus('error', 'Poll failed: ' + e.message);
       }
@@ -821,8 +853,9 @@
       clearInterval(_pollInterval);
       _pollInterval = null;
     }
-    _lastJsonStr   = null;
-    _lastUpdatedAt = null;
+    _lastJsonStr  = null;
+    _lastSha      = null;
+    _lastCommitTs = null;
   }
   // ── End polling ─────────────────────────────────────────
 
@@ -843,13 +876,6 @@
     document.getElementById('navUserName').textContent = savedName;
     document.getElementById('navAvatar').textContent   = savedInit.toUpperCase();
   }
-
-  // Patch applyGistToUI to record the payload for change detection
-  var _originalApplyGistToUI = applyGistToUI;
-  applyGistToUI = function(data) {
-    _lastJsonStr = JSON.stringify(data);
-    _originalApplyGistToUI(data);
-  };
 
   // Patch loadGistData to start polling after a successful load
   var _originalLoadGistData = loadGistData;
