@@ -1,1003 +1,864 @@
 <!DOCTYPE html>
-<html lang="en-GB">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Collinson Travel Insurance Portal | AI Claims Assistant (Embedded)</title>
-
-    <!-- Typography (clean, modern UI similar to screenshot) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- OpenDialog WebChat styles (host MUST match url) -->
-    <link
-      rel="stylesheet"
-      href="https://iceinsuretech.cloud.opendialog.ai/styles/nu-webchat.css"
-    />
-
-    <!-- OpenDialog settings (EMBEDDED) -->
-    <script>
-      window.openDialogSettings = {
-        url: "https://iceinsuretech.cloud.opendialog.ai",
-        appKey:
-          "1125899910000000|qdPw2lfUh0wH56n0v5WGGXTjTy80neTohUXcjfH5fef89eae",
-        parentEl: "#od-webchat",
-        user: {
-          custom: {
-            selected_scenario: "1125899914000000",
-            session_lifetime: 0,
-          },
-        },
-        customSettings: {
-          embedded: true,
-          fullWidth: true,
-          launcher: false,
-          additionalMenuLinks: [],
-        },
-      };
-    </script>
-
-    <style>
-      :root {
-        --bg: #f6f7fb;
-        --panel: #ffffff;
-        --border: #e7e9f2;
-        --text: #0b1220;
-        --muted: #586174;
-
-        --navy-1: #0b1628;
-        --navy-2: #0a1424;
-
-        --magenta: #8b0a5c;
-        --magenta-2: #a20a6a;
-
-        --shadow: 0 14px 36px rgba(2, 6, 23, 0.08);
-        --radius-lg: 14px;
-        --radius-md: 12px;
-        --radius-sm: 10px;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
-          sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        line-height: 1.55;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      /* ====== APP LAYOUT ====== */
-      .app {
-        min-height: 100vh;
-        display: grid;
-        grid-template-columns: 280px 1fr;
-      }
-
-      /* ====== SIDEBAR ====== */
-      .sidebar {
-        background: linear-gradient(180deg, var(--navy-1), var(--navy-2));
-        color: #e7ebf5;
-        padding: 22px 18px;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-        border-right: 1px solid rgba(255, 255, 255, 0.06);
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 10px 6px;
-      }
-
-      .brand-mark {
-        width: 28px;
-        height: 28px;
-        border-radius: 10px;
-        background: radial-gradient(circle at 35% 35%, #ff4da6, #d20b7a);
-        box-shadow: 0 10px 20px rgba(210, 11, 122, 0.22);
-      }
-
-      .brand-name {
-        font-weight: 700;
-        letter-spacing: -0.2px;
-      }
-
-      .nav {
-        margin-top: 8px;
-        display: grid;
-        gap: 8px;
-      }
-
-      .nav a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 12px;
-        border-radius: 10px;
-        color: #d9e0f2;
-        font-weight: 600;
-        font-size: 13px;
-        opacity: 0.95;
-      }
-
-      .nav a:hover {
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .nav a.active {
-        background: linear-gradient(
-          90deg,
-          rgba(139, 10, 92, 0.95),
-          rgba(162, 10, 106, 0.85)
-        );
-        color: #fff;
-        box-shadow: 0 10px 20px rgba(139, 10, 92, 0.22);
-      }
-
-      .nav .ico {
-        width: 18px;
-        height: 18px;
-        display: inline-grid;
-        place-items: center;
-        border-radius: 6px;
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .spacer {
-        flex: 1;
-      }
-
-      .user {
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        padding-top: 14px;
-        display: grid;
-        gap: 10px;
-      }
-
-      .user-card {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 10px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .avatar {
-        width: 34px;
-        height: 34px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.12);
-        display: grid;
-        place-items: center;
-        font-weight: 800;
-        color: #fff;
-      }
-
-      .user-meta {
-        line-height: 1.2;
-      }
-
-      .user-meta .name {
-        font-weight: 700;
-        font-size: 12px;
-        color: #fff;
-      }
-
-      .user-meta .tier {
-        font-size: 11px;
-        opacity: 0.8;
-      }
-
-      .signout {
-        font-size: 12px;
-        opacity: 0.85;
-        padding: 8px 10px;
-      }
-
-      /* ====== MAIN ====== */
-      .main {
-        display: flex;
-        flex-direction: column;
-        min-width: 0; /* important for grid overflow */
-      }
-
-      /* Top bar */
-      .topbar {
-        height: 62px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 22px;
-        background: #fff;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .support {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: #5c6477;
-      }
-
-      .support .dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 999px;
-        background: #2ad17f;
-        box-shadow: 0 0 0 6px rgba(42, 209, 127, 0.14);
-      }
-
-      .top-actions {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-
-      .bell {
-        width: 34px;
-        height: 34px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: #fff;
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-      }
-
-      .bell svg {
-        width: 18px;
-        height: 18px;
-        fill: var(--magenta);
-      }
-
-      /* Content */
-      .content {
-        padding: 26px 22px 36px;
-        max-width: 1200px;
-        width: 100%;
-      }
-
-      .page-head {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 18px;
-      }
-
-      .breadcrumbs {
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--magenta);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 8px;
-      }
-
-      .breadcrumbs svg {
-        width: 14px;
-        height: 14px;
-        fill: var(--magenta);
-      }
-
-      h1 {
-        font-size: 32px;
-        letter-spacing: -0.8px;
-        margin-bottom: 6px;
-      }
-
-      .subtitle {
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .primary-btn {
-        background: var(--magenta);
-        color: #fff;
-        border: 0;
-        padding: 12px 18px;
-        border-radius: 10px;
-        font-weight: 700;
-        cursor: pointer;
-        box-shadow: 0 14px 26px rgba(139, 10, 92, 0.22);
-        white-space: nowrap;
-      }
-
-      .primary-btn:hover {
-        filter: brightness(0.97);
-      }
-
-      .divider {
-        height: 1px;
-        background: var(--border);
-        margin: 18px 0 22px;
-      }
-
-      /* Two-column portal area */
-      .portal {
-        display: grid;
-        grid-template-columns: 1.7fr 1fr;
-        gap: 22px;
-        align-items: start;
-      }
-
-      /* Section title row */
-      .section-title {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-weight: 800;
-        letter-spacing: -0.2px;
-        margin-bottom: 12px;
-      }
-
-      .shield {
-        width: 28px;
-        height: 28px;
-        border-radius: 10px;
-        background: rgba(139, 10, 92, 0.10);
-        display: grid;
-        place-items: center;
-      }
-
-      .shield svg {
-        width: 16px;
-        height: 16px;
-        fill: var(--magenta);
-      }
-
-      /* Cards */
-      .card {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow);
-      }
-
-      .card-pad {
-        padding: 18px 18px;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 800;
-        border: 1px solid rgba(139, 10, 92, 0.22);
-        color: var(--magenta);
-        background: rgba(139, 10, 92, 0.06);
-      }
-
-      .policy-title {
-        margin-top: 10px;
-        font-weight: 800;
-        font-size: 18px;
-      }
-
-      .policy-id {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 2px;
-      }
-
-      .grid3 {
-        margin-top: 14px;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .kv {
-        border-top: 1px solid var(--border);
-        padding-top: 12px;
-        margin-top: 12px;
-      }
-
-      .kv .label {
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: #6b7280;
-        margin-bottom: 6px;
-      }
-
-      .kv .value {
-        font-weight: 700;
-        color: var(--magenta);
-        font-size: 13px;
-      }
-
-      .chips {
-        margin-top: 14px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        border-top: 1px solid var(--border);
-        padding-top: 12px;
-      }
-
-      .chip {
-        display: inline-flex;
-        gap: 8px;
-        align-items: center;
-        padding: 8px 10px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: #fafbff;
-        font-weight: 700;
-        font-size: 12px;
-        color: #3a4257;
-      }
-
-      .chip svg {
-        width: 14px;
-        height: 14px;
-        fill: var(--magenta);
-      }
-
-      .card-link {
-        margin-top: 14px;
-        border-top: 1px solid var(--border);
-        padding-top: 14px;
-        font-weight: 800;
-        font-size: 12px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--magenta);
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .card-link span {
-        transform: translateY(-0.5px);
-      }
-
-      /* Right column: assistance + embedded chat */
-      .assist-card {
-        overflow: hidden;
-      }
-
-      .assist-head {
-        padding: 18px 18px 14px;
-        background: linear-gradient(
-          180deg,
-          rgba(139, 10, 92, 0.95),
-          rgba(162, 10, 106, 0.92)
-        );
-        color: #fff;
-      }
-
-      .assist-head h3 {
-        font-size: 14px;
-        font-weight: 800;
-        letter-spacing: -0.2px;
-      }
-
-      .assist-head p {
-        margin-top: 10px;
-        opacity: 0.9;
-        font-size: 13px;
-        line-height: 1.5;
-      }
-
-      .assist-btn {
-        margin-top: 14px;
-        width: 100%;
-        padding: 12px 14px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.26);
-        background: rgba(10, 20, 36, 0.55);
-        color: #fff;
-        font-weight: 800;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        cursor: pointer;
-      }
-
-      .assist-btn:hover {
-        filter: brightness(1.02);
-      }
-
-      .quick-actions {
-        margin-top: 14px;
-      }
-
-      .qa-title {
-        font-weight: 800;
-        margin-bottom: 10px;
-      }
-
-      .qa-list {
-        display: grid;
-        gap: 10px;
-      }
-
-      .qa-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 12px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: #fff;
-      }
-
-      .qa-item svg {
-        width: 16px;
-        height: 16px;
-        fill: var(--magenta);
-        flex: 0 0 auto;
-      }
-
-      .qa-item span {
-        font-weight: 700;
-        color: #2f364a;
-        font-size: 13px;
-      }
-
-      /* Embedded webchat panel */
-      .chat-card {
-        margin-top: 14px;
-        overflow: hidden;
-      }
-
-      .chat-head {
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        background: #fff;
-      }
-
-      .chat-head strong {
-        font-size: 13px;
-        font-weight: 800;
-      }
-
-      .tag {
-        font-size: 12px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: rgba(139, 10, 92, 0.08);
-        color: var(--magenta);
-        font-weight: 800;
-        white-space: nowrap;
-      }
-
-      /* The embed container */
-      #od-webchat {
-        width: 100%;
-        height: 520px;
-        background: #fff;
-      }
-
-      /* Force iframe to be in-flow, full size */
-      #od-webchat > iframe#opendialog-chatwindow {
-        position: static !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        height: 100% !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-      }
-
-      #od-webchat iframe {
-        min-width: 100% !important;
-      }
-
-      /* Belt & braces: hide any launcher/CTA if injected */
-      .nu-webchat-launcher,
-      .nu-webchat-open-cta,
-      [data-testid="nu-webchat-launcher"],
-      [data-testid="nu-webchat-open-cta"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-      }
-
-      .chat-foot {
-        padding: 12px 16px 14px;
-        border-top: 1px solid var(--border);
-        font-size: 12px;
-        color: var(--muted);
-        background: #fff;
-      }
-
-      /* ====== RESPONSIVE ====== */
-      @media (max-width: 1060px) {
-        .portal {
-          grid-template-columns: 1fr;
-        }
-        #od-webchat {
-          height: 560px;
-        }
-      }
-
-      @media (max-width: 860px) {
-        .app {
-          grid-template-columns: 1fr;
-        }
-        .sidebar {
-          display: none;
-        }
-        .content {
-          padding: 22px 16px 28px;
-        }
-      }
-
-      @media (max-width: 520px) {
-        h1 {
-          font-size: 26px;
-        }
-        #od-webchat {
-          height: 520px;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="app">
-      <!-- Sidebar -->
-      <aside class="sidebar" aria-label="Sidebar navigation">
-        <div class="brand">
-          <div class="brand-mark" aria-hidden="true"></div>
-          <div class="brand-name">Collinson</div>
-        </div>
-
-        <nav class="nav">
-          <a class="active" href="#">
-            <span class="ico" aria-hidden="true">
-              <!-- grid icon -->
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Travel Home
-          </a>
-          <a href="#">
-            <span class="ico" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M3 5a2 2 0 0 1 2-2h8l6 6v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Zm10 0v5h5"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Travel Claims
-          </a>
-          <a href="#">
-            <span class="ico" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M6 2h9l3 3v17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1v3h3"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Policy Docs
-          </a>
-          <a href="#">
-            <span class="ico" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M12 1a11 11 0 1 0 11 11A11 11 0 0 0 12 1Zm1 17h-2v-2h2Zm1.9-7.7-.9.9V13h-2v-2.6l1.4-1.4a1.8 1.8 0 1 0-3.1-1.3H8.3a3.8 3.8 0 1 1 6.6 2.6Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </span>
-            Global Support
-          </a>
-        </nav>
-
-        <div class="spacer"></div>
-
-        <div class="user">
-          <div class="user-card">
-            <div class="avatar" aria-hidden="true">AJ</div>
-            <div class="user-meta">
-              <div class="name">ALEX JOHNSON</div>
-              <div class="tier">PREMIUM TRAVEL TIER</div>
-            </div>
-          </div>
-          <div class="signout">↩︎ Sign Out</div>
-        </div>
-      </aside>
-
-      <!-- Main -->
-      <main class="main">
-        <div class="topbar">
-          <div class="support">
-            <span class="dot" aria-hidden="true"></span>
-            <span>GLOBAL SUPPORT ACTIVE</span>
-          </div>
-
-          <div class="top-actions">
-            <button class="bell" type="button" aria-label="Notifications">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 1 0-14 0v5l-2 2v1h18v-1l-2-2Z"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="content">
-          <div class="page-head">
-            <div>
-              <div class="breadcrumbs">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.2L19 8v8l-7 3.9L5 16V8l7-3.8Z"
-                  />
-                </svg>
-                <span>TRAVEL PROTECTION</span>
-              </div>
-              <h1>Travel Insurance Portal</h1>
-              <div class="subtitle">
-                Manage your global travel policies and active claims.
-              </div>
-            </div>
-
-            <button
-              class="primary-btn"
-              type="button"
-              onclick="document.querySelector('#assistant')?.scrollIntoView({behavior:'smooth'});"
-            >
-              Make a Travel Claim
-            </button>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="portal">
-            <!-- Left: policy cards -->
-            <section aria-label="Active policies">
-              <div class="section-title">
-                <div class="shield" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"
-                    />
-                  </svg>
-                </div>
-                <div>Your Active Policy</div>
-              </div>
-
-              <div class="card" style="margin-bottom: 18px;">
-                <div class="card-pad">
-                  <span class="pill">Active</span>
-
-                  <div class="policy-title">Annual Multi-Trip Premium</div>
-                  <div class="policy-id">TRV-2026-X99</div>
-
-                  <div class="grid3">
-                    <div class="kv">
-                      <div class="label">Region</div>
-                      <div class="value">Worldwide (excl. USA/Canada)</div>
-                    </div>
-                    <div class="kv">
-                      <div class="label">Medical limit</div>
-                      <div class="value">£10,000,000 Medical</div>
-                    </div>
-                    <div class="kv">
-                      <div class="label">Expiry date</div>
-                      <div class="value">Jan 15, 2027</div>
-                    </div>
-                  </div>
-
-                  <div class="chips" aria-label="Key highlights">
-                    <div class="chip">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"
-                        />
-                      </svg>
-                      Emergency Medical
-                    </div>
-                    <div class="chip">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M7 4h10v2H7V4Zm-2 4h14v2H5V8Zm2 4h10v2H7v-2Zm-2 4h14v2H5v-2Z"
-                        />
-                      </svg>
-                      Trip Cancellation
-                    </div>
-                    <div class="chip">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M6 7h12l-1 14H7L6 7Zm2-4h8l1 3H7l1-3Z"
-                        />
-                      </svg>
-                      Personal Baggage
-                    </div>
-                    <div class="chip">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M3 12h18v2H3v-2Zm2-7h14v2H5V5Zm0 14h14v2H5v-2Z"
-                        />
-                      </svg>
-                      Flight Delay
-                    </div>
-                  </div>
-
-                  <a class="card-link" href="#" aria-label="View full policy documents">
-                    <span>VIEW FULL POLICY DOCUMENTS</span> →
-                  </a>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="card-pad">
-                  <span class="pill">Active</span>
-
-                  <div class="policy-title">Winter Sports Extension</div>
-                  <div class="policy-id">TRV-2026-S12</div>
-
-                  <div class="grid3">
-                    <div class="kv">
-                      <div class="label">Region</div>
-                      <div class="value">Europe Only</div>
-                    </div>
-                    <div class="kv">
-                      <div class="label">Medical limit</div>
-                      <div class="value">Ski Equipment Cover</div>
-                    </div>
-                    <div class="kv">
-                      <div class="label">Expiry date</div>
-                      <div class="value">Mar 30, 2026</div>
-                    </div>
-                  </div>
-
-                  <div class="chips" aria-label="Key highlights">
-                    <div class="chip">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M7 21 3 17l2-2 4 4-2 2Zm14-2-4-4 2-2 4 4-2 2Z" />
-                      </svg>
-                      Ski Hire
-                    </div>
-                    <div class="chip">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 15h-2v-2h2Zm0-4h-2V7h2Z"
-                        />
-                      </svg>
-                      Piste Closure
-                    </div>
-                    <div class="chip">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"
-                        />
-                      </svg>
-                      Search and Rescue
-                    </div>
-                  </div>
-
-                  <a class="card-link" href="#" aria-label="View full policy documents">
-                    <span>VIEW FULL POLICY DOCUMENTS</span> →
-                  </a>
-                </div>
-              </div>
-            </section>
-
-            <!-- Right: assistance + embedded chat -->
-            <aside aria-label="Assistance and AI assistant" id="assistant">
-              <div class="section-title" style="margin-bottom: 12px;">
-                <div style="font-weight: 800; color: var(--magenta);">Need Assistance?</div>
-              </div>
-
-              <div class="card assist-card">
-                <div class="assist-head">
-                  <h3>24/7 Global Emergency</h3>
-                  <p>
-                    In case of medical emergency anywhere in the world, our dedicated
-                    team is here to help you.
-                  </p>
-                  <button class="assist-btn" type="button">
-                    Call emergency line
-                  </button>
-                </div>
-
-                <div class="card-pad quick-actions">
-                  <div class="qa-title">Quick Actions</div>
-                  <div class="qa-list">
-                    <div class="qa-item">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4 0-8 2-8 6h2c0-2.7 3-4 6-4s6 1.3 6 4h2c0-4-4-6-8-6Z"
-                        />
-                      </svg>
-                      <span>Update Personal Details</span>
-                    </div>
-                    <div class="qa-item">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm7 8h-2v-2h-2v-2h2v-2h2v2h2v2h-2v2Z"
-                        />
-                      </svg>
-                      <span>Add Travel Companion</span>
-                    </div>
-                    <div class="qa-item">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                          d="M12 16 7 11h3V4h4v7h3l-5 5Zm-7 4h14v2H5v-2Z"
-                        />
-                      </svg>
-                      <span>Download App</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Embedded AI Claims Assistant -->
-              <div class="card chat-card" style="margin-top: 14px;">
-                <div class="chat-head">
-                  <strong>AI Claims Assistant</strong>
-                  <span class="tag">Embedded</span>
-                </div>
-
-                <div id="od-webchat"></div>
-
-                <div class="chat-foot">
-                  This is a demo portal UI with an embedded OpenDialog assistant.
-                </div>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </main>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor Insurance Portal | AI Claims Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://iceinsuretech.cloud.opendialog.ai/styles/nu-webchat.css">
+<style>
+  :root {
+    --brand-primary:   #003366;
+    --brand-secondary: #0066CC;
+    --brand-accent:    #E8401C;
+    --brand-light:     #EAF2FF;
+    --brand-text:      #0D1B2A;
+    --brand-muted:     #5E7A99;
+    --brand-border:    #C8D9EE;
+    --brand-nav-bg:    #000000;
+    --brand-card-bg:   #FFFFFF;
+    --brand-page-bg:   #F0F4FA;
+    --left-nav-w:      220px;
+    --admin-sw:        320px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--brand-page-bg);
+    color: var(--brand-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .app-shell { display: flex; flex: 1; overflow: hidden; }
+  .left-nav {
+    width: var(--left-nav-w);
+    background: var(--brand-nav-bg);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    transition: background 0.3s;
+    z-index: 90;
+  }
+  .left-nav-logo {
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px 16px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    min-height: 80px;
+  }
+  .nav-logo-mark {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: var(--brand-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 20px;
+    color: #fff; flex-shrink: 0; overflow: hidden; transition: all 0.3s;
+  }
+  .nav-logo-mark.has-image { width:100%;height:auto;min-height:44px;background:transparent;border-radius:0;padding:0 4px; }
+  .nav-logo-mark img { width:100%;max-height:52px;object-fit:contain;display:none;filter:brightness(0) invert(1);transition:filter 0.3s; }
+  .nav-logo-mark.has-image img { display:block; }
+  .nav-logo-mark.has-image span { display:none; }
+  .nav-logo-mark.logo-dark img { filter:none; }
+  .left-nav-user { display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.08); }
+  .nav-avatar { width:32px;height:32px;border-radius:50%;background:var(--brand-secondary);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:700;font-size:12px;color:#fff;flex-shrink:0;transition:background 0.3s; }
+  .nav-user-name { font-size:12px;font-weight:700;color:#fff; }
+  .left-nav-links { list-style:none;padding:10px 8px;flex:1; }
+  .left-nav-links li { margin-bottom:2px; }
+  .left-nav-links a { display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:13px;font-weight:500;padding:9px 10px;border-radius:8px;transition:all 0.2s;white-space:nowrap; }
+  .left-nav-links a svg { width:15px;height:15px;flex-shrink:0;opacity:0.7; }
+  .left-nav-links a:hover, .left-nav-links a.active { color:#fff;background:rgba(255,255,255,0.12); }
+  .left-nav-links a.active svg { opacity:1; }
+  .left-nav-footer { padding:12px 14px;border-top:1px solid rgba(255,255,255,0.08); }
+  .support-pill { background:rgba(126,207,255,0.14);border:1px solid rgba(126,207,255,0.22);border-radius:20px;padding:5px 10px;font-size:10px;font-weight:700;color:#7ECFFF;letter-spacing:0.8px;text-transform:uppercase;text-align:center;margin-bottom:8px; }
+  .signout-btn { display:flex;align-items:center;justify-content:center;gap:6px;width:100%;background:none;border:1px solid rgba(255,255,255,0.16);border-radius:6px;color:rgba(255,255,255,0.5);font-size:12px;padding:7px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s; }
+  .signout-btn:hover { background:rgba(255,255,255,0.08);color:#fff; }
+  .signout-btn svg { width:12px;height:12px; }
+  .nav-admin-btn { display:flex;align-items:center;gap:8px;width:calc(100% - 28px);margin:0 14px 10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);border-radius:8px;color:rgba(255,255,255,0.75);font-family:'Sora',sans-serif;font-weight:700;font-size:12px;padding:9px 12px;cursor:pointer;transition:all 0.2s;letter-spacing:0.2px; }
+  .nav-admin-btn svg { width:14px;height:14px;flex-shrink:0; }
+  .nav-admin-btn:hover { background:rgba(255,255,255,0.16);color:#fff;border-color:rgba(255,255,255,0.3); }
+  .main-body { flex:1;display:flex;flex-direction:column;min-width:0;overflow-y:auto;height:100vh; }
+  .top-bar { background:linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;transition:background 0.3s; }
+  .top-bar-left h1 { font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:#fff; }
+  .top-bar-left p { font-size:13px;color:rgba(255,255,255,0.62);margin-top:3px; }
+  .claim-cta { display:inline-flex;align-items:center;gap:8px;background:var(--brand-accent);color:#fff;font-family:'Sora',sans-serif;font-weight:700;font-size:13px;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(0,0,0,0.2);text-decoration:none;flex-shrink:0; }
+  .claim-cta:hover { transform:translateY(-1px);filter:brightness(1.08); }
+  .claim-cta svg { width:14px;height:14px; }
+  .content-grid { display:grid;grid-template-columns:1fr 430px;gap:22px;padding:24px 28px 40px;align-items:start; }
+  .section-label { font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--brand-muted);margin-bottom:12px;display:flex;align-items:center; }
+  .policy-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px; }
+  .policy-card { background:var(--brand-card-bg);border-radius:14px;border:1px solid var(--brand-border);padding:18px;box-shadow:0 2px 8px rgba(0,30,80,0.06);transition:box-shadow 0.2s; }
+  .policy-card:hover { box-shadow:0 6px 20px rgba(0,30,80,0.10); }
+  .policy-card-header { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px; }
+  .policy-status { background:#E6F9F0;color:#1A7A4A;font-size:10px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px; }
+  .policy-ref { font-size:10px;color:var(--brand-muted);font-weight:600;font-family:'Sora',monospace; }
+  .policy-name { font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:var(--brand-text);margin-bottom:12px;line-height:1.3; }
+  .policy-meta { display:flex;flex-direction:column;gap:6px;margin-bottom:12px; }
+  .policy-meta-row { display:flex;justify-content:space-between;font-size:12px; }
+  .meta-label { color:var(--brand-muted); }
+  .meta-value { color:var(--brand-text);font-weight:600;text-align:right; }
+  .policy-tags { display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px; }
+  .policy-tag { background:var(--brand-light);color:var(--brand-secondary);font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;transition:background 0.3s,color 0.3s; }
+  .policy-link { font-size:11px;font-weight:700;color:var(--brand-secondary);text-decoration:none;letter-spacing:0.3px;transition:color 0.3s; }
+  .policy-link:hover { text-decoration:underline; }
+  .quick-actions-card { background:var(--brand-card-bg);border-radius:14px;border:1px solid var(--brand-border);padding:18px;box-shadow:0 2px 8px rgba(0,30,80,0.06); }
+  .qa-title { font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:var(--brand-text);margin-bottom:12px; }
+  .qa-grid { display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px; }
+  .qa-btn { display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:var(--brand-light);border:1px solid var(--brand-border);border-radius:10px;padding:14px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--brand-text);transition:all 0.2s;text-align:left;line-height:1.3; }
+  .qa-btn svg { width:18px;height:18px;color:var(--brand-secondary);transition:color 0.2s; }
+  .qa-btn:hover { background:var(--brand-secondary);color:#fff;border-color:var(--brand-secondary); }
+  .qa-btn:hover svg { color:#fff; }
+  .right-col { display:flex;flex-direction:column;gap:14px; }
+  .helpline-card { background:linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));border-radius:14px;padding:16px 18px;transition:background 0.3s; }
+  .helpline-icon { width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px; }
+  .helpline-icon svg { width:18px;height:18px;color:#fff; }
+  .helpline-title { font-family:'Sora',sans-serif;font-weight:700;font-size:13px;color:#fff;margin-bottom:2px; }
+  .helpline-number { font-family:'Sora',sans-serif;font-weight:700;font-size:18px;color:#fff;letter-spacing:0.5px;margin-bottom:6px; }
+  .helpline-text { font-size:11px;color:rgba(255,255,255,0.68);line-height:1.5;margin-bottom:10px; }
+  .helpline-btn { background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.28);border-radius:7px;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;width:100%; }
+  .helpline-btn:hover { background:rgba(255,255,255,0.28); }
+  .ai-panel { background:var(--brand-card-bg);border-radius:14px;border:1px solid var(--brand-border);box-shadow:0 2px 8px rgba(0,30,80,0.06);overflow:hidden; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .admin-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:900;opacity:0;pointer-events:none;transition:opacity 0.3s; }
+  .admin-overlay.open { opacity:1;pointer-events:all; }
+  .admin-sidebar { position:fixed;top:0;right:0;width:var(--admin-sw);height:100vh;background:#fff;z-index:901;box-shadow:-8px 0 40px rgba(0,0,0,0.18);transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;overflow:hidden; }
+  .admin-sidebar.open { transform:translateX(0); }
+  .admin-header { background:#1A1A2E;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0; }
+  .admin-header-left { display:flex;align-items:center;gap:10px; }
+  .admin-icon-badge { width:32px;height:32px;background:rgba(255,255,255,0.12);border-radius:8px;display:flex;align-items:center;justify-content:center; }
+  .admin-icon-badge svg { width:16px;height:16px;color:#fff; }
+  .admin-title { font-family:'Sora',sans-serif;font-weight:700;font-size:14px;color:#fff; }
+  .admin-sub { font-size:11px;color:rgba(255,255,255,0.5);margin-top:1px; }
+  .admin-close { width:28px;height:28px;background:rgba(255,255,255,0.1);border:none;border-radius:6px;color:rgba(255,255,255,0.8);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s; }
+  .admin-close:hover { background:rgba(255,255,255,0.2);color:#fff; }
+  .admin-body { flex:1;overflow-y:auto;padding:20px; }
+  .admin-section { margin-bottom:24px; }
+  .admin-section-title { font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#8892A4;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #EEF0F5; }
+  .admin-field { margin-bottom:12px; }
+  .admin-label { font-size:12px;font-weight:600;color:#3A4554;margin-bottom:5px;display:block; }
+  .admin-input { width:100%;border:1px solid #DDE3EE;border-radius:7px;padding:8px 11px;font-family:'DM Sans',sans-serif;font-size:13px;color:#1A2535;background:#FAFBFD;transition:border-color 0.2s; }
+  .admin-input:focus { outline:none;border-color:#0066CC;background:#fff; }
+  .color-row { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+  .color-field { display:flex;flex-direction:column;gap:4px; }
+  .color-field label { font-size:11px;font-weight:600;color:#5E6F85; }
+  .color-wrap { display:flex;align-items:center;gap:8px;background:#FAFBFD;border:1px solid #DDE3EE;border-radius:7px;padding:5px 10px;cursor:pointer;transition:border-color 0.2s; }
+  .color-wrap:focus-within { border-color:#0066CC; }
+  .color-wrap input[type="color"] { width:22px;height:22px;border:none;border-radius:4px;padding:0;cursor:pointer;background:none; }
+  .color-hex { font-size:12px;font-family:'Sora',monospace;color:#3A4554;font-weight:600;flex:1;border:none;background:none;width:60px; }
+  .color-hex:focus { outline:none; }
+  .nav-link-item { display:flex;align-items:center;gap:8px;margin-bottom:8px; }
+  .nav-link-item input { flex:1;border:1px solid #DDE3EE;border-radius:6px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:12px;color:#1A2535;background:#FAFBFD;transition:border-color 0.2s; }
+  .nav-link-item input:focus { outline:none;border-color:#0066CC; }
+  .nav-remove { width:26px;height:26px;border:1px solid #DDE3EE;background:#fff;border-radius:6px;color:#C0432C;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s; }
+  .nav-remove:hover { background:#FFF0ED;border-color:#C0432C; }
+  .add-nav-btn { width:100%;border:1px dashed #C8D3E5;background:#F6F8FC;border-radius:6px;padding:8px;font-size:12px;font-weight:600;color:#5E6F85;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif; }
+  .add-nav-btn:hover { border-color:#0066CC;color:#0066CC;background:#EAF2FF; }
+  .logo-upload-area { border:2px dashed #C8D3E5;border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:all 0.2s;background:#FAFBFD;position:relative; }
+  .logo-upload-area:hover { border-color:#0066CC;background:#EAF2FF; }
+  .logo-upload-area input { position:absolute;inset:0;opacity:0;cursor:pointer; }
+  .logo-preview { max-height:40px;max-width:140px;object-fit:contain;display:none;margin:0 auto; }
+  .logo-upload-text { font-size:12px;color:#8892A4;font-weight:500;line-height:1.5; }
+  .logo-upload-icon { font-size:22px;margin-bottom:4px; }
+  .preset-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:8px; }
+  .preset-btn { border:2px solid transparent;border-radius:8px;padding:8px 6px;cursor:pointer;text-align:center;transition:all 0.2s;background:#F6F8FC;font-size:11px;font-weight:600;color:#5E6F85;font-family:'DM Sans',sans-serif; }
+  .preset-btn:hover { border-color:#0066CC; }
+  .preset-btn.active { border-color:#0066CC;color:#0066CC;background:#EAF2FF; }
+  .preset-swatch { display:flex;gap:3px;justify-content:center;margin-bottom:5px; }
+  .swatch-dot { width:12px;height:12px;border-radius:50%; }
+  .admin-actions { padding:16px 20px;border-top:1px solid #EEF0F5;display:flex;gap:10px;flex-shrink:0;background:#FAFBFD; }
+  .btn-apply { flex:1;background:#003366;color:#fff;border:none;border-radius:8px;padding:10px;font-family:'Sora',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all 0.2s; }
+  .btn-apply:hover { background:#0066CC; }
+  .btn-reset { background:#fff;color:#5E6F85;border:1px solid #DDE3EE;border-radius:8px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;transition:all 0.2s; }
+  .btn-reset:hover { border-color:#C0432C;color:#C0432C; }
+
+  /* ─── GIST LIVE DATA INDICATOR ─── */
+  .gist-live-badge {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #1A7A4A;
+    background: #E6F9F0;
+    border: 1px solid #A8E8C8;
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+  .gist-live-badge.visible { display: inline-flex; }
+  .gist-live-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #1A7A4A;
+    box-shadow: 0 0 5px #1A7A4A;
+    flex-shrink: 0;
+    animation: pulseGreen 2s infinite;
+  }
+  @keyframes pulseGreen { 0%,100%{opacity:1} 50%{opacity:0.5} }
+  .gist-status-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 8px; font-size: 11px; color: #8892A4; min-height: 18px;
+  }
+  .gist-status-dot { width:7px;height:7px;border-radius:50%;background:#C8D3E5;flex-shrink:0; }
+  .gist-status-dot.ok      { background:#1A7A4A; box-shadow:0 0 4px #1A7A4A; }
+  .gist-status-dot.error   { background:#C0432C; }
+  .gist-status-dot.loading { background:#0066CC; animation:pulseGreen 1s infinite; }
+
+  /* Admin toggle moved to left nav */
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <nav class="left-nav" id="leftNav">
+    <div class="left-nav-logo">
+      <div class="nav-logo-mark has-image logo-dark" id="navLogoMark">
+        <img id="navLogoImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Crect width='120' height='40' fill='none'/%3E%3Ccircle cx='8' cy='20' r='6' fill='white' opacity='0.9'/%3E%3Ccircle cx='20' cy='14' r='4' fill='white' opacity='0.7'/%3E%3Ccircle cx='20' cy='26' r='4' fill='white' opacity='0.7'/%3E%3Ctext x='30' y='16' font-family='Sora,sans-serif' font-size='11' font-weight='700' fill='white'%3Eice-tech%3C/text%3E%3Ctext x='30' y='29' font-family='Sora,sans-serif' font-size='7' fill='rgba(255,255,255,0.6)'%3EINSURANCE GROUP%3C/text%3E%3C/svg%3E" alt="logo">
+        <span id="navLogoLetter">I</span>
+      </div>
+    </div>
+    <div class="left-nav-user">
+      <div class="nav-avatar" id="navAvatar">AJ</div>
+      <div>
+        <div class="nav-user-name" id="navUserName">Alex Johnson</div>
+      </div>
+    </div>
+    <ul class="left-nav-links" id="navLinks">
+      <li><a href="#" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Claims</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Policy Docs</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        Global Support</a></li>
+    </ul>
+    <button class="nav-admin-btn" onclick="openAdmin()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+      Admin Controls
+    </button>
+    <div class="left-nav-footer">
+      <div class="support-pill">Global Support Active</div>
+      <button class="signout-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </nav>
+
+  <div class="main-body">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <h1 id="heroTitle">Motor Insurance Portal</h1>
+        <p id="heroSub">Manage your vehicle policies, claims and driver details.</p>
+      </div>
+      <a href="#" class="claim-cta" id="claimCta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <span id="claimCtaLabel">Make a Motor Claim</span>
+      </a>
     </div>
 
-    <!-- OpenDialog WebChat JS (host MUST match url) -->
-    <script src="https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+    <div class="content-grid">
+      <div>
+        <div class="section-label" id="sectionLabel">Your Active Policies<span class="gist-live-badge" id="gistLiveBadge">&#11044; Live Data</span></div>
+        <div class="policy-grid" id="policyGrid">
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <span class="policy-status">Active</span>
+              <span class="policy-ref">MTR-2026-A71</span>
+            </div>
+            <div class="policy-name">Comprehensive Car Cover</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">Vehicle</span><span class="meta-value">BMW 320d &mdash; AB21 XYZ</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Driver</span><span class="meta-value">Alex Johnson (NCB 7yr)</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Expiry</span><span class="meta-value">Aug 20, 2026</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Fully Comprehensive</span>
+              <span class="policy-tag">Windscreen</span>
+              <span class="policy-tag">Breakdown</span>
+              <span class="policy-tag">Courtesy Car</span>
+            </div>
+            <a href="#" class="policy-link">VIEW FULL POLICY DOCUMENTS &rarr;</a>
+          </div>
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <span class="policy-status">Active</span>
+              <span class="policy-ref">MTR-2026-V03</span>
+            </div>
+            <div class="policy-name">Second Vehicle &mdash; Third Party</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">Vehicle</span><span class="meta-value">VW Polo &mdash; CD19 JKL</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Driver</span><span class="meta-value">Named Driver</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Expiry</span><span class="meta-value">Aug 20, 2026</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Third Party</span>
+              <span class="policy-tag">Fire &amp; Theft</span>
+              <span class="policy-tag">Personal Accident</span>
+            </div>
+            <a href="#" class="policy-link">VIEW FULL POLICY DOCUMENTS &rarr;</a>
+          </div>
+        </div>
 
-    <!-- Optional: ensure iframe sizes correctly after load -->
-    <script>
-      setTimeout(function () {
-        const iframe = document.querySelector("#od-webchat iframe");
-        if (iframe) {
-          iframe.style.width = "100%";
-          iframe.style.height = "100%";
-          iframe.style.border = "0";
+        <div class="quick-actions-card">
+          <div class="qa-title">Quick Actions</div>
+          <div class="qa-grid" id="qaGrid">
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Update Driver Details
+            </button>
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="12" rx="2"/><circle cx="7" cy="12" r="2"/><path d="M1 10h22"/></svg>
+              Change Vehicle
+            </button>
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              Download App
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="helpline-card">
+          <div class="helpline-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="helpline-title">24/7 Emergency Line</div>
+          <div class="helpline-number">+44 800 123 4567</div>
+          <div class="helpline-text">Our global assistance team is available around the clock for emergency support while travelling.</div>
+          <button class="helpline-btn">Contact Support &rarr;</button>
+        </div>
+        <div class="ai-panel">
+          <div style="min-height:550px;padding:0;background:#fff;">
+            <div id="od-webchat" style="width:100%;height:100%;min-height:550px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="admin-overlay" id="adminOverlay" onclick="closeAdmin()"></div>
+
+<div class="admin-sidebar" id="adminSidebar">
+  <div class="admin-header">
+    <div class="admin-header-left">
+      <div class="admin-icon-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+      </div>
+      <div>
+        <div class="admin-title">Admin Controls</div>
+        <div class="admin-sub">Demo customisation panel</div>
+      </div>
+    </div>
+    <button class="admin-close" onclick="closeAdmin()">&#10005;</button>
+  </div>
+
+  <div class="admin-body">
+
+    <div class="admin-section">
+      <div class="admin-section-title">Quick Theme Presets</div>
+      <div class="preset-grid">
+        <button class="preset-btn active" id="preset-collinson" onclick="applyPreset('collinson')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#003366"></div><div class="swatch-dot" style="background:#0066CC"></div><div class="swatch-dot" style="background:#E8401C"></div></div>Collinson
+        </button>
+        <button class="preset-btn" id="preset-aviva" onclick="applyPreset('aviva')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#5C1F7A"></div><div class="swatch-dot" style="background:#8B31B5"></div><div class="swatch-dot" style="background:#E8401C"></div></div>Aviva
+        </button>
+        <button class="preset-btn" id="preset-axa" onclick="applyPreset('axa')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#00008F"></div><div class="swatch-dot" style="background:#FF1721"></div><div class="swatch-dot" style="background:#fff;border:1px solid #ddd"></div></div>AXA
+        </button>
+        <button class="preset-btn" id="preset-lloyds" onclick="applyPreset('lloyds')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#006A4E"></div><div class="swatch-dot" style="background:#00A36C"></div><div class="swatch-dot" style="background:#FDB913"></div></div>Lloyds
+        </button>
+        <button class="preset-btn" id="preset-zurich" onclick="applyPreset('zurich')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#003399"></div><div class="swatch-dot" style="background:#0055CC"></div><div class="swatch-dot" style="background:#CC0000"></div></div>Zurich
+        </button>
+        <button class="preset-btn" id="preset-custom" onclick="applyPreset('custom')">
+          <div class="preset-swatch"><div class="swatch-dot" style="background:#ccc"></div><div class="swatch-dot" style="background:#aaa"></div><div class="swatch-dot" style="background:#888"></div></div>Custom
+        </button>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">Brand Colours</div>
+      <div class="color-row">
+        <div class="color-field"><label>Primary</label><div class="color-wrap"><input type="color" id="colorPrimary" value="#003366" oninput="syncHex(this,'hexPrimary')"><input class="color-hex" id="hexPrimary" value="#003366" oninput="syncColor(this,'colorPrimary')" maxlength="7"></div></div>
+        <div class="color-field"><label>Secondary</label><div class="color-wrap"><input type="color" id="colorSecondary" value="#0066CC" oninput="syncHex(this,'hexSecondary')"><input class="color-hex" id="hexSecondary" value="#0066CC" oninput="syncColor(this,'colorSecondary')" maxlength="7"></div></div>
+        <div class="color-field"><label>Accent / CTA</label><div class="color-wrap"><input type="color" id="colorAccent" value="#E8401C" oninput="syncHex(this,'hexAccent')"><input class="color-hex" id="hexAccent" value="#E8401C" oninput="syncColor(this,'colorAccent')" maxlength="7"></div></div>
+        <div class="color-field"><label>Nav Background</label><div class="color-wrap"><input type="color" id="colorNav" value="#000000" oninput="syncHex(this,'hexNav')"><input class="color-hex" id="hexNav" value="#000000" oninput="syncColor(this,'colorNav')" maxlength="7"></div></div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">Page Content</div>
+      <div class="admin-field"><label class="admin-label">Policyholder Name</label><input class="admin-input" type="text" id="inputUserName" value="Alex Johnson"></div>
+      <div class="admin-field"><label class="admin-label">Initials</label><input class="admin-input" type="text" id="inputUserInitials" value="AJ" maxlength="3" style="width:80px;text-transform:uppercase;text-align:center;font-weight:700;letter-spacing:1px;"></div>
+      <div class="admin-field"><label class="admin-label">Portal Title</label><input class="admin-input" type="text" id="inputHeroTitle" value="Motor Insurance Portal"></div>
+      <div class="admin-field"><label class="admin-label">Subtitle</label><input class="admin-input" type="text" id="inputHeroSub" value="Manage your vehicle policies, claims and driver details."></div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">Live Data Source</div>
+      <div style="background:#F6F8FC;border:1px solid #DDE3EE;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:#5E6F85;line-height:1.6;">
+        💡 Paste a raw GitHub Gist URL to populate the policyholder name, initials and policy tiles from live JSON. Each demo can use a different Gist URL.
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">Gist URL <span style="color:#8892A4;font-weight:400">(raw JSON endpoint)</span></label>
+        <input class="admin-input" type="text" id="inputGistUrl"
+          placeholder="https://gist.githubusercontent.com/user/abc.../raw/demo-data.json"
+          style="font-family:monospace;font-size:10px;word-break:break-all;">
+      </div>
+      <div class="gist-status-row">
+        <div class="gist-status-dot" id="gistStatusDot"></div>
+        <span id="gistStatusText">No Gist loaded</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button onclick="loadGistData()" style="flex:1;background:linear-gradient(135deg,#1A1A2E,#2E3A5C);color:#fff;border:none;border-radius:7px;padding:9px;font-family:'Sora',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.82'" onmouseout="this.style.opacity='1'">
+          ↻ Load Gist Data
+        </button>
+        <button onclick="clearGistData()" style="background:#fff;color:#8892A4;border:1px solid #DDE3EE;border-radius:7px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#C0432C';this.style.color='#C0432C'" onmouseout="this.style.borderColor='#DDE3EE';this.style.color='#8892A4'">
+          ✕ Clear
+        </button>
+      </div>
+    </div>
+
+
+    <div class="admin-section">
+      <div class="admin-section-title">AI Claims Assistant</div>
+      <div style="background:#F6F8FC;border:1px solid #DDE3EE;border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#8892A4;margin-bottom:4px;">Connected Instance</div>
+        <div style="font-size:12px;font-weight:600;color:#3A4554;">iceinsuretech.cloud.opendialog.ai</div>
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">App Key</label>
+        <input class="admin-input" type="text" id="inputAppKey" value="1125899908000001|ayAq7el77MSf32ScfpshN93t6aT69Py6t75xNrj513d3459f" style="font-family:monospace;font-size:11px;">
+      </div>
+      <div class="admin-field">
+        <label class="admin-label">Scenario ID</label>
+        <input class="admin-input" type="text" id="inputScenarioId" value="1125899909000092" style="font-family:monospace;font-size:11px;">
+      </div>
+      <button onclick="applyEmbedCode()" style="width:100%;background:linear-gradient(135deg,#1A1A2E,#2E3A5C);color:#fff;border:none;border-radius:7px;padding:9px;font-family:'Sora',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all 0.2s;" id="applyEmbedBtn">
+        &#8635; Load Widget
+      </button>
+    </div>
+
+  </div>
+
+  <div class="admin-actions">
+    <button class="btn-apply" onclick="applyChanges()">Apply Changes</button>
+    <button class="btn-reset" onclick="resetDefaults()">Reset</button>
+  </div>
+</div>
+
+<script>
+  function openAdmin()  { document.getElementById('adminSidebar').classList.add('open'); document.getElementById('adminOverlay').classList.add('open'); }
+  function closeAdmin() { document.getElementById('adminSidebar').classList.remove('open'); document.getElementById('adminOverlay').classList.remove('open'); }
+  function syncHex(el,hexId)   { document.getElementById(hexId).value = el.value; }
+  function syncColor(el,cId)   { if(/^#[0-9A-Fa-f]{6}$/.test(el.value)) document.getElementById(cId).value = el.value; }
+
+  var _storedAppKey   = sessionStorage.getItem('od_appKey')   || '1125899908000001|ayAq7el77MSf32ScfpshN93t6aT69Py6t75xNrj513d3459f';
+  var _storedScenario = sessionStorage.getItem('od_scenario') || '1125899909000092';
+
+  window.openDialogSettings = {
+    url: 'https://iceinsuretech.cloud.opendialog.ai',
+    appKey: _storedAppKey,
+    parentEl: '#od-webchat',
+    user: { custom: { selected_scenario: _storedScenario, session_lifetime: 0 } },
+    customSettings: { additionalMenuLinks: [], embedded: true, fullWidth: true }
+  };
+
+  function applyEmbedCode() {
+    var k = document.getElementById('inputAppKey').value.trim();
+    var s = document.getElementById('inputScenarioId').value.trim();
+    if (!k || !s) { alert('Please enter both App Key and Scenario ID.'); return; }
+    sessionStorage.setItem('od_appKey',   k);
+    sessionStorage.setItem('od_scenario', s);
+    document.getElementById('applyEmbedBtn').textContent = '\u2713 Reloading\u2026';
+    setTimeout(function(){ location.reload(); }, 300);
+  }
+
+  function applyChanges() {
+    var r = document.documentElement.style;
+    r.setProperty('--brand-primary',   document.getElementById('colorPrimary').value);
+    r.setProperty('--brand-secondary', document.getElementById('colorSecondary').value);
+    r.setProperty('--brand-accent',    document.getElementById('colorAccent').value);
+    r.setProperty('--brand-nav-bg',    document.getElementById('colorNav').value);
+    document.getElementById('heroTitle').textContent     = document.getElementById('inputHeroTitle').value;
+    document.getElementById('heroSub').textContent       = document.getElementById('inputHeroSub').value;
+    // Only update name/initials from admin if no Gist is loaded
+    if (!_gistLoadedData) {
+      document.getElementById('navUserName').textContent = document.getElementById('inputUserName').value;
+      document.getElementById('navAvatar').textContent   = document.getElementById('inputUserInitials').value.toUpperCase();
+    }
+    var btn = document.querySelector('.btn-apply');
+    btn.textContent='\u2713 Applied!'; btn.style.background='#1A7A4A';
+    setTimeout(function(){ btn.textContent='Apply Changes'; btn.style.background=''; }, 1800);
+  }
+
+  var presets = {
+    collinson:{ primary:'#003366', secondary:'#0066CC', accent:'#E8401C', nav:'#000000' },
+    aviva:    { primary:'#5C1F7A', secondary:'#8B31B5', accent:'#E8401C', nav:'#3D1050' },
+    axa:      { primary:'#00008F', secondary:'#1414A0', accent:'#FF1721', nav:'#00006F' },
+    lloyds:   { primary:'#006A4E', secondary:'#00A36C', accent:'#FDB913', nav:'#005040' },
+    zurich:   { primary:'#003399', secondary:'#0055CC', accent:'#CC0000', nav:'#002277' },
+    custom:   null
+  };
+
+  function applyPreset(key) {
+    document.querySelectorAll('.preset-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('preset-'+key).classList.add('active');
+    if (!presets[key]) return;
+    var p = presets[key];
+    function sf(cId,hId,v){ document.getElementById(cId).value=v; document.getElementById(hId).value=v; }
+    sf('colorPrimary','hexPrimary',p.primary);
+    sf('colorSecondary','hexSecondary',p.secondary);
+    sf('colorAccent','hexAccent',p.accent);
+    sf('colorNav','hexNav',p.nav);
+  }
+
+  function resetDefaults() {
+    applyPreset('collinson');
+    sessionStorage.clear();
+    location.reload();
+  }
+
+  window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('inputAppKey').value    = _storedAppKey;
+    document.getElementById('inputScenarioId').value = _storedScenario;
+  });
+
+  // ══════════════════════════════════════════════════
+  // GIST LIVE DATA — populates name, initials, tiles
+  // ══════════════════════════════════════════════════
+
+  var _gistLoadedData = null;
+
+  function setGistStatus(state, msg) {
+    var dot  = document.getElementById('gistStatusDot');
+    var text = document.getElementById('gistStatusText');
+    if (!dot || !text) return;
+    dot.className  = 'gist-status-dot ' + (state || '');
+    text.textContent = msg || '';
+  }
+
+  function getInitials(name) {
+    if (!name) return 'AJ';
+    return name.trim().split(/\s+/).map(function(w){ return w[0] ? w[0].toUpperCase() : ''; }).slice(0,2).join('');
+  }
+
+  function fmtDate(d) {
+    if (!d) return '\u2014';
+    try { return new Date(d).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}); }
+    catch(e) { return d; }
+  }
+
+  function fmtCurrency(n) {
+    if (n === undefined || n === null) return null;
+    return '\u00A3' + Number(n).toLocaleString('en-GB', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  function buildMetaRows(p) {
+    var rows = [];
+    var v  = p.vehicle  || {};
+    var e  = p.excess   || {};
+    var pr = p.premium  || {};
+
+    if (v.make && v.model) {
+      rows.push({ l:'Vehicle', v: v.make + ' ' + v.model + (v.registration ? ' \u2014 ' + v.registration : '') });
+    }
+    if (p.meta && p.meta.length) {
+      p.meta.forEach(function(m){ rows.push({ l: m.l || m.label || '', v: m.v || m.value || '' }); });
+    }
+    if (p.expiryDate) rows.push({ l:'Expiry', v: fmtDate(p.expiryDate) });
+    if (e.compulsory !== undefined) {
+      var exc = 'Comp ' + fmtCurrency(e.compulsory);
+      if (e.voluntary !== undefined) exc += ' / Vol ' + fmtCurrency(e.voluntary);
+      rows.push({ l:'Excess', v: exc });
+    }
+    if (pr.annual !== undefined) {
+      rows.push({ l:'Premium', v: fmtCurrency(pr.annual) + (pr.paymentMethod ? ' / ' + pr.paymentMethod : '') });
+    }
+    return rows.slice(0, 4);
+  }
+
+  function buildTags(p) {
+    if (p.covers && p.covers.length) return p.covers.slice(0, 5);
+    if (p.tags   && p.tags.length)   return p.tags.slice(0, 5);
+    return [];
+  }
+
+  function applyGistToUI(data) {
+    _gistLoadedData = data;
+    var ph   = data.policyholder || {};
+    var name = ph.name || null;
+
+    // 1. Policyholder name
+    if (name) {
+      document.getElementById('navUserName').textContent = name;
+      var inp = document.getElementById('inputUserName');
+      if (inp) inp.value = name;
+    }
+
+    // 2. Initials
+    var initials = getInitials(name);
+    if (name) {
+      document.getElementById('navAvatar').textContent = initials;
+      var inpI = document.getElementById('inputUserInitials');
+      if (inpI) inpI.value = initials;
+    }
+
+    // 3 & 4. Policy tiles
+    var policies = data.policies || [];
+    var pg = document.getElementById('policyGrid');
+    if (!pg || policies.length === 0) {
+      // Show live badge anyway if name loaded
+      var badge = document.getElementById('gistLiveBadge');
+      if (badge && name) badge.classList.add('visible');
+      return;
+    }
+
+    pg.innerHTML = policies.map(function(p) {
+      var status   = p.status || 'Active';
+      var ref      = p.ref    || '';
+      var pname    = p.name   || p.product || 'Policy';
+      var rows     = buildMetaRows(p);
+      var tags     = buildTags(p);
+      var isActive = status.toLowerCase().includes('active');
+      var statusBg  = isActive ? '#E6F9F0' : '#FFF5E6';
+      var statusCol = isActive ? '#1A7A4A' : '#CC6600';
+
+      return '<div class="policy-card">' +
+        '<div class="policy-card-header">' +
+          '<span class="policy-status" style="background:' + statusBg + ';color:' + statusCol + '">' + status + '</span>' +
+          '<span class="policy-ref">' + ref + '</span>' +
+        '</div>' +
+        '<div class="policy-name">' + pname + '</div>' +
+        '<div class="policy-meta">' +
+          rows.map(function(r){ return '<div class="policy-meta-row"><span class="meta-label">' + r.l + '</span><span class="meta-value">' + r.v + '</span></div>'; }).join('') +
+        '</div>' +
+        '<div class="policy-tags">' +
+          tags.map(function(t){ return '<span class="policy-tag">' + t + '</span>'; }).join('') +
+        '</div>' +
+        '<a href="#" class="policy-link">VIEW FULL POLICY DOCUMENTS \u2192</a>' +
+      '</div>';
+    }).join('');
+
+    // Live badge
+    var badge = document.getElementById('gistLiveBadge');
+    if (badge) badge.classList.add('visible');
+
+    var now = new Date().toLocaleTimeString('en-GB');
+    setGistStatus('ok', 'Loaded ' + now + (name ? ' \u2014 ' + name : ''));
+  }
+
+  // Normalise a Gist URL to the "latest" (no commit hash) form
+  // so proxies don't struggle with the long commit-pinned path.
+  // Input:  https://gist.githubusercontent.com/user/ID/raw/COMMIT/file.json
+  // Output: https://gist.githubusercontent.com/user/ID/raw/file.json
+  function normaliseGistUrl(url) {
+    // Match commit-pinned raw Gist URLs
+    var m = url.match(/^(https:\/\/gist\.githubusercontent\.com\/[^/]+\/[^/]+\/raw\/)([0-9a-f]{7,40})\/(.+)$/i);
+    if (m) return m[1] + m[3]; // drop the commit hash segment
+    return url;
+  }
+
+  // Extract the Gist ID from a raw githubusercontent URL
+  // e.g. https://gist.githubusercontent.com/user/GIST_ID/raw/...
+  function extractGistId(url) {
+    var m = url.match(/gist\.githubusercontent\.com\/[^/]+\/([a-f0-9]+)\/raw/i);
+    return m ? m[1] : null;
+  }
+
+  // Try fetching fresh Gist data, bypassing CDN cache.
+  // Strategy:
+  //   1. GitHub Gist API (/gists/{id}) — server-side, always fresh, no CDN cache
+  //   2. Raw URL via proxy with no-cache headers
+  //   3. Fallback proxies
+  async function fetchViaProxy(url) {
+    var clean  = normaliseGistUrl(url);
+    var gistId = extractGistId(url);
+    var bust   = Date.now();
+    var lastErr = null;
+
+    // ── Attempt 1: GitHub Gist API (always returns current content) ──
+    // This is unauthenticated but still bypasses the raw CDN cache.
+    if (gistId) {
+      try {
+        var apiUrl = 'https://api.github.com/gists/' + gistId;
+        var res = await fetch(apiUrl, {
+          headers: {
+            'Accept':        'application/vnd.github.v3+json',
+            'Cache-Control': 'no-cache, no-store',
+            'Pragma':        'no-cache'
+          },
+          cache: 'no-store'
+        });
+        if (res.ok) {
+          var gistMeta = await res.json();
+          // Find the first JSON file in the Gist and parse its content
+          var files = gistMeta.files || {};
+          var fileNames = Object.keys(files);
+          var jsonFile  = fileNames.find(function(n){ return n.endsWith('.json'); }) || fileNames[0];
+          if (jsonFile && files[jsonFile] && files[jsonFile].content) {
+            return JSON.parse(files[jsonFile].content);
+          }
         }
-      }, 1200);
-    </script>
-  </body>
+      } catch(e) {
+        lastErr = e;
+      }
+    }
+
+    // ── Attempt 2–4: CORS proxies with cache-busting ──
+    var proxies = [
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(clean + '?bust=' + bust),
+      'https://corsproxy.io/?'              + encodeURIComponent(clean) + '&_=' + bust,
+      'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(clean) + '&_=' + bust,
+    ];
+
+    for (var i = 0; i < proxies.length; i++) {
+      try {
+        var res = await fetch(proxies[i], { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status + ' via proxy ' + (i+1));
+        var data = await res.json();
+        return data;
+      } catch(e) {
+        lastErr = e;
+      }
+    }
+
+    throw lastErr || new Error('All fetch attempts failed');
+  }
+
+  async function loadGistData() {
+    var urlInput = document.getElementById('inputGistUrl');
+    var url = urlInput ? urlInput.value.trim() : '';
+    if (!url) { setGistStatus('error', 'Please enter a Gist URL'); return; }
+    setGistStatus('loading', 'Fetching\u2026');
+    try {
+      var data = await fetchViaProxy(url);
+      sessionStorage.setItem('od_gist_url', url);
+      applyGistToUI(data);
+    } catch(err) {
+      setGistStatus('error', 'Error: ' + err.message);
+      var badge = document.getElementById('gistLiveBadge');
+      if (badge) badge.classList.remove('visible');
+    }
+  }
+
+  // ── Polling ────────────────────────────────────────────
+  var _pollInterval  = null;
+  var _pollMs        = 10000; // check every 10 seconds
+  var _lastJsonStr   = null;  // track last payload to detect changes
+
+  function startPolling(url) {
+    stopPolling(); // clear any existing timer first
+    _pollInterval = setInterval(async function() {
+      try {
+        var data    = await fetchViaProxy(url);
+        var jsonStr = JSON.stringify(data);
+        if (jsonStr !== _lastJsonStr) {
+          _lastJsonStr = jsonStr;
+          applyGistToUI(data);
+        }
+        // Update the "last checked" time in status even if no change
+        var now = new Date().toLocaleTimeString('en-GB');
+        var name = (data.policyholder || {}).name || null;
+        setGistStatus('ok', 'Live \u2014 checked ' + now + (name ? ' \u2014 ' + name : ''));
+      } catch(e) {
+        setGistStatus('error', 'Poll failed: ' + e.message);
+      }
+    }, _pollMs);
+  }
+
+  function stopPolling() {
+    if (_pollInterval) {
+      clearInterval(_pollInterval);
+      _pollInterval = null;
+    }
+    _lastJsonStr = null;
+  }
+  // ── End polling ─────────────────────────────────────────
+
+  function clearGistData() {
+    stopPolling();
+    sessionStorage.removeItem('od_gist_url');
+    _gistLoadedData = null;
+    var badge = document.getElementById('gistLiveBadge');
+    if (badge) badge.classList.remove('visible');
+    setGistStatus('', 'Cleared \u2014 showing static data');
+    var urlInput = document.getElementById('inputGistUrl');
+    if (urlInput) urlInput.value = '';
+    // Restore static tiles for current product
+    applyProductContent(currentProduct);
+    // Restore name & initials from admin fields
+    var savedName = (document.getElementById('inputUserName') || {}).value || 'Alex Johnson';
+    var savedInit = (document.getElementById('inputUserInitials') || {}).value || 'AJ';
+    document.getElementById('navUserName').textContent = savedName;
+    document.getElementById('navAvatar').textContent   = savedInit.toUpperCase();
+  }
+
+  // Patch applyGistToUI to record the payload for change detection
+  var _originalApplyGistToUI = applyGistToUI;
+  applyGistToUI = function(data) {
+    _lastJsonStr = JSON.stringify(data);
+    _originalApplyGistToUI(data);
+  };
+
+  // Patch loadGistData to start polling after a successful load
+  var _originalLoadGistData = loadGistData;
+  loadGistData = async function() {
+    await _originalLoadGistData();
+    // If load succeeded (badge visible), start polling
+    var badge = document.getElementById('gistLiveBadge');
+    if (badge && badge.classList.contains('visible')) {
+      var url = (document.getElementById('inputGistUrl') || {}).value || '';
+      if (url) startPolling(url);
+    }
+  };
+
+  // Auto-restore Gist URL from sessionStorage on page load
+  window.addEventListener('DOMContentLoaded', function() {
+    var savedUrl = sessionStorage.getItem('od_gist_url');
+    if (savedUrl) {
+      var urlInput = document.getElementById('inputGistUrl');
+      if (urlInput) urlInput.value = savedUrl;
+      setGistStatus('loading', 'Restoring\u2026');
+      setTimeout(async function() {
+        try {
+          var data = await fetchViaProxy(savedUrl);
+          applyGistToUI(data);
+          startPolling(savedUrl); // begin polling after restore
+        } catch(e) {
+          setGistStatus('error', 'Auto-restore failed: ' + e.message);
+        }
+      }, 700);
+    }
+  });
+
+
+</script>
+
+<!-- OpenDialog Webchat JS -->
+<script src="https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js"></script>
+<style>
+  #od-webchat > iframe#opendialog-chatwindow {
+    position:static !important; width:100% !important; max-width:100% !important;
+    min-width:100% !important; height:100% !important; min-height:550px !important;
+    border:none !important; border-radius:14px !important;
+  }
+</style>
+</body>
 </html>
