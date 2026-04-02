@@ -664,16 +664,49 @@
     setGistStatus('ok', 'Loaded ' + now + (name ? ' \u2014 ' + name : ''));
   }
 
+  // Normalise a Gist URL to the "latest" (no commit hash) form
+  // so proxies don't struggle with the long commit-pinned path.
+  // Input:  https://gist.githubusercontent.com/user/ID/raw/COMMIT/file.json
+  // Output: https://gist.githubusercontent.com/user/ID/raw/file.json
+  function normaliseGistUrl(url) {
+    // Match commit-pinned raw Gist URLs
+    var m = url.match(/^(https:\/\/gist\.githubusercontent\.com\/[^/]+\/[^/]+\/raw\/)([0-9a-f]{7,40})\/(.+)$/i);
+    if (m) return m[1] + m[3]; // drop the commit hash segment
+    return url;
+  }
+
+  // Try fetching via multiple CORS proxies in sequence
+  async function fetchViaProxy(url) {
+    var clean = normaliseGistUrl(url);
+    var bust  = '&_=' + Date.now();
+
+    var proxies = [
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(clean) + bust,
+      'https://corsproxy.io/?'              + encodeURIComponent(clean) + bust,
+      'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(clean),
+    ];
+
+    var lastErr = null;
+    for (var i = 0; i < proxies.length; i++) {
+      try {
+        var res = await fetch(proxies[i]);
+        if (!res.ok) throw new Error('HTTP ' + res.status + ' via proxy ' + (i+1));
+        var data = await res.json();
+        return data;
+      } catch(e) {
+        lastErr = e;
+      }
+    }
+    throw lastErr || new Error('All proxies failed');
+  }
+
   async function loadGistData() {
     var urlInput = document.getElementById('inputGistUrl');
     var url = urlInput ? urlInput.value.trim() : '';
     if (!url) { setGistStatus('error', 'Please enter a Gist URL'); return; }
     setGistStatus('loading', 'Fetching\u2026');
     try {
-      var proxy = 'https://corsproxy.io/?' + encodeURIComponent(url) + '&_=' + Date.now();
-      var res   = await fetch(proxy);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      var data = await res.json();
+      var data = await fetchViaProxy(url);
       sessionStorage.setItem('od_gist_url', url);
       applyGistToUI(data);
     } catch(err) {
@@ -709,13 +742,10 @@
       setGistStatus('loading', 'Restoring\u2026');
       setTimeout(async function() {
         try {
-          var proxy = 'https://corsproxy.io/?' + encodeURIComponent(savedUrl) + '&_=' + Date.now();
-          var res   = await fetch(proxy);
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          var data = await res.json();
+          var data = await fetchViaProxy(savedUrl);
           applyGistToUI(data);
         } catch(e) {
-          setGistStatus('error', 'Auto-restore failed');
+          setGistStatus('error', 'Auto-restore failed: ' + e.message);
         }
       }, 700);
     }
