@@ -713,13 +713,21 @@
           var file     = files[fileName];
 
           if (file) {
+            var parsed = null;
+
             // If content is truncated GitHub provides a raw_url for the full file
             if (file.truncated && file.raw_url) {
               var rawRes = await fetch(file.raw_url, { cache: 'no-store' });
-              if (rawRes.ok) return await rawRes.json();
+              if (rawRes.ok) parsed = await rawRes.json();
             }
             // Normal case — content is inline
-            if (file.content) return JSON.parse(file.content);
+            if (!parsed && file.content) parsed = JSON.parse(file.content);
+
+            if (parsed) {
+              // Stamp with the Gist's updated_at so the version guard can compare
+              parsed._gistUpdatedAt = gistMeta.updated_at || null;
+              return parsed;
+            }
           }
         }
       } catch(e) {
@@ -765,9 +773,18 @@
   }
 
   // ── Polling ────────────────────────────────────────────
-  var _pollInterval  = null;
-  var _pollMs        = 10000; // check every 10 seconds
-  var _lastJsonStr   = null;  // track last payload to detect changes
+  var _pollInterval    = null;
+  var _pollMs          = 10000; // check every 10 seconds
+  var _lastJsonStr     = null;  // last applied payload (for change detection)
+  var _lastUpdatedAt   = null;  // ISO timestamp of last applied Gist version
+
+  // Only apply data if it is genuinely newer than what's already displayed.
+  // This prevents a stale CDN response from overwriting fresher data.
+  function isNewer(data) {
+    var ts = data._gistUpdatedAt || null;
+    if (!ts || !_lastUpdatedAt) return true;          // no timestamp to compare, allow
+    return new Date(ts) > new Date(_lastUpdatedAt);   // only accept if strictly newer
+  }
 
   function startPolling(url) {
     stopPolling(); // clear any existing timer first
@@ -775,12 +792,22 @@
       try {
         var data    = await fetchViaProxy(url);
         var jsonStr = JSON.stringify(data);
+
+        // Guard: never apply a response that is older than what we already show
+        if (!isNewer(data)) {
+          var now = new Date().toLocaleTimeString('en-GB');
+          setGistStatus('ok', 'Live \u2014 checked ' + now + ' \u2014 awaiting update\u2026');
+          return;
+        }
+
+        // Apply only when content has actually changed
         if (jsonStr !== _lastJsonStr) {
-          _lastJsonStr = jsonStr;
+          _lastJsonStr   = jsonStr;
+          _lastUpdatedAt = data._gistUpdatedAt || null;
           applyGistToUI(data);
         }
-        // Update the "last checked" time in status even if no change
-        var now = new Date().toLocaleTimeString('en-GB');
+
+        var now  = new Date().toLocaleTimeString('en-GB');
         var name = (data.policyholder || {}).name || null;
         setGistStatus('ok', 'Live \u2014 checked ' + now + (name ? ' \u2014 ' + name : ''));
       } catch(e) {
@@ -794,7 +821,8 @@
       clearInterval(_pollInterval);
       _pollInterval = null;
     }
-    _lastJsonStr = null;
+    _lastJsonStr   = null;
+    _lastUpdatedAt = null;
   }
   // ── End polling ─────────────────────────────────────────
 
