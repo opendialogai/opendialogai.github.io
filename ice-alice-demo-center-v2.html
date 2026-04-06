@@ -465,7 +465,7 @@
     if(!gistId)throw new Error('Could not extract a Gist ID from the URL provided.');
 
     var res=await fetch('https://api.github.com/gists/'+gistId,{
-      headers:{'Accept':'application/vnd.github.v3+json','Cache-Control':'no-cache, no-store','Pragma':'no-cache'},
+      headers:{'Accept':'application/vnd.github.v3+json'},
       cache:'no-store'
     });
     if(!res.ok)throw new Error('GitHub API returned '+res.status+' for Gist '+gistId);
