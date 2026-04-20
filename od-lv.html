@@ -1057,8 +1057,12 @@ function fuzzy(t,words){for(const w of words){if(t.includes(w))return true;for(l
 function insuranceResponse(text,p){
   const t=text.toLowerCase().trim();
   if(fuzzy(t,["underwrite","underwriter","insurer","who insures","backed by","insurance company","who provides","provider"]))return "This policy is underwritten by one of our LV= insurers. You'll see the full underwriter information listed in your policy documents.";
+  // "drive my partner's car" / "drive someone else's car" — third-party driving question
+  if(fuzzy(t,["drive my partner","drive my wife","drive my husband","drive my spouse","drive their car","drive someone else","drive another car","drive a different car","drive other cars","borrow a car","borrow my","borrow their","use their car","use my partner","drive my friend","drive my parent","drive my mum","drive my dad"]))
+    return "Your policy may include a provision to drive other cars with the owner's permission, but this typically only provides third-party cover. Check your policy documents to confirm whether this applies to you.";
+  // Named person driving abroad (explicit abroad context required)
   const namedPerson=fuzzy(t,["wife","husband","partner","spouse","she drives","he drives","she covered","he covered","they covered"]);
-  const abroadCtx=fuzzy(t,["abroad","europe","european","driving","covered","holiday","france","spain","drive"]);
+  const abroadCtx=fuzzy(t,["abroad","overseas","europe","european","holiday","france","spain","italy","continent","foreign country"]);
   if(namedPerson&&abroadCtx)return "They'll be covered if they're named on your policy and meet the driving requirements. Cover abroad follows the same terms as your policy.";
   if(fuzzy(t,["abroad","abrod","abroard","overseas","holiday","europe","europ","eurpoe","european","foreign","continent"]))return "Our policies include a basic level of European cover, for up to 90 days.";
   if(/^(hi|hello|hey|morning|afternoon|howdy|hiya)/.test(t))return "Hi there! I'm Selma, your LV= AI assistant. I can help with questions about your cover, optional extras, excess, NCD, claims, and anything else about your quote.";
@@ -1079,8 +1083,11 @@ function insuranceResponse(text,p){
   // Add another driver
   if(fuzzy(t,["add a driver","add another driver","add driver","additional driver","extra driver","second driver","named driver","can i add","can someone else drive","other drivers","my wife drive","my husband drive","my partner drive","joint policy","put someone on"]))
     return "Yes, you can add additional drivers to your policy. This may change your premium depending on their details and driving history.";
+  // Business trips / occasional business use
+  if(fuzzy(t,["business trip","business trips","occasional business","business use","business travel","business journey","client visit","site visit","meeting","meetings","use for business","use my car for business","business miles","work meetings","driving for work","driving to meetings","can i use for business","business purposes","travelling for work"]))
+    return "Standard policies cover social, domestic and commuting use. Occasional business trips to different locations are not typically included under commuting use — you would need to add business use to your policy. Contact LV= to discuss the right level of cover for your needs.";
   // Commuting / work use
-  if(fuzzy(t,["commut","commuting","drive to work","work travel","use for work","travel to work","place of work","business use","work use","work journey","social domestic","sdc","sdpc"]))
+  if(fuzzy(t,["commut","commuting","drive to work","work travel","use for work","travel to work","place of work","work use","work journey","social domestic","sdc","sdpc"]))
     return "Yes, commuting to a single place of work is included if you select social, domestic and commuting use.";
   // Theft cover
   if(fuzzy(t,["theft","stolen","car stolen","steal my car","breaking in","break in","thief","thieves","vehicle theft","car taken","nicked"]))
