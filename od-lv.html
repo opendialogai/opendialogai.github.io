@@ -1056,36 +1056,41 @@ function fuzzy(t,words){for(const w of words){if(t.includes(w))return true;for(l
 
 function insuranceResponse(text,p){
   const t=text.toLowerCase().trim();
-  if(fuzzy(t,["underwrite","underwriter","insurer","who insures","backed by","insurance company","who provides","provider"]))return "This policy is underwritten by one of our LV= insurers. You'll see the full underwriter information listed in your policy documents.";
+  if(fuzzy(t,["underwrite","underwriter","insurer","who insures","backed by","insurance company","who provides","provider"]))return "This policy is underwritten by LV= General Insurance, which is part of the Allianz group.";
   // "drive my partner's car" / "drive someone else's car" — third-party driving question
   if(fuzzy(t,["drive my partner","drive my wife","drive my husband","drive my spouse","drive their car","drive someone else","drive another car","drive a different car","drive other cars","borrow a car","borrow my","borrow their","use their car","use my partner","drive my friend","drive my parent","drive my mum","drive my dad"]))
-    return "Your policy may include a provision to drive other cars with the owner's permission, but this typically only provides third-party cover. Check your policy documents to confirm whether this applies to you.";
+    return "Your LV= comprehensive policy includes the option to drive other cars with the owner's permission. This provides third-party cover only — it does not include accidental damage to the vehicle you are driving.";
   // Named person driving abroad (explicit abroad context required)
   const namedPerson=fuzzy(t,["wife","husband","partner","spouse","she drives","he drives","she covered","he covered","they covered"]);
   const abroadCtx=fuzzy(t,["abroad","overseas","europe","european","holiday","france","spain","italy","continent","foreign country"]);
   if(namedPerson&&abroadCtx)return "They'll be covered if they're named on your policy and meet the driving requirements. Cover abroad follows the same terms as your policy.";
   if(fuzzy(t,["abroad","abrod","abroard","overseas","holiday","europe","europ","eurpoe","european","foreign","continent"]))return "Our policies include a basic level of European cover, for up to 90 days.";
   if(/^(hi|hello|hey|morning|afternoon|howdy|hiya)/.test(t))return "Hi there! I'm Selma, your LV= AI assistant. I can help with questions about your cover, optional extras, excess, NCD, claims, and anything else about your quote.";
-  if(fuzzy(t,["ncd","no claim","no-claim","ncb","no claims bonus","claims discount"]))return p?.ncd>0?`You currently have ${p.ncd} years of no-claims discount, which reduces your premium. Protected NCD means that if you make a claim, you keep that discount. It's worth considering if maintaining that discount matters to you.`:"You don't have any no-claims discount yet, so Protected NCD isn't available at the moment. Build it up over a claim-free year and it'll become available at renewal.";
+  if(fuzzy(t,["ncd","no claim","no-claim","ncb","no claims bonus","claims discount"]))return p?.ncd>0?`You currently have ${p.ncd} years of no-claims discount, which reduces your premium. Protected NCD means that if you make a claim, you keep that discount. Protected NCD is available as an optional extra on your policy.`:"You don't have any no-claims discount yet, so Protected NCD isn't available at the moment. Build it up over a claim-free year and it'll become available at renewal.";
   if(fuzzy(t,["excess","exces","compulsory","voluntary","voluntry","deductible"]))return "Your excess has two parts: the voluntary amount you choose and a compulsory amount set by LV=. Both are payable if you make an at-fault claim. Using a non-LV= repairer adds an extra \u00A3200.";
-  if(fuzzy(t,["make a claim","had an accident","how do i claim","had a crash","car damaged","car stolen"]))return "To make a claim, call LV= on 0800 032 4534 (available 24/7). Have your policy number ready. LV= will arrange repairs through an approved repairer and handle communications with third parties.";
+  // No-fault / non-fault claim — specific branch
+  if(fuzzy(t,["no-fault","non-fault","not my fault","not at fault","other driver fault","no fault claim","non fault claim","third party claim","they hit me","someone hit me","other driver hit","wasn't my fault","wasnt my fault","not to blame","blameless","other driver caused"]))
+    return "No, if the claim was settled and you were not at fault this does not need to be declared when purchasing a policy.";
+  // General claims process
+  if(fuzzy(t,["make a claim","had an accident","how do i claim","had a crash","i was in an accident","car damaged","car stolen","need to claim","report a claim","log a claim","i need to claim"]))
+    return "To make a claim, call LV= on 0800 032 4534 (available 24/7). Have your policy number ready. LV= will arrange repairs through an approved repairer and handle communications with third parties.";
   if(fuzzy(t,["breakdown","brekdown","breakdwon","britannia","roadside","broke down","broken down","car wont start"]))return "Breakdown cover from Britannia Rescue provides 24/7 roadside assistance anywhere in the UK, plus cover in most European countries for up to 60 days. It also includes a home start service. Available from \u00A324/year.";
-  if(fuzzy(t,["legal","leagl","solicitor","sue","court","legal expenses","legal fees"]))return "Motor Legal Expenses covers up to \u00A3100,000 in legal fees with no excess to pay. It helps recover uninsured losses after a non-fault accident, including your excess, loss of earnings, hire vehicle costs, and personal injury claims. Available from \u00A325.99/year.";
+  if(fuzzy(t,["legal expenses","legal cover","motor legal","leagl expenses","solicitor","taking to court","take them to court","legal protection","legal fees","legal costs","legal action","going to court","make a legal claim","need a lawyer","need legal"]))return "Motor Legal Expenses covers up to \u00A3100,000 in legal fees with no excess to pay. It helps recover uninsured losses after a non-fault accident, including your excess, loss of earnings, hire vehicle costs, and personal injury claims. Available from \u00A325.99/year.";
   if(fuzzy(t,["hire car","replacement car","courtesy car","loan car","off the road"]))return "Guaranteed Hire Car provides a replacement vehicle if your car is stolen, written off, or being repaired. You can choose Basic cover (small hatchback) or Enhanced cover (family car or 7-seater). Available from \u00A319.90/year.";
   if(fuzzy(t,["personal accident","injury","injry","disability","hospital","hurt"]))return "Extended Personal Accident increases the standard injury benefit from \u00A310,000 to \u00A3100,000 per person. It covers you, your partner, and any named drivers for serious injuries while travelling in your car. Available from \u00A315/year.";
   if(fuzzy(t,["comprehensive","third party","tpft","cover type","level of cover"]))return "Comprehensive cover includes damage to your own car even if an accident is your fault. Third Party, Fire & Theft covers damage you cause to others, plus fire damage and theft of your own vehicle. Comprehensive cover is often similarly priced.";
   if(fuzzy(t,["premium","price","cost","expensive","cheaper","too high","how much","reduce"]))return p?.name==="Priya Sharma"?"Your premium reflects that you're in your first year of driving on a new vehicle without a no-claims discount history yet. Each claim-free year will reduce your premium. Choosing a higher voluntary excess is one way to bring the cost down.":"Your premium takes into account vehicle value, annual mileage, driving history, postcode, your chosen excess, and your no-claims discount. A higher voluntary excess may affect the overall amount.";
-  if(fuzzy(t,["cancel","cancell","cancellation","stop my policy","want to leave"]))return "You can cancel your LV= policy at any time. Within the 14-day cooling-off period you'll receive a full refund less any time already on cover. After 14 days you'll receive a pro-rata refund less a cancellation fee. Call 0800 032 4533 to cancel.";
-  if(fuzzy(t,["windscreen","chip","cracked","glass","stone chip"]))return "Windscreen repair carries a \u00A320 excess. Full windscreen replacement has a \u00A3140 excess. Using an LV= approved repairer such as Autoglass keeps you within these amounts.";
-  if(fuzzy(t,["named driver","add a driver","additional driver","can my","can she drive","can he drive"]))return "You can add named drivers to your policy using the 'Add or remove drivers' option. Any driver added needs to meet the standard policy conditions. The main user of the vehicle should always be listed as the main driver.";
-  if(fuzzy(t,["renew","renewal","expires","next year"]))return "LV= will send you a renewal invitation around 30 days before your policy expires. Your policy auto-renews unless you cancel. It's always worth reviewing your details at renewal to make sure your cover still meets your needs.";
+  if(fuzzy(t,["cancel","cancell","cancellation","stop my policy","want to leave"]))return "You can cancel your LV= policy at any time. Within the 14-day cooling-off period you will receive a full refund. After 14 days, a cancellation fee of £40 applies and you will receive a pro-rata refund for the unused portion.";
+  if(fuzzy(t,["windscreen","chip","cracked","glass","stone chip"]))return "Yes, comprehensive cover includes windscreen repair and replacement. Chips and cracks are repaired with a \u00A320 excess. Full replacement carries a \u00A3140 excess.";
+  if(fuzzy(t,["named driver","add a driver","additional driver","can my","can she drive","can he drive"]))return "Yes, you can add named drivers to your policy. The main user of the vehicle must always be listed as the policyholder. Adding drivers with more experience can sometimes reduce your premium.";
+  if(fuzzy(t,["renew","renewal","expires","next year"]))return "LV= will send you a renewal invitation 30 days before your policy expires. Your policy auto-renews unless you cancel before the renewal date.";
   // ── NEW Q&A BANK ─────────────────────────────────────────────────────────
   // Add another driver
   if(fuzzy(t,["add a driver","add another driver","add driver","additional driver","extra driver","second driver","named driver","can i add","can someone else drive","other drivers","my wife drive","my husband drive","my partner drive","joint policy","put someone on"]))
-    return "Yes, you can add additional drivers to your policy. This may change your premium depending on their details and driving history.";
+    return "Yes, you can add additional drivers to your policy. Adding a driver will affect your premium based on their age, driving experience and claims history.";
   // Business trips / occasional business use
   if(fuzzy(t,["business trip","business trips","occasional business","business use","business travel","business journey","client visit","site visit","meeting","meetings","use for business","use my car for business","business miles","work meetings","driving for work","driving to meetings","can i use for business","business purposes","travelling for work"]))
-    return "Standard policies cover social, domestic and commuting use. Occasional business trips to different locations are not typically included under commuting use — you would need to add business use to your policy. Contact LV= to discuss the right level of cover for your needs.";
+    return "Yes, under this policy you are covered for occasional business use.";
   // Commuting / work use
   if(fuzzy(t,["commut","commuting","drive to work","work travel","use for work","travel to work","place of work","work use","work journey","social domestic","sdc","sdpc"]))
     return "Yes, commuting to a single place of work is included if you select social, domestic and commuting use.";
@@ -1094,13 +1099,13 @@ function insuranceResponse(text,p){
     return "Yes, comprehensive cover includes protection if your car is stolen or damaged during a theft.";
   // NCD and making a claim
   if(fuzzy(t,["no claims bonus","no claim bonus","ncb","ncd affected","lose my ncd","lose my no claims","claim affect","affect my ncd","affect my bonus","lose bonus","discount affected"]))
-    return "Yes, your no claims bonus may be reduced unless you have no claims discount protection in place.";
+    return "Yes, making a claim will reduce your no claims discount unless you have Protected NCD in place. With Protected NCD, your discount is maintained even after a claim.";
   // Cancellation
   if(fuzzy(t,["cancel","cancell","canceling","cancellation","end my policy","stop my cover","leave my policy","terminate","want to cancel"]))
-    return "Yes, you can cancel your policy at any time. A cancellation fee may apply and you may receive a partial refund for the remaining period.";
+    return "Yes, you can cancel your policy at any time. Within the 14-day cooling-off period you will receive a full refund. After 14 days, a cancellation fee applies and you will receive a pro-rata refund for the unused portion of your policy.";
   // Lost or stolen keys
   if(fuzzy(t,["lost my keys","lost keys","key cover","stolen keys","key stolen","replace my keys","replacement keys","key replacement","car keys","lost car key","key fob","lost fob","lock replacement","change my locks"]))
-    return "Yes, comprehensive cover typically includes lost or stolen key cover, including replacement keys and locks if needed.";
+    return "Yes, comprehensive cover includes lost or stolen key cover. LV= will cover the cost of replacement keys and locks if your keys are lost or stolen.";
   // Does policy include breakdown
   if(fuzzy(t,["does my policy include breakdown","is breakdown included","breakdown included","comes with breakdown","does it include breakdown","breakdown cover included","have breakdown"]))
     return "Breakdown cover is optional and only included if you selected it when setting up your policy. If you haven’t added it, you can do so in the optional extras section of your quote.";
@@ -1112,7 +1117,7 @@ function insuranceResponse(text,p){
     return "Yes, you are covered under comprehensive insurance if someone hits your parked car, even if the other driver is not identified.";
   // Windscreen
   if(fuzzy(t,["windscreen","windshield","screen damaged","cracked windscreen","chip","chipped","stone chip","glass claim","crack in screen","crack in windscreen","screen cover","glass cover","window cracked"]))
-    return "Yes, comprehensive policies include windscreen cover, usually with a lower excess than standard claims. Repair of chips and cracks carries a £20 excess; full replacement has a £140 excess.";
+    return "Yes, comprehensive cover includes windscreen cover. Repair of chips and cracks carries a £20 excess, and full windscreen replacement carries a £140 excess.";
 
   // Fun facts — profile specific
   if(fuzzy(t,["fun fact","funfact","fun-fact","tell me about my car","tell me about my vehicle","fact about","something interesting","interesting fact","trivia"])){
