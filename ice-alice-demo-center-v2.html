@@ -1467,19 +1467,33 @@ function classifyVersion(data) {
   return 'unknown';
 }
 
+// Strip internal tracking props before content comparison
+function contentStr(data) {
+  var d = Object.assign({}, data);
+  delete d._gistSha; delete d._gistUpdatedAt;
+  return JSON.stringify(d);
+}
+
 function startPolling(url) {
   stopPolling();
   _pollInterval = setInterval(async function() {
     try {
-      var data = await fetchViaProxy(url);
-      var jsonStr = JSON.stringify(data);
+      var data    = await fetchViaProxy(url);
+      var content = contentStr(data);          // content only, no SHA/ts
       var verdict = classifyVersion(data);
-      var now = new Date().toLocaleTimeString('en-GB');
-      var pname = (data.policyholder || {}).name || null;
-      if (verdict === 'older') { setGistStatus('ok', 'Live · checked ' + now); return; }
-      if (verdict === 'same' || jsonStr === _lastJsonStr) { setGistStatus('ok', 'Live · checked ' + now + (pname ? ' · ' + pname : '')); return; }
-      _lastJsonStr = jsonStr; _lastSha = data._gistSha || null; _lastCommitTs = data._gistUpdatedAt || null;
+      var now     = new Date().toLocaleTimeString('en-GB');
+      var pname   = (data.policyholder || {}).name || null;
+      var statusMsg = 'Live · checked ' + now + (pname ? ' · ' + pname : '');
+
+      // Content unchanged — just update status ticker, never re-apply
+      if (content === _lastJsonStr) { setGistStatus('ok', statusMsg); return; }
+
+      // Content has changed — apply regardless of SHA verdict
+      _lastJsonStr  = content;
+      _lastSha      = data._gistSha      || null;
+      _lastCommitTs = data._gistUpdatedAt || null;
       applyGistToUI(data);
+      setGistStatus('ok', statusMsg);
     } catch(e) { setGistStatus('error', 'Poll failed: ' + e.message); }
   }, _pollMs);
 }
@@ -1497,7 +1511,7 @@ async function loadGistData() {
   try {
     var data = await fetchViaProxy(url);
     sessionStorage.setItem('od_gist_url', url);
-    _lastJsonStr = JSON.stringify(data);
+    _lastJsonStr = contentStr(data);
     _lastSha = data._gistSha || null;
     _lastCommitTs = data._gistUpdatedAt || null;
     applyGistToUI(data);
