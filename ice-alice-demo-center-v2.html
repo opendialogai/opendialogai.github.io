@@ -1439,15 +1439,11 @@ var _lastJsonStr = null, _lastSha = null, _lastCommitTs = null;
 
 function classifyVersion(data) {
   var sha = data._gistSha || null, ts = data._gistUpdatedAt || null;
-  if (sha && _lastSha && sha === _lastSha) return 'same';
-  if (sha && _lastSha && sha !== _lastSha) {
-    if (!ts || !_lastCommitTs) return 'newer';
-    return new Date(ts) > new Date(_lastCommitTs) ? 'newer' : 'older';
-  }
+  // SHA is the canonical truth — any change means newer, ignore timestamp (avoids CDN clock-skew discards)
+  if (sha && _lastSha) return sha === _lastSha ? 'same' : 'newer';
+  // Raw URL fallback — timestamp only, never discard as older
   if (ts && _lastCommitTs) {
-    if (new Date(ts) < new Date(_lastCommitTs)) return 'older';
-    if (new Date(ts) > new Date(_lastCommitTs)) return 'newer';
-    return 'same';
+    return new Date(ts) > new Date(_lastCommitTs) ? 'newer' : 'same';
   }
   return 'unknown';
 }
