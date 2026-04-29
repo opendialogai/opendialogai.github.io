@@ -1103,11 +1103,14 @@ function extractGistId(url) {
 
 // ── Gist: fetch with API → raw URL fallback chain ────────────
 async function fetchRawUrl(rawUrl) {
+  // Append timestamp to bust proxy-server caches on every call
+  var cb = '?_cb=' + Date.now();
+  var busted = rawUrl + (rawUrl.includes('?') ? '&_cb=' + Date.now() : cb);
   var proxies = [
-    rawUrl,  // direct first (works if CORS allows, or from same origin)
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent(rawUrl),
-    'https://corsproxy.io/?' + encodeURIComponent(rawUrl),
-    'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(rawUrl)
+    busted,
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent(busted),
+    'https://corsproxy.io/?' + encodeURIComponent(busted),
+    'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(busted)
   ];
   var lastErr = null;
   for (var i = 0; i < proxies.length; i++) {
@@ -1122,11 +1125,25 @@ async function fetchRawUrl(rawUrl) {
   throw lastErr || new Error('All raw URL fetch attempts failed');
 }
 
-async function fetchViaProxy(url) {
-  var gistId  = extractGistId(url);
-  var rawUrl  = url; // may be a raw URL already
+// Build the canonical unversioned raw URL from any Gist URL or ID
+function buildUnversionedRawUrl(url, gistId) {
+  // If it's already an unversioned raw URL, return as-is
+  if (url.includes('gist.githubusercontent.com')) {
+    // Strip any commit SHA segment: .../raw/<40-char-sha>/filename -> .../raw/filename
+    var clean = url.replace(/\/raw\/[a-f0-9]{40}\//, '/raw/');
+    return clean;
+  }
+  // Construct from Gist ID — works if user pastes a gist.github.com URL or bare ID
+  if (gistId) {
+    return 'https://gist.githubusercontent.com/danny-major-od/' + gistId + '/raw/ice-demo-data.json';
+  }
+  return url;
+}
 
-  // ── Strategy 1: GitHub API (best — gives us SHA for version tracking) ──
+async function fetchViaProxy(url) {
+  var gistId = extractGistId(url);
+
+  // ── Strategy 1: GitHub API — try first for SHA tracking ──
   if (gistId) {
     try {
       var res = await fetch('https://api.github.com/gists/' + gistId, {
@@ -1141,7 +1158,9 @@ async function fetchViaProxy(url) {
         var file     = files[fileName];
         if (!file) throw new Error('No JSON file found in Gist');
         var parsed = null;
-        if (file.truncated && file.raw_url) {
+        // Always fetch via the versioned raw_url from the API response —
+        // this bypasses CDN caching entirely
+        if (file.raw_url) {
           var rawRes = await fetch(file.raw_url, { cache: 'no-store' });
           if (rawRes.ok) parsed = await rawRes.json();
         }
@@ -1152,16 +1171,16 @@ async function fetchViaProxy(url) {
         parsed._gistUpdatedAt = history.length ? history[0].committed_at : (gistMeta.updated_at || null);
         return parsed;
       }
-      // 403 = rate limited or unauthenticated — fall through to raw fetch
+      // 403/rate-limited — fall through to raw fetch
     } catch(e) { /* fall through */ }
   }
 
-  // ── Strategy 2: fetch the raw URL directly (public Gists don't need auth) ──
-  if (!rawUrl) throw new Error('Could not determine a URL to fetch');
+  // ── Strategy 2: unversioned raw URL with cache-busting ──
+  var rawUrl = buildUnversionedRawUrl(url, gistId);
   var result = await fetchRawUrl(rawUrl);
   var parsed = result.data;
   if (!parsed) throw new Error('Could not parse Gist content');
-  parsed._gistSha       = null;  // no SHA available via raw fetch
+  parsed._gistSha       = null;
   parsed._gistUpdatedAt = null;
   return parsed;
 }
