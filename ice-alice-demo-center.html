@@ -949,7 +949,7 @@
       <div class="admin-field">
         <label class="admin-label">App Key</label>
         <input class="admin-input" type="text" id="inputAppKey"
-          value="1125899912000000|mO266I8pasH59mnL4XgWIfxh13Tufcmz1cgE9yHN28545e0c"
+          value="1125899917000000|xEXH8i38fTRs0YPlT62DZ3hs1tOX8Qr5mscSmPuva861ee97"
           placeholder="e.g. 1125899910000000|xxxxxx..."
           style="font-family:monospace;font-size:11px;">
       </div>
@@ -957,7 +957,7 @@
       <div class="admin-field">
         <label class="admin-label">Scenario ID</label>
         <input class="admin-input" type="text" id="inputScenarioId"
-          value="1125899918000002"
+          value="1125899925000000"
           placeholder="e.g. 1125899914000000"
           style="font-family:monospace;font-size:11px;">
       </div>
@@ -1188,8 +1188,8 @@
       heroSub: 'Manage your global travel policies and active claims.',
       ctaLabel: 'Make a Travel Claim',
       navDefaults: ['Home','Claims','Policy Docs','Global Support'],
-      appKey: '1125899912000000|mO266I8pasH59mnL4XgWIfxh13Tufcmz1cgE9yHN28545e0c',
-      scenario: '1125899918000002',
+      appKey: '1125899917000000|xEXH8i38fTRs0YPlT62DZ3hs1tOX8Qr5mscSmPuva861ee97',
+      scenario: '1125899925000000',
       policies: [
         { ref:'TRV-2026-X99', name:'Annual Multi-Trip Premium', meta:[{l:'Region',v:'Worldwide (excl. USA/Canada)'},{l:'Medical limit',v:'£10,000,000'},{l:'Expiry',v:'Jan 15, 2027'}], tags:['Emergency Medical','Trip Cancellation','Personal Baggage','Flight Delay'] },
         { ref:'TRV-2026-S12', name:'Winter Sports Extension', meta:[{l:'Region',v:'Europe Only'},{l:'Cover',v:'Ski Equipment Cover'},{l:'Expiry',v:'Mar 30, 2026'}], tags:['Ski Hire','Piste Closure','Search & Rescue'] }
@@ -1470,8 +1470,8 @@
   // ─── OpenDialog Webchat (direct embed) ──────────────────
   // Read overrides from sessionStorage (set by Admin Controls)
   // Default to Travel product keys
-  var _storedAppKey    = sessionStorage.getItem('od_appKey')    || '1125899912000000|mO266I8pasH59mnL4XgWIfxh13Tufcmz1cgE9yHN28545e0c';
-  var _storedScenario  = sessionStorage.getItem('od_scenario')  || '1125899918000002';
+  var _storedAppKey    = sessionStorage.getItem('od_appKey')    || '1125899917000000|xEXH8i38fTRs0YPlT62DZ3hs1tOX8Qr5mscSmPuva861ee97';
+  var _storedScenario  = sessionStorage.getItem('od_scenario')  || '1125899925000000';
 
   window.openDialogSettings = {
     url: 'https://iceinsuretech.cloud.opendialog.ai',
