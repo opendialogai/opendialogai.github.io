@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACME Health | My Policy</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://iceinsuretech.cloud.opendialog.ai/styles/nu-webchat.css">
+<style>
+  :root {
+    --brand-primary:   #003366;
+    --brand-secondary: #0066CC;
+    --brand-accent:    #E8401C;
+    --brand-light:     #EAF2FF;
+    --brand-text:      #0D1B2A;
+    --brand-muted:     #5E7A99;
+    --brand-border:    #C8D9EE;
+    --brand-nav-bg:    #000000;
+    --brand-card-bg:   #FFFFFF;
+    --brand-page-bg:   #F0F4FA;
+    --left-nav-w:      220px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--brand-page-bg);
+    color: var(--brand-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .app-shell { display: flex; flex: 1; overflow: hidden; }
+
+  /* ── LEFT NAV ── */
+  .left-nav {
+    width: var(--left-nav-w);
+    background: var(--brand-nav-bg);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+  }
+
+  .left-nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 18px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    min-height: 80px;
+  }
+
+  .nav-logo-mark {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--brand-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 18px; color: #fff;
+    flex-shrink: 0;
+  }
+  .nav-logo-text { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 16px; color: #fff; line-height: 1.1; }
+  .nav-logo-text small { display: block; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
+
+  .left-nav-user {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--brand-secondary);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 12px; color: #fff;
+    flex-shrink: 0;
+  }
+  .nav-user-name { font-size: 12px; font-weight: 700; color: #fff; }
+  .nav-user-tier { font-size: 10px; color: rgba(255,255,255,0.48); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1px; }
+
+  .left-nav-links { list-style: none; padding: 10px 8px; flex: 1; }
+  .left-nav-links li { margin-bottom: 2px; }
+  .left-nav-links a {
+    display: flex; align-items: center; gap: 10px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 9px 10px; border-radius: 8px;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .left-nav-links a svg { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.7; }
+  .left-nav-links a:hover, .left-nav-links a.active { color: #fff; background: rgba(255,255,255,0.12); }
+  .left-nav-links a.active svg { opacity: 1; }
+
+  .left-nav-footer { padding: 12px 14px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .support-pill {
+    background: rgba(126,207,255,0.14);
+    border: 1px solid rgba(126,207,255,0.22);
+    border-radius: 20px; padding: 5px 10px;
+    font-size: 10px; font-weight: 700; color: #7ECFFF;
+    letter-spacing: 0.8px; text-transform: uppercase; text-align: center;
+    margin-bottom: 8px;
+  }
+  .signout-btn {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; background: none;
+    border: 1px solid rgba(255,255,255,0.16); border-radius: 6px;
+    color: rgba(255,255,255,0.5); font-size: 12px; padding: 7px;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .signout-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .signout-btn svg { width: 12px; height: 12px; }
+
+  /* ── MAIN BODY ── */
+  .main-body { flex: 1; display: flex; flex-direction: column; min-width: 0; overflow-y: auto; height: 100vh; }
+
+  .top-bar {
+    background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+    padding: 22px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .top-bar-left h1 { font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700; color: #fff; }
+  .top-bar-left p { font-size: 13px; color: rgba(255,255,255,0.62); margin-top: 3px; }
+
+  .claim-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--brand-accent); color: #fff;
+    font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px;
+    padding: 11px 22px; border-radius: 8px; border: none; cursor: pointer;
+    transition: all 0.2s; box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    text-decoration: none; flex-shrink: 0;
+  }
+  .claim-cta:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .claim-cta svg { width: 14px; height: 14px; }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 430px;
+    gap: 22px;
+    padding: 24px 28px 40px;
+    align-items: start;
+  }
+
+  .section-label {
+    font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--brand-muted); margin-bottom: 12px;
+  }
+
+  /* ── POLICY SUMMARY ── */
+  .policy-summary {
+    background: var(--brand-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--brand-border);
+    box-shadow: 0 2px 8px rgba(0,30,80,0.06);
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  }
+  .ps-main { flex: 1; min-width: 200px; }
+  .ps-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .ps-name { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 16px; }
+  .ps-sub { font-size: 12px; color: var(--brand-muted); }
+  .ps-stats { display: flex; gap: 22px; flex-wrap: wrap; }
+  .ps-stat-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--brand-muted); }
+  .ps-stat-value { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 15px; margin-top: 2px; }
+
+  .policy-status {
+    background: #E6F9F0; color: #1A7A4A;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+  }
+
+  /* ── COVERAGE CARDS ── */
+  .policy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+  .policy-card {
+    background: var(--brand-card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--brand-border);
+    padding: 18px;
+    box-shadow: 0 2px 8px rgba(0,30,80,0.06);
+    transition: box-shadow 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .policy-card:hover { box-shadow: 0 6px 20px rgba(0,30,80,0.10); }
+
+  .policy-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .cover-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: var(--brand-light);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cover-icon svg { width: 17px; height: 17px; color: var(--brand-secondary); }
+  .cover-badge {
+    font-size: 10px; font-weight: 700; color: var(--brand-muted);
+    background: #F3F6FB; border: 1px solid var(--brand-border);
+    padding: 3px 9px; border-radius: 20px;
+  }
+
+  .policy-name { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px; color: var(--brand-text); margin-bottom: 12px; line-height: 1.3; }
+
+  .policy-meta { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+  .policy-meta-row { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; }
+  .meta-label { color: var(--brand-muted); }
+  .meta-value { color: var(--brand-text); font-weight: 600; text-align: right; }
+
+  .policy-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .policy-tag {
+    background: var(--brand-light); color: var(--brand-secondary);
+    font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+  }
+
+  .policy-link { margin-top: auto; font-size: 11px; font-weight: 700; color: var(--brand-secondary); text-decoration: none; letter-spacing: 0.3px; }
+  .policy-link:hover { text-decoration: underline; }
+
+  /* ── QUICK ACTIONS ── */
+  .quick-actions-card {
+    background: var(--brand-card-bg);
+    border-radius: 14px; border: 1px solid var(--brand-border);
+    padding: 18px; box-shadow: 0 2px 8px rgba(0,30,80,0.06);
+  }
+  .qa-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px; color: var(--brand-text); margin-bottom: 12px; }
+  .qa-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .qa-btn {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    background: var(--brand-light); border: 1px solid var(--brand-border);
+    border-radius: 10px; padding: 14px 12px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    color: var(--brand-text); transition: all 0.2s; text-align: left; line-height: 1.3;
+  }
+  .qa-btn svg { width: 18px; height: 18px; color: var(--brand-secondary); transition: color 0.2s; }
+  .qa-btn:hover { background: var(--brand-secondary); color: #fff; border-color: var(--brand-secondary); }
+  .qa-btn:hover svg { color: #fff; }
+
+  /* ── RIGHT COLUMN ── */
+  .right-col { display: flex; flex-direction: column; gap: 14px; }
+
+  .helpline-card {
+    background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+    border-radius: 14px; padding: 16px 18px;
+  }
+  .helpline-icon {
+    width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
+  }
+  .helpline-icon svg { width: 18px; height: 18px; color: #fff; }
+  .helpline-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 13px; color: #fff; margin-bottom: 2px; }
+  .helpline-number { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 18px; color: #fff; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .helpline-text { font-size: 11px; color: rgba(255,255,255,0.68); line-height: 1.5; margin-bottom: 10px; }
+  .helpline-btn {
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 7px; color: #fff; font-size: 12px; font-weight: 700;
+    padding: 8px 14px; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s; width: 100%;
+  }
+  .helpline-btn:hover { background: rgba(255,255,255,0.28); }
+
+  .ai-panel {
+    background: var(--brand-card-bg);
+    border-radius: 14px; border: 1px solid var(--brand-border);
+    box-shadow: 0 2px 8px rgba(0,30,80,0.06); overflow: hidden;
+  }
+  .ai-embed-area { background: #fff; min-height: 550px; display: flex; flex-direction: column; }
+  #od-webchat { width: 100%; height: 100%; min-height: 550px; }
+
+  .ai-setup-note {
+    margin: auto; max-width: 280px; text-align: center; padding: 24px;
+    font-size: 12px; color: var(--brand-muted); line-height: 1.6;
+  }
+  .ai-setup-note strong { display: block; font-family: 'Sora', sans-serif; color: var(--brand-text); font-size: 13px; margin-bottom: 6px; }
+  .ai-setup-note code { font-size: 11px; background: #F3F6FB; padding: 1px 5px; border-radius: 4px; }
+
+  /* Force webchat iframe to fill the AI panel */
+  #od-webchat > iframe#opendialog-chatwindow {
+    position: static !important;
+    width: 100% !important; max-width: 100% !important; min-width: 100% !important;
+    height: 100% !important; min-height: 550px !important;
+    border: none !important; border-radius: 14px !important;
+  }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ════════════ LEFT NAV ════════════ -->
+  <nav class="left-nav">
+    <div class="left-nav-logo">
+      <div class="nav-logo-mark">A</div>
+      <div class="nav-logo-text">ACME<small>International Health</small></div>
+    </div>
+
+    <div class="left-nav-user">
+      <div class="nav-avatar">C</div>
+      <div>
+        <div class="nav-user-name">Chris</div>
+        <div class="nav-user-tier">Policy 997</div>
+      </div>
+    </div>
+
+    <ul class="left-nav-links">
+      <li><a href="#" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Home</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Claims</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Policy Docs</a></li>
+      <li><a href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Find a Hospital</a></li>
+    </ul>
+
+    <div class="left-nav-footer">
+      <div class="support-pill">Medical Assistance Active</div>
+      <button class="signout-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </nav>
+
+  <!-- ════════════ MAIN BODY ════════════ -->
+  <div class="main-body">
+
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <h1><!--HERO_TITLE-->My Health Policy<!--/HERO_TITLE--></h1>
+        <p><!--HERO_SUB-->Check what you're covered for and keep your details up to date.<!--/HERO_SUB--></p>
+      </div>
+      <a href="#" class="claim-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        <span><!--CTA-->Ask About My Cover<!--/CTA--></span>
+      </a>
+    </div>
+
+    <div class="content-grid">
+
+      <!-- Centre: policy summary, coverage cards, quick actions -->
+      <div>
+        <div class="section-label">Your Policy</div>
+        <div class="policy-summary">
+          <div class="ps-main">
+            <div class="ps-top">
+              <span class="ps-name">ACME International Health</span>
+              <span class="policy-status">Active</span>
+            </div>
+            <div class="ps-sub">Policy 997 · Chris · Cover 30 Oct – 12 Nov 2026</div>
+          </div>
+          <div class="ps-stats">
+            <div><div class="ps-stat-label">Overall limit</div><div class="ps-stat-value">€350,000</div></div>
+            <div><div class="ps-stat-label">Currency</div><div class="ps-stat-value">EUR</div></div>
+          </div>
+        </div>
+
+        <div class="section-label">Your Cover</div>
+        <div class="policy-grid">
+
+          <!-- Hospital & Surgery -->
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <div class="cover-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
+              <span class="cover-badge">€65 deductible</span>
+            </div>
+            <div class="policy-name">Hospital &amp; Surgery</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">MRI, CT &amp; PET scans</span><span class="meta-value">€2,000</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Organ transplant</span><span class="meta-value">€35,000</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Psychiatric inpatient care</span><span class="meta-value">45 days</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Rehabilitation</span><span class="meta-value">45 days</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Hospital Room</span>
+              <span class="policy-tag">Surgery &amp; Theatre</span>
+              <span class="policy-tag">Intensive Care</span>
+              <span class="policy-tag">Cancer Treatment</span>
+            </div>
+            <a href="#" class="policy-link">VIEW BENEFIT DETAILS →</a>
+          </div>
+
+          <!-- Outpatient -->
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <div class="cover-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6 6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3"/><path d="M8 15v1a6 6 0 006 6 6 6 0 006-6v-4"/><circle cx="20" cy="10" r="2"/></svg></div>
+              <span class="cover-badge">10% co-insurance</span>
+            </div>
+            <div class="policy-name">Outpatient</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">Outpatient limit</span><span class="meta-value">€650</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Prescribed medication</span><span class="meta-value">€200</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Physio, chiro &amp; osteo</span><span class="meta-value">12 sessions</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Mental health</span><span class="meta-value">10 sessions</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Specialist Consultations</span>
+              <span class="policy-tag">Diagnostic Tests</span>
+              <span class="policy-tag">Vaccinations</span>
+            </div>
+            <a href="#" class="policy-link">VIEW BENEFIT DETAILS →</a>
+          </div>
+
+          <!-- Dental & Optical -->
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <div class="cover-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+              <span class="cover-badge">€270 limit</span>
+            </div>
+            <div class="policy-name">Dental &amp; Optical</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">Preventive dental</span><span class="meta-value">Covered</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Basic restorative</span><span class="meta-value">20% co-insurance</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Major restorative</span><span class="meta-value">50% co-insurance</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Glasses or lenses</span><span class="meta-value">€35</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Check-ups</span>
+              <span class="policy-tag">Fillings</span>
+              <span class="policy-tag">Eyewear</span>
+            </div>
+            <a href="#" class="policy-link">VIEW BENEFIT DETAILS →</a>
+          </div>
+
+          <!-- Emergency & Evacuation -->
+          <div class="policy-card">
+            <div class="policy-card-header">
+              <div class="cover-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></div>
+              <span class="cover-badge">Worldwide</span>
+            </div>
+            <div class="policy-name">Emergency &amp; Evacuation</div>
+            <div class="policy-meta">
+              <div class="policy-meta-row"><span class="meta-label">Medical evacuation</span><span class="meta-value">€130,000</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Treatment outside area</span><span class="meta-value">€13,000</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Accident outpatient care</span><span class="meta-value">€350</span></div>
+              <div class="policy-meta-row"><span class="meta-label">Repatriation</span><span class="meta-value">€2,700</span></div>
+            </div>
+            <div class="policy-tags">
+              <span class="policy-tag">Road Ambulance</span>
+              <span class="policy-tag">Emergency Dental</span>
+              <span class="policy-tag">24/7 Assistance</span>
+            </div>
+            <a href="#" class="policy-link">VIEW BENEFIT DETAILS →</a>
+          </div>
+
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions-card">
+          <div class="qa-title">Quick Actions</div>
+          <div class="qa-grid">
+<!--QUICK_ACTIONS-->
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Update Personal Details
+            </button>
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              Check My Cover
+            </button>
+            <button class="qa-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Download Certificate
+            </button>
+<!--/QUICK_ACTIONS-->
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: helpline then AI assistant -->
+      <div class="right-col">
+
+        <div class="helpline-card">
+          <div class="helpline-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="helpline-title">24/7 Medical Assistance</div>
+          <div class="helpline-number">+44 800 123 4567</div>
+          <div class="helpline-text">For emergencies, hospital admissions and pre-authorisation, wherever you are in the world.</div>
+          <button class="helpline-btn">Contact Assistance →</button>
+        </div>
+
+        <div class="ai-panel">
+          <div class="ai-embed-area">
+            <div id="od-webchat"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /content-grid -->
+  </div><!-- /main-body -->
+</div><!-- /app-shell -->
+
+<script>
+  /* ═══════════════════════════════════════════════════════
+     WEBCHAT SETTINGS: the only two values to set
+     ═══════════════════════════════════════════════════════ */
+  var OD_APP_KEY  = 'PASTE_APP_KEY_HERE';   // e.g. 1125899910000000|xxxxxx...
+  var OD_SCENARIO = '4503599628000239';     // Nordic Service - ACME iPMI
+
+  window.openDialogSettings = {
+    url: 'https://iceinsuretech.cloud.opendialog.ai',
+    appKey: '4503599627370498|6TxXnAcdmEL9dLBLSsWc7TelZ5QvWPwOglmjktUG520b55a2',
+    parentEl: '#od-webchat',
+    user: {
+      custom: {
+        selected_scenario: '4503599628000239',
+        session_lifetime: 0
+      }
+    },
+    customSettings: {
+      openCta: {
+        title: "Hello!👋 Chat with us!",
+        icon: "https://iceinsuretech.cloud.opendialog.ai/images/cta-chat-open.svg",
+        borderRadius: "50px",
+        width: "280px",
+        height: "80px",
+        background: "#001abf"
+      },
+      additionalMenuLinks: [],
+      embedded: true,
+      fullWidth: true
+    }
+  };
+
+  // Load the webchat only once an app key has been pasted in
+  if (OD_APP_KEY.indexOf('PASTE_') === 0) {
+    document.getElementById('od-webchat').innerHTML =
+      '<div class="ai-setup-note"><strong>Assistant not connected yet</strong>' +
+      'Paste the webchat app key into <code>OD_APP_KEY</code> near the bottom of this file.</div>';
+  } else {
+    var s = document.createElement('script');
+    s.src = 'https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js';
+    document.body.appendChild(s);
+  }
+</script>
+
+</body>
+</html>
