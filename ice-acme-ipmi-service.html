@@ -501,16 +501,16 @@
   /* ═══════════════════════════════════════════════════════
      WEBCHAT SETTINGS: the only two values to set
      ═══════════════════════════════════════════════════════ */
-  var OD_APP_KEY  = 'PASTE_APP_KEY_HERE';   // e.g. 1125899910000000|xxxxxx...
+  var OD_APP_KEY  = '1125899918000000|aaGkWNP31APUiz0VxvvyhTtOHVXSzPUdUNUtDMpDbacedcf3';   // webchat app key
   var OD_SCENARIO = '4503599628000239';     // Nordic Service - ACME iPMI
 
   window.openDialogSettings = {
     url: 'https://iceinsuretech.cloud.opendialog.ai',
-    appKey: '4503599627370498|6TxXnAcdmEL9dLBLSsWc7TelZ5QvWPwOglmjktUG520b55a2',
+    appKey: OD_APP_KEY,
     parentEl: '#od-webchat',
     user: {
       custom: {
-        selected_scenario: '4503599628000239',
+        selected_scenario: OD_SCENARIO,
         session_lifetime: 0
       }
     },
@@ -529,17 +529,10 @@
     }
   };
 
-  // Load the webchat only once an app key has been pasted in
-  if (OD_APP_KEY.indexOf('PASTE_') === 0) {
-    document.getElementById('od-webchat').innerHTML =
-      '<div class="ai-setup-note"><strong>Assistant not connected yet</strong>' +
-      'Paste the webchat app key into <code>OD_APP_KEY</code> near the bottom of this file.</div>';
-  } else {
-    var s = document.createElement('script');
-    s.src = 'https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js';
-    document.body.appendChild(s);
-  }
 </script>
+
+<!-- OpenDialog Webchat JS -->
+<script src="https://iceinsuretech.cloud.opendialog.ai/dist/nu-webchat-js"></script>
 
 </body>
 </html>
